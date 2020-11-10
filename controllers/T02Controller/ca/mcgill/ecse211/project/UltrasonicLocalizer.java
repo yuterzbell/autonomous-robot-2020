@@ -181,7 +181,7 @@ public class UltrasonicLocalizer {
     arr[arr.length - 1] = dist;
 
     // return the filtered data
-    return getMedian(dists);
+    return getMedian(arr);
   }
 
   /**

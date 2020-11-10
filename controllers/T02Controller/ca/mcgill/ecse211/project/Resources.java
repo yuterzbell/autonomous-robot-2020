@@ -87,6 +87,12 @@ public class Resources {
   /** The speed at which the robot rotates in degrees per second. */
   public static final int ROTATE_SPEED = 300;
   
+  /** Light Detection speed. */
+  public static final int MOTOR_LOW = 125;
+  
+  /** Light Threshold. */
+  public static final float LIGHT_THRESH = 80f;
+  
   /** The motor acceleration in degrees per second squared. */
   public static final int ACCELERATION = 3000;
   

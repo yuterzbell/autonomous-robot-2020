@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
+import java.util.Arrays;
 
 
 public class LightLocalizer {
@@ -9,15 +10,18 @@ public class LightLocalizer {
   private static float[] leftColorSensorData = new float[leftColorSensor.sampleSize()];
   private static float[] rightColorSensorData = new float[rightColorSensor.sampleSize()];
   /** The discrete derivatives of each sensor. */
-  private static float[] leftDerivative = new float[3];
-  private static float[] rightDerivative = new float[3];
+  private static int[] leftDerivative = new int[3];
+  private static int[] rightDerivative = new int[3];
+  /** Values read from corresponding light sensor. */  
+  private static int[] leftValues = new int[5];
+  private static int[] rightValues = new int[5];
   private static int i = 0;     // left counter
   private static int j = 0;     // right counter
   /** Last readings from sensor. */
-  private static float prevLeft;
-  private static float prevRight;
+  private static int prevLeft;
+  private static int prevRight;
   /** Derivative threshold for valid change in readings. */
-  private static float dThresh = 50f;
+  private static int dThresh = 50;
   
   /**
    * This method will bring the pivot point of the robot a the top right corner 
@@ -25,13 +29,9 @@ public class LightLocalizer {
    *
    */
   public static void localize() {
-    leftColorSensor.fetchSample(leftColorSensorData, 0);
-    rightColorSensor.fetchSample(rightColorSensorData, 0);
-    prevLeft = leftColorSensorData[0];
-    prevRight = rightColorSensorData[0];
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected2();
+    moveUntilBlackLineDetected();
     
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -40,7 +40,7 @@ public class LightLocalizer {
     Helper.turnBy(90);
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected2();
+    moveUntilBlackLineDetected();
 
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -56,13 +56,13 @@ public class LightLocalizer {
    * 
    * @author Andre-Walter Panzini
    */
-  /*
+
   public static void moveUntilBlackLineDetected() {
     boolean isLeftWheelDetected = false;
     boolean isRightWheelDetected = false;
     
-    leftMotor.setSpeed(MOTOR_HIGH);
-    rightMotor.setSpeed(MOTOR_HIGH);
+    leftMotor.setSpeed(MOTOR_LOW);
+    rightMotor.setSpeed(MOTOR_LOW);
     
     while (!isLeftWheelDetected || !isRightWheelDetected) {
       leftColorSensor.fetchSample(leftColorSensorData, 0);
@@ -88,7 +88,7 @@ public class LightLocalizer {
       }
       
     }
-  } */
+  } 
   
   /*
    * Moves the robot straight until a black line is detected by both left and right color sensors.
@@ -100,16 +100,44 @@ public class LightLocalizer {
   public static void moveUntilBlackLineDetected2() {
     boolean isLeftWheelDetected = false;
     boolean isRightWheelDetected = false;
+   
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
     
-    leftMotor.setSpeed(ROTATE_SPEED);
-    rightMotor.setSpeed(ROTATE_SPEED);
-    
+    initilizeData();
+   
     while (!isLeftWheelDetected || !isRightWheelDetected) {
-      readLight();
-      System.out.printf("Left: %f\n",leftColorSensorData[0]);
-      System.out.printf("Right: %f\n", rightColorSensorData[0]);
+      if (isLeftWheelDetected) {
+        rightMotor.setSpeed(MOTOR_LOW);
+      } 
+      if (isRightWheelDetected) {
+        leftMotor.setSpeed(MOTOR_LOW);
+      }
+      // get the filtered readings
+      int left = medianFilteringLeft(leftValues);      
+      int right = medianFilteringRight(rightValues);
       
-      if (leftDerivativeValid()) { //Should update the threshold to be a constant
+      // then record derivative of the 
+      int derivative = 0;
+      derivative = left - prevLeft;
+      if (Math.abs(derivative) > dThresh && i < 2) {
+        leftDerivative[i] = derivative;
+        i++;
+      }
+      prevLeft = left;
+      
+      derivative = right - prevRight;
+      if (Math.abs(derivative) > dThresh && j < 2) {
+        rightDerivative[j] = derivative;
+        j++;
+      }
+      prevRight = right;
+      
+      
+      System.out.printf("Left: %d\n",left);
+      System.out.printf("Right: %d\n", right);
+      
+      if (leftDerivativeValid()) { // Should update the threshold to be a constant
         leftMotor.stop();
         isLeftWheelDetected = true;
         System.out.println("left black line detected");
@@ -131,29 +159,17 @@ public class LightLocalizer {
   }
   
   
-  /**
-   * This method read the values from light sensors and update derivative arrays.
-   * @author Zichen Chang
-   */
-  public static void readLight() {
-    float derivative = 0;
-    leftColorSensor.fetchSample(leftColorSensorData, 0);
-    float currentLeft = leftColorSensorData[0];
-    derivative = currentLeft - prevLeft;
-    if (Math.abs(derivative) > dThresh && i < 2) {
-      leftDerivative[i] = derivative;
+  private static void initilizeData() {
+    // initialize the window of our data
+    int i = 0;                // counter of initializing dist[]
+    while (i < leftValues.length) {
+      leftColorSensor.fetchSample(leftColorSensorData, 0);
+      leftValues[i] = (int) leftColorSensorData[0];
+      rightValues[i] = (int) leftColorSensorData[0];
       i++;
     }
-    prevLeft = currentLeft;
-    
-    rightColorSensor.fetchSample(rightColorSensorData, 0);
-    float currentRight = rightColorSensorData[0];
-    derivative = currentRight - prevRight;
-    if (Math.abs(derivative) > dThresh && j < 2) {
-      rightDerivative[j] = derivative;
-      j++;
-    }
-    prevRight = currentRight;
+    prevLeft = (int) leftColorSensorData[0];
+    prevRight = (int) leftColorSensorData[0];
   }
   
   
@@ -187,7 +203,7 @@ public class LightLocalizer {
    */
   public static void clearLeftDerivatives() {
     i = 0;
-    leftDerivative = new float[3];
+    leftDerivative = new int[3];
   }
   
   /**
@@ -195,7 +211,7 @@ public class LightLocalizer {
    */
   public static void clearRightDerivatives() {
     j = 0;
-    rightDerivative = new float[3];
+    rightDerivative = new int[3];
   }
   
   /**
@@ -212,6 +228,58 @@ public class LightLocalizer {
    */
   public static float[] getrightColorData() {
     return rightColorSensorData;
+  }
+  
+  /**
+   * Use median window filtering to filter data.
+   * @return  median of the window
+   */
+  private static int medianFilteringLeft(int[] arr) {
+    // shift data window to left by 1
+    for (int j = 0; j < arr.length - 1; j++) {
+      arr[j] = arr[j + 1];
+    }
+    leftColorSensor.fetchSample(leftColorSensorData, 0);      // get distance of current loop
+    int value = (int)leftColorSensorData[0];
+    arr[arr.length - 1] = value;
+
+    // return the filtered data
+    return getMedian(arr);
+  }
+  
+  /**
+   * Use median window filtering to filter data.
+   * @return  median of the window
+   */
+  private static int medianFilteringRight(int[] arr) {
+    // shift data window to left by 1
+    for (int j = 0; j < arr.length - 1; j++) {
+      arr[j] = arr[j + 1];
+    }
+    rightColorSensor.fetchSample(rightColorSensorData, 0);      // get distance of current loop
+    int value = (int)rightColorSensorData[0];
+    arr[arr.length - 1] = value;
+
+    // return the filtered data
+    return getMedian(arr);
+  }
+  
+  /**
+   * Returns median of a given array.
+   * @param arr input array
+   * @return the filtered data of the window
+   */
+  public static int getMedian(int[] arr) {
+    // System.out.println(arr[0] + ", " + arr[1] + ", " + arr[2] + ", " + arr[3] + ", " + arr[4]);
+    int[] copy = arr.clone();
+    Arrays.sort(copy);
+    int median = 0;
+    if (copy.length % 2 == 0) {
+      median = (copy[copy.length / 2] + copy[copy.length / 2 - 1]) / 2;
+    } else {
+      median = copy[copy.length / 2];
+    }
+    return median;
   }
    
 }

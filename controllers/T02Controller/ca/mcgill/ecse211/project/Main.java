@@ -26,6 +26,8 @@ public class Main {
     
     // Start the odometer thread
     new Thread(odometer).start();
+//    Helper.turnBy(90);
+    
     
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -34,7 +36,7 @@ public class Main {
     
 //    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
 //    Navigation.navigateTo(bridge);
-//    
+//   
 //    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
 //    Navigation.navigateTo(searchZone);
     
