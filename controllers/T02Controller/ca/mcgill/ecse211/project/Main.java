@@ -29,16 +29,16 @@ public class Main {
 //    Helper.turnBy(90);
     
     
-    UltrasonicLocalizer.localize();
+//    UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     
     Helper.BeepNtimes(3);
     
-//    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
-//    Navigation.navigateTo(bridge);
-//   
-//    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
-//    Navigation.navigateTo(searchZone);
+    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
+    Navigation.navigateTo(bridge);
+   
+    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
+    Navigation.navigateTo(searchZone);
     
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
