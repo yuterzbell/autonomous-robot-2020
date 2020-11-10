@@ -10,6 +10,19 @@ public class Navigation {
   /** Do not instantiate this class. */
   private Navigation() {}
   
+  /**
+   * Navigate robot first in y-axis, then in x-axis.
+   * @param destination- target point
+   * @author Zichen Chang
+   */
+  public static void navigateTo(Point destination) {
+    var xyt = odometer.getXyt();
+    var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
+    travelTo(pointX);
+    var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
+    travelTo(pointY);
+  }
+  
   /** Travels to the given destination. */
   public static void travelTo(Point destination) {
     var xyt = odometer.getXyt();
@@ -17,7 +30,13 @@ public class Navigation {
     var currentTheta = xyt[2];
     var destinationTheta = getDestinationAngle(currentLocation, destination);
     turnBy(minimalAngle(currentTheta, destinationTheta));
-    moveStraightFor(distanceBetween(currentLocation, destination));
+    int moveInX = 1;
+    if (destination.x != xyt[0] / TILE_SIZE) {
+      moveInX = 1;
+    } else if (destination.y != xyt[1] / TILE_SIZE) {
+      moveInX = 0;
+    }
+    moveStraightWithLineCorrection2(moveInX, distanceBetween(currentLocation, destination));
   }
   
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
@@ -56,6 +75,52 @@ public class Navigation {
     rightMotor.rotate(convertDistance(distance * TILE_SIZE), false);
   }
   
+  /**
+   * Moves the robot for a certain distance and corrects the orientation of the robot
+   * when it crosses a black line.
+   * 
+   * @param moveInX integer indicating robot is move in x-direction if equal to 1
+   * @param distance number of tiles (in feet) to move straight for
+   */
+  public static void moveStraightWithLineCorrection2(int moveInX, double distance) { 
+    double inMeters = distance * TILE_SIZE;
+    double distanceChange = 0;
+
+    while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
+      var xyt0 = odometer.getXyt();
+      
+      LightLocalizer.moveUntilBlackLineDetected2();
+      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);        // TODO remember to change the speed here to FORWARD_SPEED
+     
+      var xyt1 = odometer.getXyt();
+      
+      if (moveInX == 1) {
+        double x = xyt1[0] / TILE_SIZE;             // calculate the x-coordinate
+        odometer.setX(Math.round(x) * TILE_SIZE);   // round the x-coordinate
+        if (xyt1[2] < 100 && xyt1[1] > 80) {
+          odometer.setTheta(90);
+        } else if (xyt1[2] < 280 && xyt1[1] > 260){
+          odometer.setTheta(270);
+        }
+      } else if (moveInX == 0){
+        double y = xyt1[1] / TILE_SIZE;             // calculate the x-coordinate
+        odometer.setY(Math.round(y) * TILE_SIZE);   // round the x-coordinate
+        if (xyt1[2] < 10 && xyt1[1] > 350) {
+          odometer.setTheta(0);
+        } else if (xyt1[2] < 190 && xyt1[1] > 170){
+          odometer.setTheta(180);
+        }
+      }
+      distanceChange = Math.sqrt(Math.pow((xyt0[1] - xyt1[1]), 2) + 
+          Math.pow((xyt0[0] - xyt1[0]), 2));
+      inMeters -= distanceChange;
+      odometer.printPosition();
+    }
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    moveStraightFor(inMeters / TILE_SIZE);
+  }
+  
   /** Moves the robot forward for an indeterminate distance. */
   public static void forward() {
     setSpeed(FORWARD_SPEED);
@@ -83,6 +148,8 @@ public class Navigation {
     leftMotor.rotate(convertAngle(angle), true);
     rightMotor.rotate(-convertAngle(angle), false);
   }
+  
+ 
   
   /** Rotates motors clockwise. */
   public static void clockwise() {

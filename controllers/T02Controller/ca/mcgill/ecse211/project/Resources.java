@@ -70,25 +70,25 @@ public class Resources {
   public static final int MAX_SENSOR_DIST = 255;
   
   /** The limit of invalid samples that we read from the US sensor before assuming no obstacle. */
-  public static final int INVALID_SAMPLE_LIMIT = 0;
+  public static final int INVALID_SAMPLE_LIMIT = 20;
   
   /** The wheel radius in meters. */
-  public static final double WHEEL_RAD = 0;
+  public static final double WHEEL_RAD = 0.021;
   
   /** The robot width in meters. */
-  public static final double BASE_WIDTH = 0;
+  public static final double BASE_WIDTH = 0.167;
   
   /** The distance between the color sensors and the wheels in meters. */
-  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0;
+  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0.071;
   
   /** The speed at which the robot moves forward in degrees per second. */
-  public static final int FORWARD_SPEED = 0;
+  public static final int FORWARD_SPEED = 500;
   
   /** The speed at which the robot rotates in degrees per second. */
-  public static final int ROTATE_SPEED = 0;
+  public static final int ROTATE_SPEED = 300;
   
   /** The motor acceleration in degrees per second squared. */
-  public static final int ACCELERATION = 0;
+  public static final int ACCELERATION = 3000;
   
   /** Timeout period in milliseconds. */
   public static final int TIMEOUT_PERIOD = 3000;
@@ -96,6 +96,8 @@ public class Resources {
   /** The tile size in meters. Note that 0.3048 m = 1 ft. */
   public static final double TILE_SIZE = 0.3048;
 
+  /** Group7's parameters. */
+  public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
 
   // Hardware resources
 
@@ -114,7 +116,9 @@ public class Resources {
   /** The right color sensor. */
   public static final EV3ColorSensor rightColorSensor = new EV3ColorSensor(SensorPort.S3);
 
-
+  /** The top ultrasonic sensor. */
+  public static final EV3UltrasonicSensor usSensortop = new EV3UltrasonicSensor(SensorPort.S4);
+  
   // Software singletons
   
   /** The odometer. */
