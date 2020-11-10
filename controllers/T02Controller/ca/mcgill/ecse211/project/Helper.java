@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Resources.*;
+import simlejos.hardware.ev3.LocalEV3;
 
 public class Helper {
 
@@ -58,4 +59,10 @@ public class Helper {
     leftMotor.rotate(wheelRotation, true);
     rightMotor.rotate(wheelRotation, false);
   } 
+  
+  public static void BeepNtimes(int n) {
+    for(int i = 0; i < n; i++) {
+      LocalEV3.getAudio().beep(); // beeps once
+    }
+  }
 }

@@ -4,6 +4,7 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.*;
 
 import java.lang.Thread;
+import ca.mcgill.ecse211.playingfield.Point;
 import simlejos.hardware.ev3.LocalEV3;
 
 /**
@@ -25,6 +26,17 @@ public class Main {
     
     // Start the odometer thread
     new Thread(odometer).start();
+    
+    UltrasonicLocalizer.localize();
+    LightLocalizer.localize();
+    
+    Helper.BeepNtimes(3);
+    
+//    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
+//    Navigation.navigateTo(bridge);
+//    
+//    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
+//    Navigation.navigateTo(searchZone);
     
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once

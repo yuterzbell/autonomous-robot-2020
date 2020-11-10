@@ -101,13 +101,13 @@ public class LightLocalizer {
     boolean isLeftWheelDetected = false;
     boolean isRightWheelDetected = false;
     
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
     
     while (!isLeftWheelDetected || !isRightWheelDetected) {
       readLight();
-//      System.out.printf("Left: %f\n",leftColorSensorData[0]);
-//      System.out.printf("Right: %f\n", rightColorSensorData[0]);
+      System.out.printf("Left: %f\n",leftColorSensorData[0]);
+      System.out.printf("Right: %f\n", rightColorSensorData[0]);
       
       if (leftDerivativeValid()) { //Should update the threshold to be a constant
         leftMotor.stop();

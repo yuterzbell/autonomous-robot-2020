@@ -95,6 +95,9 @@ public class Resources {
   
   /** The tile size in meters. Note that 0.3048 m = 1 ft. */
   public static final double TILE_SIZE = 0.3048;
+  
+  /** Robot offset. */
+  public static final double ROBOT_OFFSET = 0.7;   
 
   /** Group7's parameters. */
   public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
