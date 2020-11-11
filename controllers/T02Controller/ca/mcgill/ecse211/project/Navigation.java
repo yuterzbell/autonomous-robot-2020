@@ -17,10 +17,18 @@ public class Navigation {
    */
   public static void navigateTo(Point destination) {
     var xyt = odometer.getXyt();
+    // move in y first 
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX);
+    System.out.println("Finished y-direction move");
+    odometer.printPositionXY();
+    // move in x then
+    xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
+    System.out.println("Current y is: " + xyt[1] / TILE_SIZE);
     travelTo(pointY);
+    System.out.println("Finished x-direction move");
+    odometer.printPositionXY();
   }
   
   /** Travels to the given destination. */
@@ -29,7 +37,9 @@ public class Navigation {
     var currentLocation = new Point(xyt[0] / TILE_SIZE, xyt[1] / TILE_SIZE);
     var currentTheta = xyt[2];
     var destinationTheta = getDestinationAngle(currentLocation, destination);
+    
     turnBy(minimalAngle(currentTheta, destinationTheta));
+    System.out.println(minimalAngle(currentTheta, destinationTheta));
     int moveInX = 1;
     if (destination.x != xyt[0] / TILE_SIZE) {
       moveInX = 1;

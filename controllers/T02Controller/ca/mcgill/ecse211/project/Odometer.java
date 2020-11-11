@@ -121,6 +121,15 @@ public class Odometer implements Runnable {
     lock.unlock();
   }
   
+  /** Prints odometer information in coordinate to the console. */
+  public void printPositionXY() {
+    lock.lock();
+    System.out.println("Odometer:\tx =" + String.format("% 02.2f", x / TILE_SIZE)
+        + "m\ty =" + String.format("% 02.2f", y / TILE_SIZE)
+        + "m\ttheta =" + String.format("% 06.2f", theta) + " degrees"); 
+    lock.unlock();
+  }
+  
   /**
    * Returns the Odometer data.
    * 

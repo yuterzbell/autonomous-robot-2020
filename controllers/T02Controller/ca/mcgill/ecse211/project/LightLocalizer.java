@@ -31,7 +31,7 @@ public class LightLocalizer {
   public static void localize() {
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected();
+    moveUntilBlackLineDetected2();
     
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -40,7 +40,7 @@ public class LightLocalizer {
     Helper.turnBy(90);
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected();
+    moveUntilBlackLineDetected2();
 
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -134,13 +134,13 @@ public class LightLocalizer {
       prevRight = right;
       
       
-      System.out.printf("Left: %d\n",left);
-      System.out.printf("Right: %d\n", right);
+//      System.out.printf("Left: %d\n",left);
+//      System.out.printf("Right: %d\n", right);
       
       if (leftDerivativeValid()) { // Should update the threshold to be a constant
         leftMotor.stop();
         isLeftWheelDetected = true;
-        System.out.println("left black line detected");
+//        System.out.println("left black line detected");
         clearLeftDerivatives();
       } else {
         leftMotor.forward();
@@ -149,7 +149,7 @@ public class LightLocalizer {
       if (rightDerivativeValid()) {
         rightMotor.stop();
         isRightWheelDetected = true;
-        System.out.println("right black line detected");
+//        System.out.println("right black line detected");
         clearRightDerivatives();
       } else {
         rightMotor.forward();
