@@ -43,8 +43,9 @@ public class Main {
     Navigation.navigateTo(bridge);
     System.out.println("Bridge gotcha!");
    
-//    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() + tnr.ll.y);
-//    Navigation.navigateTo(searchZone);
+    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
+    System.out.println("SearchZone is at: " + searchZone);
+    Navigation.navigateTo(searchZone);
     
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
