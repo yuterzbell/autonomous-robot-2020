@@ -107,6 +107,8 @@ public class Resources {
 
   /** Group7's parameters. */
   public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
+  
+  public static final double US_DIFF_THRESHOLD = 5;
 
   // Hardware resources
 
@@ -132,6 +134,9 @@ public class Resources {
   
   /** The odometer. */
   public static Odometer odometer = Odometer.getOdometer();
+  
+  /** The object detector. */
+  public static ObjectDetection detector = ObjectDetection.getObjectDetection();
 
 
   // Wi-Fi parameters

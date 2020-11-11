@@ -7,17 +7,17 @@ import static ca.mcgill.ecse211.project.LightLocalizer.*;
 public class ObjectDetection implements Runnable{
 
     /** The singleton odometer instance. */
-    private static ObjectDetection odo;
+    private static ObjectDetection detect;
 
     /**
      * Gets the object for threads
      * @return the object for the thread
      */
     public static synchronized ObjectDetection getObjectDetection() {
-        if (odo == null) {
-          odo = new ObjectDetection();
+        if (detect == null) {
+          detect = new ObjectDetection();
         }
-        return odo;
+        return detect;
       }
 
 
@@ -41,7 +41,11 @@ public class ObjectDetection implements Runnable{
 
     public static void detectObject(int bottomSensor, int topSensor){
         int sensorDifference = Math.abs(bottomSensor - topSensor);
-        if(sensorDifference <= US_DIFF_THRESHOLD){
+        //sensorDifference <= US_DIFF_THRESHOLD &&
+        if( bottomSensor < 15 && topSensor < 20){
+          System.out.println("obstacle detected");
+          System.out.println(bottomSensor);
+          System.out.println(topSensor);
             Helper.turnBy(-90);
             moveStraightFor(TILE_SIZE);
             Helper.turnBy(90);
