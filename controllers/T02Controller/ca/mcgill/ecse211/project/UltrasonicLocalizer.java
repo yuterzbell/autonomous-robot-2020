@@ -26,8 +26,8 @@ public class UltrasonicLocalizer {
   private static int prevDistance;
   /** The number of invalid samples seen by filter() so far. */
   private static int invalidSampleCount;
-  /** The window of data measured by usensor. */
-  private static int[] dists = new int[9];
+//  /** The window of data measured by usensor. */
+//  private static int[] down_dists = new int[9];
   /** Delta theta account for correction of heading. */
   private static double dtheta;
   /** First falling edge. */
@@ -66,7 +66,7 @@ public class UltrasonicLocalizer {
     Sequence[0] = true;
     while (true) { 
       prevmedian = curmedian;       // take record of last reading
-      curmedian = medianFiltering(dists);
+      curmedian = Helper.downMedianFiltering(down_dists);
       
       if (prevmedian >= D_THRESH + K && curmedian < D_THRESH + K && Sequence[0]) {
         System.out.println("angle1 detected!!!");
@@ -102,21 +102,15 @@ public class UltrasonicLocalizer {
         Sequence[3] = false;
         break;
       }
-
       sleepFor(500);        // restrict sampling frequency
     }
-
     // stop the motors to calculate result
     leftMotor.stop();
     rightMotor.stop();
-
     dtheta = calculate_dtheta(Alpha, Beta);
-
     correctOdometer(dtheta);
-   
     // get current position of robot and turn to right direction
     double latest = odometer.getXyt()[THETA];
-
     // turn robot to the south and then turn 180 deg
     turnBy(-latest);
     turnBy(180);
@@ -162,8 +156,8 @@ public class UltrasonicLocalizer {
     rightMotor.setSpeed(FORWARD_SPEED);
     // initialize the window of our data
     int i = 0;                // counter of initializing dist[]
-    while (i < dists.length) {
-      dists[i] = 255;
+    while (i < down_dists.length) {
+      down_dists[i] = 255;
       i++;
     }
   }
@@ -194,11 +188,10 @@ public class UltrasonicLocalizer {
     leftMotor.forward();
 
     dist = readUsDistance();
-    while (dist <= 200) {
+    while (dist <= OPEN_THRESH) {
       dist = readUsDistance();
     }
     System.out.println("Open ground found! Reinitializing.....");
-    odometer.setTheta(0.0);
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     rightMotor.backward();

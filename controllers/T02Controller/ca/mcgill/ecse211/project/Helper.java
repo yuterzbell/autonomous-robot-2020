@@ -61,6 +61,10 @@ public class Helper {
     rightMotor.rotate(wheelRotation, false);
   } 
   
+  /**
+   * This method control robot beep n times.
+   * @param n
+   */
   public static void BeepNtimes(int n) {
     for(int i = 0; i < n; i++) {
       LocalEV3.getAudio().beep(); // beeps once
@@ -68,6 +72,55 @@ public class Helper {
     }
   }
   
+  /**
+   *  This method reinitialize the readings for both sensors, should be called before medianFiltering.
+   *  @author Zichen Chang
+   */
+  public static void ReinitializeDoubleUsensors() {
+    int i = 0;                // counter of initializing dist[]
+    int down = UltrasonicLocalizer.readUsDistance();
+    int top = UltrasonicLocalizer.readUsDistance2();
+    while (i < down_dists.length) {
+      down_dists[i] = down;
+      top_dists[i] = top;
+      i++;
+    }
+  }
+  
+  
+  /**
+   * Use median window filtering to filter data read from down sensor
+   * @author Zichen Chang
+   * @return  median of the window
+   */
+  public static int downMedianFiltering(int[] arr) {
+    // shift data window to left by 1
+    for (int j = 0; j < arr.length - 1; j++) {
+      arr[j] = arr[j + 1];
+    }
+    int dist = UltrasonicLocalizer.readUsDistance();      // get distance of current loop
+    arr[arr.length - 1] = dist;
+
+    // return the filtered data
+    return UltrasonicLocalizer.getMedian(arr);
+  }
+  
+  /**
+   * Use median window filtering to filter data read from down sensor
+   * @author Zichen Chang
+   * @return  median of the window
+   */
+  public static int topMedianFiltering(int[] arr) {
+    // shift data window to left by 1
+    for (int j = 0; j < arr.length - 1; j++) {
+      arr[j] = arr[j + 1];
+    }
+    int dist = UltrasonicLocalizer.readUsDistance2();      // get distance of current loop
+    arr[arr.length - 1] = dist;
+
+    // return the filtered data
+    return UltrasonicLocalizer.getMedian(arr);
+  }
   
   
 }

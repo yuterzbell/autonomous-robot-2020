@@ -104,11 +104,22 @@ public class Resources {
   
   /** Robot offset. */
   public static final double ROBOT_OFFSET = 0.7;   
+  
+  /** Open ground threshold. */
+  public static final double OPEN_THRESH = 200;   
 
   /** Group7's parameters. */
   public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
   
+
   public static final double US_DIFF_THRESHOLD = 5;
+
+  /** The window of data measured by down_usensor. */
+  public static int[] down_dists = new int[9];
+  
+  /** The window of data measured by top_usensor. */
+  public static int[] top_dists = new int[9];
+
 
   // Hardware resources
 
