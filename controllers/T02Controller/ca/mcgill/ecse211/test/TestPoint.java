@@ -12,7 +12,7 @@ public class TestPoint {
   /** Tests Point.makePointsFromString(). */
   @Test void testMakePointsFromString() {
     // Test usual case
-    var expected = List.of(p(1, 2));
+/*   var expected = List.of(p(1, 2));
     var actual = Point.makePointsFromString("(1, 2)");
     assertEquals(expected, actual);
     
@@ -30,8 +30,8 @@ public class TestPoint {
   }
   
   /** Helper method to create a Point. */
-  private static Point p(double x, double y) {
-    return new Point(x, y);
+//  private static Point p(double x, double y) {
+//    return new Point(x, y);
   }
 
 }

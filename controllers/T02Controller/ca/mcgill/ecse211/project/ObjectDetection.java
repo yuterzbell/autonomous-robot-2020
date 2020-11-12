@@ -42,14 +42,16 @@ public class ObjectDetection implements Runnable{
     public static void detectObject(int bottomSensor, int topSensor){
         int sensorDifference = Math.abs(bottomSensor - topSensor);
         //sensorDifference <= US_DIFF_THRESHOLD &&
-        if( bottomSensor < 15 && topSensor < 20){
+        if( bottomSensor < 60 ){
           System.out.println("obstacle detected");
           System.out.println(bottomSensor);
           System.out.println(topSensor);
             Helper.turnBy(-90);
+            System.out.println("turning");
             moveStraightFor(TILE_SIZE);
             Helper.turnBy(90);
-            moveUntilBlackLineDetected2();
+            System.out.println("turning2");
+           // moveUntilBlackLineDetected2();
         }
     }
 }
