@@ -20,15 +20,15 @@ public class Navigation {
     // move in y first 
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX);
-    System.out.println("Finished y-direction move");
-    odometer.printPositionXY();
+//    System.out.println("Finished y-direction move");
+//    odometer.printPositionXY();
     // move in x then
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
     System.out.println("Current y is: " + xyt[1] / TILE_SIZE);
     travelTo(pointY);
-    System.out.println("Finished x-direction move");
-    odometer.printPositionXY();
+//    System.out.println("Finished x-direction move");
+//    odometer.printPositionXY();
   }
   
   /** Travels to the given destination. */

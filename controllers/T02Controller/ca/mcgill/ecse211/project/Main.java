@@ -17,7 +17,7 @@ public class Main {
   /**
    * The number of threads used in the program (main, odometer), other than the one used to perform physics steps.
    */
-  public static final int NUMBER_OF_THREADS = 2;
+  public static final int NUMBER_OF_THREADS = 3;
 
   /** Main entry point. */
   public static void main(String[] args) {
@@ -25,6 +25,7 @@ public class Main {
        
     // Start the odometer thread
     new Thread(odometer).start();
+    new Thread(detector).start();
     
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -40,22 +41,27 @@ public class Main {
 //    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
    
      // start the detector thread after initial localizing
-    new Thread(detector).start();
+   
        
     var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("Bridge is at: " + bridge);
     Navigation.navigateTo(bridge);
+    odometer.setY((tnr.getHeight()/2 + tnr.ll.y) * TILE_SIZE);
     System.out.println("Bridge gotcha!");
        
     var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
+    Helper.BeepNtimes(3);
   
+    // first turn the robot to 180 deg
+    Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
     // then detect container
-    if(ObjectDetection.containerDetect()) {
-      BeepNtimes(3);
+    while(!ObjectDetection.containerDetect()) {
+      System.out.println("Keep searching");
     }
-      
+    // when find the container
+    Helper.BeepNtimes(3);
   }
 
   /**

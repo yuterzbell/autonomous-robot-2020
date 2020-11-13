@@ -119,10 +119,10 @@ public class Resources {
   /** The window of data measured by top_usensor. */
   public static int[] top_dists = new int[9];
 
-  /** Threshold to determine the block. */
-  public static final double US_DIFF_THRESHOLD = 15;
+  /** Threshold to determine the block(cm). */
+  public static final double US_DIFF_THRESHOLD = 20;
   
-  /** Threshold for the bottom sensor to tell should do object avoidance. */
+  /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 60;
   
   /** Flag variable indicating object detect. */
