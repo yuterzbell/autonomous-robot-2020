@@ -22,38 +22,31 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-    
-
-    
+       
     // Start the odometer thread
     new Thread(odometer).start();
     
-
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
     odometer.printPositionXY();
+    Helper.BeepNtimes(3);
   
-    ReinitializeDoubleUsensors();
-    int down = downMedianFiltering(down_dists);
-    int top = topMedianFiltering(top_dists);
-    System.out.println("Top readings:" + top + "\nDown readings: " + down);
+    // testing for readings
+//    ReinitializeDoubleUsensors();
+//    int down = downMedianFiltering(down_dists);
+//    int top = topMedianFiltering(top_dists);
+//    System.out.println("Top readings:" + top + "\nDown readings: " + down);
 //    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
    
-    
-/*
-    // start the detector thread after initial localizing
+     // start the detector thread after initial localizing
     new Thread(detector).start();
-    Helper.BeepNtimes(3);
-    // test Navigation.moveStraightFor(1);
-
-   
+       
     var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("Bridge is at: " + bridge);
     Navigation.navigateTo(bridge);
     System.out.println("Bridge gotcha!");
-    
-   
+       
     var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
@@ -62,12 +55,7 @@ public class Main {
     if(ObjectDetection.containerDetect()) {
       BeepNtimes(3);
     }
-    */
-    
-    
-    // TODO Replace these method calls with your own logic
-    LocalEV3.getAudio().beep(); // beeps once
-//    wifiExample();
+      
   }
 
   /**

@@ -81,15 +81,15 @@ public class ObjectDetection implements Runnable{
   public static boolean containerDetect() {
     Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
     // turning -90 degrees
-    leftMotor.rotate(convertAngle(-90), true);
-    rightMotor.rotate(-convertAngle(-90), true);
+    leftMotor.rotate(convertAngle(-180), true);
+    rightMotor.rotate(-convertAngle(-180), true);
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
     int top = topMedianFiltering(top_dists);
     // if found a close enough object.
     while(true) {
       down = downMedianFiltering(down_dists);
-      System.out.println("The down sensor read: " + down);
+//      System.out.println("The down sensor read: " + down);
       top = topMedianFiltering(top_dists);
       if(down < OBJTHRESH) {
         stop();
@@ -98,6 +98,7 @@ public class ObjectDetection implements Runnable{
     }
     // if top is really far from down, then it's a container
     if (top > down + US_DIFF_THRESHOLD) {
+      System.out.println("Top reads: " + top + "\nDown reads: " + down);
       return true;
     }
     return false;

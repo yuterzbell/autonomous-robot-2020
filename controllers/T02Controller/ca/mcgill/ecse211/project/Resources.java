@@ -123,7 +123,7 @@ public class Resources {
   public static final double US_DIFF_THRESHOLD = 15;
   
   /** Threshold for the bottom sensor to tell should do object avoidance. */
-  public static final int OBJTHRESH = 50;
+  public static final int OBJTHRESH = 60;
   
   /** Flag variable indicating object detect. */
   public static boolean DETECT_FLAG = false;
