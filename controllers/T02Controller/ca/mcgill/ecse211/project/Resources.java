@@ -81,7 +81,7 @@ public class Resources {
   public static final double BASE_WIDTH = 0.167;
   
   /** The distance between the color sensors and the wheels in meters. */
-  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0.071;
+  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0.060;
   
   /** The speed at which the robot moves forward in degrees per second. */
   public static final int FORWARD_SPEED = 500;
@@ -120,7 +120,7 @@ public class Resources {
   public static int[] top_dists = new int[9];
 
   /** Threshold to determine the block(cm). */
-  public static final double US_DIFF_THRESHOLD = 20;
+  public static final double US_DIFF_THRESHOLD = 30;
   
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 60;

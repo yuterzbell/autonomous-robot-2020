@@ -25,7 +25,6 @@ public class Navigation {
     // move in x then
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
-    System.out.println("Current y is: " + xyt[1] / TILE_SIZE);
     travelTo(pointY);
 //    System.out.println("Finished x-direction move");
 //    odometer.printPositionXY();
@@ -39,7 +38,6 @@ public class Navigation {
     var destinationTheta = getDestinationAngle(currentLocation, destination);
     
     turnBy(minimalAngle(currentTheta, destinationTheta));
-    System.out.println(minimalAngle(currentTheta, destinationTheta));
     int moveInX = 1;
     if (destination.x != xyt[0] / TILE_SIZE) {
       moveInX = 1;
@@ -97,7 +95,6 @@ public class Navigation {
     double distanceChange = 0;
 
     while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
-      System.out.println("Move to next tile.");
       if (DETECT_FLAG) {
         ObjectDetection.objectAvoidance();
       }
@@ -127,7 +124,6 @@ public class Navigation {
       }
       distanceChange = Math.sqrt(Math.pow((xyt0[1] - xyt1[1]), 2) + Math.pow((xyt0[0] - xyt1[0]), 2));
       inMeters -= distanceChange;
-      odometer.printPosition();
     }
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);

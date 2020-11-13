@@ -59,6 +59,7 @@ public class Main {
     // then detect container
     while(!ObjectDetection.containerDetect()) {
       System.out.println("Keep searching");
+      sleepFor(500);
     }
     // when find the container
     Helper.BeepNtimes(3);
