@@ -47,6 +47,12 @@ public class Main {
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
     
+    Thread t = new Thread(detector);
+    t.start();
+    while (!boxDetected) {
+      Navigation.boxSearch();
+    }
+
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();

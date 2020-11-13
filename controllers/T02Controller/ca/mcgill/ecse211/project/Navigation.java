@@ -231,4 +231,29 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
   
+  
+  //TO BE IMPROVED
+  public static void boxSearch() {
+    if (goCheck == false) {
+      turnBy(-90);
+      if (boxDetected == false) {
+        turnBy(180);
+        if (boxDetected == false) {
+          turnBy(-90);
+        }
+      }
+    }
+    
+    if (goCheck == true) {
+        leftMotor.setSpeed(MOTOR_LOW);
+        rightMotor.setSpeed(MOTOR_LOW);
+        
+        leftMotor.forward();
+        rightMotor.forward();
+    }
+    
+    
+
+  }
+  
 }

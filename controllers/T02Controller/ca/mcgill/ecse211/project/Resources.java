@@ -142,6 +142,9 @@ public class Resources {
   /** The odometer. */
   public static Odometer odometer = Odometer.getOdometer();
 
+  
+  /** Object detector **/
+  public static ObjectDetection detector = ObjectDetection.getObjectDetection();
 
   // Wi-Fi parameters
 
@@ -243,4 +246,9 @@ public class Resources {
     return new Region(makePoint(paramPrefix + "_LL"), makePoint(paramPrefix + "_UR"));
   }
   
+  public static boolean boxDetected = false;
+  
+  public static boolean clear = true;
+  
+  public static boolean goCheck = false;
 }
