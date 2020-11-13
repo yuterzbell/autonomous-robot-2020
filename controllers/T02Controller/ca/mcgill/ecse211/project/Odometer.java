@@ -125,8 +125,8 @@ public class Odometer implements Runnable {
   public void printPositionXY() {
     lock.lock();
     System.out.println("Odometer:\tx =" + String.format("% 02.2f", x / TILE_SIZE)
-        + "m\ty =" + String.format("% 02.2f", y / TILE_SIZE)
-        + "m\ttheta =" + String.format("% 06.2f", theta) + " degrees"); 
+        + "\ty =" + String.format("% 02.2f", y / TILE_SIZE)
+        + "\ttheta =" + String.format("% 06.2f", theta) + " degrees"); 
     lock.unlock();
   }
   

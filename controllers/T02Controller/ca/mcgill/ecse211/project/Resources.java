@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.project;
 
+import static ca.mcgill.ecse211.project.Resources.usSensor;
+import static ca.mcgill.ecse211.project.Resources.usSensortop;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,7 +81,7 @@ public class Resources {
   public static final double BASE_WIDTH = 0.167;
   
   /** The distance between the color sensors and the wheels in meters. */
-  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0.071;
+  public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0.060;
   
   /** The speed at which the robot moves forward in degrees per second. */
   public static final int FORWARD_SPEED = 500;
@@ -110,12 +112,23 @@ public class Resources {
 
   /** Group7's parameters. */
   public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
-  
+
   /** The window of data measured by down_usensor. */
   public static int[] down_dists = new int[9];
   
   /** The window of data measured by top_usensor. */
   public static int[] top_dists = new int[9];
+
+  /** Threshold to determine the block(cm). */
+  public static final double US_DIFF_THRESHOLD = 30;
+  
+  /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
+  public static final int OBJTHRESH = 60;
+  
+  /** Flag variable indicating object detect. */
+  public static boolean DETECT_FLAG = false;
+  
+
 
   // Hardware resources
 
@@ -141,6 +154,9 @@ public class Resources {
   
   /** The odometer. */
   public static Odometer odometer = Odometer.getOdometer();
+  
+  /** The object detector. */
+  public static ObjectDetection detector = ObjectDetection.getObjectDetection();
 
 
   // Wi-Fi parameters
