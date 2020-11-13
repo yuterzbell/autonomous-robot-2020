@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.project;
 
+import static ca.mcgill.ecse211.project.Resources.usSensor;
+import static ca.mcgill.ecse211.project.Resources.usSensortop;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -110,15 +112,22 @@ public class Resources {
 
   /** Group7's parameters. */
   public static final double HETODEGREE = (BASE_WIDTH / 2.0) / WHEEL_RAD;
-  
-
-  public static final double US_DIFF_THRESHOLD = 5;
 
   /** The window of data measured by down_usensor. */
   public static int[] down_dists = new int[9];
   
   /** The window of data measured by top_usensor. */
   public static int[] top_dists = new int[9];
+
+  /** Threshold to determine the block. */
+  public static final double US_DIFF_THRESHOLD = 15;
+  
+  /** Threshold for the bottom sensor to tell should do object avoidance. */
+  public static final int OBJTHRESH = 50;
+  
+  /** Flag variable indicating object detect. */
+  public static boolean DETECT_FLAG = false;
+  
 
 
   // Hardware resources

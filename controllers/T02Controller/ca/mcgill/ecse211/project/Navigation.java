@@ -97,6 +97,10 @@ public class Navigation {
     double distanceChange = 0;
 
     while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
+      System.out.println("Move to next tile.");
+      if (DETECT_FLAG) {
+        ObjectDetection.objectAvoidance();
+      }
       var xyt0 = odometer.getXyt();
       
       LightLocalizer.moveUntilBlackLineDetected2();
@@ -121,8 +125,7 @@ public class Navigation {
           odometer.setTheta(180);
         }
       }
-      distanceChange = Math.sqrt(Math.pow((xyt0[1] - xyt1[1]), 2) + 
-          Math.pow((xyt0[0] - xyt1[0]), 2));
+      distanceChange = Math.sqrt(Math.pow((xyt0[1] - xyt1[1]), 2) + Math.pow((xyt0[0] - xyt1[0]), 2));
       inMeters -= distanceChange;
       odometer.printPosition();
     }
