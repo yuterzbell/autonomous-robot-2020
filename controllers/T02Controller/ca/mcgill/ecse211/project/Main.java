@@ -47,9 +47,8 @@ public class Main {
     System.out.println("Bridge is at: " + bridge);
     Navigation.navigateTo(bridge);
     odometer.setY((tnr.getHeight()/2 + tnr.ll.y) * TILE_SIZE);
-    System.out.println("Bridge gotcha!");
        
-    var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
+    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
     Helper.BeepNtimes(3);
