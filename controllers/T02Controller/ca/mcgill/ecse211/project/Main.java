@@ -28,7 +28,9 @@ public class Main {
     new Thread(odometer).start();
 //    Helper.turnBy(90);
     
+    Navigation.moveStraightFor(3.0);
     
+    /**
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
@@ -46,7 +48,7 @@ public class Main {
     var searchZone = new Point(tnr.ur.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
-    
+    **/
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();
