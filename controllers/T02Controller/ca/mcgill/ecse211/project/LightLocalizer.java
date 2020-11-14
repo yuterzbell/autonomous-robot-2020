@@ -108,10 +108,10 @@ public class LightLocalizer {
    
     while (!isLeftWheelDetected || !isRightWheelDetected) {
       if (isLeftWheelDetected) {
-        rightMotor.setSpeed(MOTOR_LOW);
+        rightMotor.setSpeed(ROTATE_SPEED);
       } 
       if (isRightWheelDetected) {
-        leftMotor.setSpeed(MOTOR_LOW);
+        leftMotor.setSpeed(ROTATE_SPEED);
       }
       // get the filtered readings
       int left = medianFilteringLeft(leftValues);      

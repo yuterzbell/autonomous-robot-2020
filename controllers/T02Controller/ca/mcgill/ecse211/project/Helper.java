@@ -50,7 +50,6 @@ public class Helper {
    * @param distance in meters, may be negative
    * @author Andre-Walter Panzini
    */
-
   public static void moveStraightFor(double distance) {
     int wheelRotation = Helper.convertDistance(distance);
     
@@ -59,6 +58,27 @@ public class Helper {
     
     leftMotor.rotate(wheelRotation, true);
     rightMotor.rotate(wheelRotation, false);
+  } 
+  
+  /**
+   * Moves the robot straight.
+   * @author Zichen Chang
+   */
+  public static void moveStraight() {
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
+    
+    leftMotor.forward();
+    rightMotor.forward();
+  } 
+  
+  /**
+   * Stop the Robot.
+   * @author Zichen Chang
+   */
+  public static void stop() { 
+    leftMotor.stop();
+    rightMotor.stop();
   } 
   
   /**
@@ -80,6 +100,7 @@ public class Helper {
     int i = 0;                // counter of initializing dist[]
     int down = UltrasonicLocalizer.readUsDistance();
     int top = UltrasonicLocalizer.readUsDistance2();
+//    System.out.println("Initial top reading = " + top);
     while (i < down_dists.length) {
       down_dists[i] = down;
       top_dists[i] = top;
