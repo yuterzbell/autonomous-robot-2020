@@ -27,11 +27,11 @@ public class Main {
     new Thread(odometer).start();
     new Thread(detector).start();
     
-    UltrasonicLocalizer.localize();
-    LightLocalizer.localize();
-    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
-    odometer.printPositionXY();
-    Helper.BeepNtimes(3);
+//    UltrasonicLocalizer.localize();
+//    LightLocalizer.localize();
+//    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
+//    odometer.printPositionXY();
+//    Helper.BeepNtimes(3);
   
     // testing for readings
 //    ReinitializeDoubleUsensors();
@@ -42,18 +42,19 @@ public class Main {
    
      // start the detector thread after initial localizing
    
-       
-    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
-    System.out.println("Bridge is at: " + bridge);
-    Navigation.navigateTo(bridge);
-    odometer.setY((tnr.getHeight()/2 + tnr.ll.y) * TILE_SIZE);
-       
-    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
-    System.out.println("SearchZone is at: " + searchZone);
-    Navigation.navigateTo(searchZone);
-    Helper.BeepNtimes(3);
+//       
+//    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
+//    System.out.println("Bridge is at: " + bridge);
+//    Navigation.navigateTo(bridge);
+//    odometer.setY((tnr.getHeight()/2 + tnr.ll.y) * TILE_SIZE);
+//       
+//    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
+//    System.out.println("SearchZone is at: " + searchZone);
+//    Navigation.navigateTo(searchZone);
+//    Helper.BeepNtimes(3);
   
     // first turn the robot to 180 deg
+    odometer.setTheta(90);
     Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
     // then detect container
     while(!ObjectDetection.containerDetect()) {
