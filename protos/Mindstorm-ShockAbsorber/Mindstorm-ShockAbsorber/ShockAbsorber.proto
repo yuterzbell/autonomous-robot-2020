@@ -1,0 +1,60 @@
+#VRML_SIM R2020a utf8
+# LEGO Shock Absorber by Olivier St-Martin Cormier
+# license: Creative Commons Attribution 4.0 International Public License
+# license url: https://creativecommons.org/licenses/by/4.0/legalcode
+# LEGO(R) is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this file.
+PROTO ShockAbsorber [
+  field SFString   name     "shockAbsorber"
+  field SFVec3f    translation   0 0 0
+  field SFRotation rotation      0 0 1 0
+  field SFFloat    position    0
+  field SFFloat    springConstant    20000
+  field SFFloat    dampingConstant    0.01
+  field SFFloat    staticFriction    0.01
+  field MFNode     children  []
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    children [
+      shockAbsorber-Base-solid {
+        name %{= '"' .. fields.name.value .. '-body' .. '"' }%
+        rotation 0 0 1 1.5707934569843498
+      }
+      Transform {
+        translation 0 0 -0.014
+        rotation 0 0 1 1.5707934569843498
+        children [
+          SliderJoint {
+            jointParameters JointParameters {
+              position IS position
+              minStop 0
+              maxStop 0.0061
+              springConstant IS springConstant
+              dampingConstant IS dampingConstant
+              staticFriction IS staticFriction
+            }
+            endPoint Solid {
+              name %{= '"' .. fields.name.value .. '-plunger' .. '"' }%
+              boundingObject shockAbsorber-Plunger-boundingbox {
+              }
+              physics Physics {
+                density -1
+                mass 0.024
+              }
+              children [
+                shockAbsorber-Plunger-shape {
+                }
+                Transform {
+                  translation 0 0 -0.014
+                  children IS children
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
