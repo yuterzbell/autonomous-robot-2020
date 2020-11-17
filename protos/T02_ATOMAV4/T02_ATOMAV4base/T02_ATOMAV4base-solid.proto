@@ -24,7 +24,7 @@ PROTO T02_ATOMAV4base-solid [
 		}
 		physics Physics {
 			density -1
-			mass 35.035824
+			mass 37.314526
 		}
 	}
 }
