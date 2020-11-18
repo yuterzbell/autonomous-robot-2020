@@ -24,20 +24,87 @@ public class Main {
     initialize();
        
     // Start the odometer thread
-    new Thread(odometer).start();
-
-    
+    new Thread(odometer).start();   
 //    Navigation.moveStraightFor(3.0);
-
     new Thread(detector).start();
 
     
-
+    
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
-    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
+    if (redTeam == 2) {
+      if (redCorner == 0) {
+        odometer.setXytInTailSize(1, 1, 0);
+        if (island.ll.x > red.ur.x) {
+          // move rightwards
+          var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
+        } else if (island.ll.y > red.ur.y) {
+          // move upwards
+          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ll.y - ROBOT_OFFSET);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
+        }   
+      } else if (redCorner == 1) {
+        odometer.setXytInTailSize(14, 1, 270);
+        if (island.ur.x < red.ll.x) {
+          // move leftwards
+          var bridge = new Point(tnr.ur.x + ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
+        } else if (island.ll.y > red.ur.y) {
+          // move upwards
+          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ll.y - ROBOT_OFFSET);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
+        }
+      } else if (redCorner == 2) {
+        odometer.setXytInTailSize(14, 8, 180);
+        if (island.ur.x < red.ll.x) {
+          // move leftwards
+          var bridge = new Point(tnr.ur.x + ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
+        } else if (island.ur.y < red.ll.y) {
+          // move downwards
+          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ur.y + ROBOT_OFFSET);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
+        }
+      } else if (redCorner == 3) {
+        odometer.setXytInTailSize(1, 8, 90);
+        if (island.ll.x > red.ur.x) {
+           
+//          System.out.println("Correct condition is running and current location is ");
+//          odometer.printPositionXY();
+                   
+          // move rightwards
+          var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
+        } else if (island.ur.y < red.ll.y) {
+          // move downwards
+          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ur.y + ROBOT_OFFSET);
+          System.out.println("Bridge is at: " + bridge);
+          Navigation.navigateTo(bridge);
+          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
+        }
+      }
+    }
+//    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
+    
     odometer.printPositionXY();
     Helper.BeepNtimes(3);
+    
+  
 
   
     // testing for readings
@@ -50,7 +117,7 @@ public class Main {
      // start the detector thread after initial localizing
    
 
-       
+/*       
     var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
     System.out.println("Bridge is at: " + bridge);
     Navigation.navigateTo(bridge);
@@ -72,6 +139,7 @@ public class Main {
     }
     // when find the container
     Helper.BeepNtimes(3);
+    */
     
   }
 

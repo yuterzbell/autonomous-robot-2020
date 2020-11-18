@@ -194,6 +194,27 @@ public class Odometer implements Runnable {
       lock.unlock();
     }
   }
+  
+  /**
+   * Overrides the values of x, y and theta. Use for odometry correction.
+   * 
+   * @param x the value of x in coordinate
+   * @param y the value of y in coordinate
+   * @param theta the value of theta in degrees
+   */
+  public void setXytInTailSize(double x, double y, double theta) {
+    lock.lock();
+    isResetting = true;
+    try {
+      this.x = x * TILE_SIZE;
+      this.y = y * TILE_SIZE;
+      this.theta = theta;
+      isResetting = false;
+      doneResetting.signalAll();
+    } finally {
+      lock.unlock();
+    }
+  }
 
   /**
    * Overwrites x. Use for odometry correction.
