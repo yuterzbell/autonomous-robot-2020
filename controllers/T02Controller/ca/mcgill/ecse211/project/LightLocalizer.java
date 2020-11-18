@@ -31,7 +31,7 @@ public class LightLocalizer {
   public static void localize() {
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected2();
+    moveUntilBlackLineDetected();
     
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -40,7 +40,7 @@ public class LightLocalizer {
     Helper.turnBy(90);
     
     // The robot must move forward until both sensors detect a dark line
-    moveUntilBlackLineDetected2();
+    moveUntilBlackLineDetected();
 
     // The robot must move back the distance between the wheels and the sensors
     Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);
@@ -56,7 +56,7 @@ public class LightLocalizer {
    * 
    * @author Andre-Walter Panzini
    */
-
+/*
   public static void moveUntilBlackLineDetected() {
     boolean isLeftWheelDetected = false;
     boolean isRightWheelDetected = false;
@@ -89,6 +89,7 @@ public class LightLocalizer {
       
     }
   } 
+  */
   
   /*
    * Moves the robot straight until a black line is detected by both left and right color sensors.
@@ -97,7 +98,7 @@ public class LightLocalizer {
    * 
    * @author Andre-Walter Panzini and Zichen Chang
    */
-  public static void moveUntilBlackLineDetected2() {
+  public static void moveUntilBlackLineDetected() {
     boolean isLeftWheelDetected = false;
     boolean isRightWheelDetected = false;
    
@@ -158,7 +159,10 @@ public class LightLocalizer {
     }
   }
   
-  
+  /**
+   * THis method initialize the window of two data readings from sensors.
+   * @author Zichen Chang
+   */
   private static void initilizeData() {
     // initialize the window of our data
     int i = 0;                // counter of initializing dist[]
@@ -189,6 +193,7 @@ public class LightLocalizer {
   /**
    * Returns true when two sharp derivatives have been detected by right sensor.
    * @return true when two sharp derivatives have been detected by right sensor.
+   * @author Zichen Chang
    */
   public static boolean rightDerivativeValid() {
     if (Math.abs(rightDerivative[0]) > dThresh &&
@@ -200,6 +205,7 @@ public class LightLocalizer {
   
   /**
    * This method clears the derivative arrays and counter.
+   * @author Zichen Chang
    */
   public static void clearLeftDerivatives() {
     i = 0;
@@ -208,6 +214,7 @@ public class LightLocalizer {
   
   /**
    * This method clears the derivative arrays and counter.
+   * @author Zichen Chang
    */
   public static void clearRightDerivatives() {
     j = 0;
@@ -233,6 +240,7 @@ public class LightLocalizer {
   /**
    * Use median window filtering to filter data.
    * @return  median of the window
+   * @author Zichen Chang
    */
   private static int medianFilteringLeft(int[] arr) {
     // shift data window to left by 1
@@ -250,6 +258,7 @@ public class LightLocalizer {
   /**
    * Use median window filtering to filter data.
    * @return  median of the window
+   * @author Zichen Chang
    */
   private static int medianFilteringRight(int[] arr) {
     // shift data window to left by 1
@@ -267,7 +276,7 @@ public class LightLocalizer {
   /**
    * Returns median of a given array.
    * @param arr input array
-   * @return the filtered data of the window
+   * @return the filtered median data of the window
    */
   public static int getMedian(int[] arr) {
     // System.out.println(arr[0] + ", " + arr[1] + ", " + arr[2] + ", " + arr[3] + ", " + arr[4]);

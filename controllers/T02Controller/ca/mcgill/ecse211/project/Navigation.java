@@ -44,7 +44,7 @@ public class Navigation {
     } else if (destination.y != xyt[1] / TILE_SIZE) {
       moveInX = 0;
     }
-    moveStraightWithLineCorrection2(moveInX, distanceBetween(currentLocation, destination));
+    moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
   }
   
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
@@ -90,7 +90,7 @@ public class Navigation {
    * @param moveInX integer indicating robot is move in x-direction if equal to 1
    * @param distance number of tiles (in feet) to move straight for
    */
-  public static void moveStraightWithLineCorrection2(int moveInX, double distance) { 
+  public static void moveStraightWithLineCorrection(int moveInX, double distance) { 
     double inMeters = distance * TILE_SIZE;
     double distanceChange = 0;
 
@@ -100,7 +100,7 @@ public class Navigation {
       }
       var xyt0 = odometer.getXyt();
       
-      LightLocalizer.moveUntilBlackLineDetected2();
+      LightLocalizer.moveUntilBlackLineDetected();
       Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);        // TODO remember to change the speed here to FORWARD_SPEED
      
       var xyt1 = odometer.getXyt();
