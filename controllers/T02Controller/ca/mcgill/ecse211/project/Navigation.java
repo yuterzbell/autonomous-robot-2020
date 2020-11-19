@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static java.lang.Math.*;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
 
@@ -234,4 +235,17 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
   
+  public static void rampMovement(){
+    int bottomReading = -1;
+    while(true){
+      bottomReading = readUsDistance();
+      if(bottomReading > 80){
+        leftMotor.stop();
+        rightMotor.stop();
+        moveStraightFor(-TILE_SIZE);
+        break;
+      }
+    } 
+
+  }
 }
