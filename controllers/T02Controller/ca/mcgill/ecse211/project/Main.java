@@ -39,19 +39,19 @@ public class Main {
     
     
     
-//    identifySelf();
-//    // first identify team and extract
-//    // then set odometer based on corner number  
-//    UltrasonicLocalizer.localize();
-//    LightLocalizer.localize();
-//    
-//    setOdometer();
-//    
+    identifySelf();
+    // first identify team and extract
+    // then set odometer based on corner number  
+    UltrasonicLocalizer.localize();
+    LightLocalizer.localize();
+    
+    setOdometer();
+    
 //    moveToBridge();
 //    
 //    odometer.printPositionXY();
 //    Helper.BeepNtimes(3);
-//    
+    
   
 
   
