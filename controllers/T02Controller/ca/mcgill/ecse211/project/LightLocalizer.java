@@ -2,26 +2,104 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
+import simlejos.robotics.SampleProvider;
 
 
 public class LightLocalizer {
  
+  /** Color sensors are in RGB mode */
+  private static SampleProvider leftColorSensorSample = leftColorSensor.getRGBMode();
+  private static SampleProvider rightColorSensorSample = rightColorSensor.getRGBMode();
+  
   /** Buffer (array) to store US samples. */
-  private static float[] leftColorSensorData = new float[leftColorSensor.sampleSize()];
-  private static float[] rightColorSensorData = new float[rightColorSensor.sampleSize()];
+  private static float[] leftColorSensorData = new float[leftColorSensorSample.sampleSize()];
+  private static float[] rightColorSensorData = new float[rightColorSensorSample.sampleSize()];
+  
   /** The discrete derivatives of each sensor. */
   private static int[] leftDerivative = new int[3];
   private static int[] rightDerivative = new int[3];
+ 
   /** Values read from corresponding light sensor. */  
   private static int[] leftValues = new int[5];
   private static int[] rightValues = new int[5];
+ 
+  /** Counters */
   private static int i = 0;     // left counter
   private static int j = 0;     // right counter
+  
   /** Last readings from sensor. */
   private static int prevLeft;
   private static int prevRight;
+  
   /** Derivative threshold for valid change in readings. */
   private static int dThresh = 50;
+  
+  public static void printLightSensorReadings() {
+    leftColorSensorSample.fetchSample(leftColorSensorData, 0);
+    rightColorSensorSample.fetchSample(rightColorSensorData, 0);
+    //System.out.println( "Left: R: " + leftColorSensorData[0] + " G: " + leftColorSensorData[1] + " B: " + leftColorSensorData[2] + " : Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
+    //System.out.println( "Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
+    getColorFromSensor(leftColorSensorData);
+    //System.out.println(getColorFromSensor(leftColorSensorData));
+  }
+  
+  public static void getColorFromSensor(float[] colorSensorData) {
+    float[] eucledianDistanceArr = new float[4];
+    
+    for(int i = 0; i < 4 ; i++) {
+      eucledianDistanceArr[i] = computeRGBEuclideanDistance(colorSensorData, COLOR_ARR[i]);
+    }
+    System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
+  }
+  
+  // Pass a color from the COLOR_ARR (defined in Resources)
+  // We implement integer algebra from float values
+  public static float computeRGBEuclideanDistance(float[] colorSensorData, String color) {
+    float euclideanDistance;
+    int tmpsquare = 0;
+    float square = 0;
+    int r = (int)(colorSensorData[0] * 100);
+    int g = (int)(colorSensorData[1] * 100);
+    int b = (int)(colorSensorData[2] * 100);
+    int r_model; 
+    int g_model; 
+    int b_model; 
+    
+    switch(color) {
+      case "RED": {
+        r_model = (int) (R_mean_RED * 100);
+        g_model = (int) (G_mean_RED * 100);
+        b_model = (int) (B_mean_RED * 100);
+        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
+      }
+      break;
+      case "GREEN": {
+        r_model = (int) (R_mean_GREEN * 100);
+        g_model = (int) (G_mean_GREEN * 100);
+        b_model = (int) (B_mean_GREEN * 100);
+        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
+      }
+      break;
+      case "YELLOW": {
+        r_model = (int) (R_mean_YELLOW * 100);
+        g_model = (int) (G_mean_YELLOW * 100);
+        b_model = (int) (B_mean_YELLOW * 100);
+        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
+      }
+      break;
+      case "BLUE": {
+        r_model = (int) (R_mean_BLUE * 100);
+        g_model = (int) (G_mean_BLUE * 100);
+        b_model = (int) (B_mean_BLUE * 100);
+        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
+      }
+      break;
+    }
+    square = (float) tmpsquare/(float) 100.0;
+    euclideanDistance = (float) Math.sqrt((double) square);
+    return euclideanDistance;
+  }
+  
   
   /**
    * This method will bring the pivot point of the robot a the top right corner 
@@ -108,6 +186,7 @@ public class LightLocalizer {
     initilizeData();
    
     while (!isLeftWheelDetected || !isRightWheelDetected) {
+      printLightSensorReadings();
       if (isLeftWheelDetected) {
         rightMotor.setSpeed(ROTATE_SPEED);
       } 
