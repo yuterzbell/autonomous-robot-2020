@@ -5,6 +5,7 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.*;
 import java.lang.*;
 import ca.mcgill.ecse211.playingfield.Point;
+import ca.mcgill.ecse211.test.Testcontroller;
 import simlejos.hardware.ev3.LocalEV3;
 
 /**
@@ -23,24 +24,34 @@ public class Main {
   public static void main(String[] args) {
     initialize();
        
+   
+    
+    
+    
     // Start the odometer thread
     new Thread(odometer).start();   
 //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
 
-    identifySelf();
-    // first identify team and extract
-    // then set odometer based on corner number  
-    UltrasonicLocalizer.localize();
-    LightLocalizer.localize();
     
-    setOdometer();
+//    Testcontroller.readDown();
+//    Testcontroller.readTop();
     
-    moveToBridge();
     
-    odometer.printPositionXY();
-    Helper.BeepNtimes(3);
     
+//    identifySelf();
+//    // first identify team and extract
+//    // then set odometer based on corner number  
+//    UltrasonicLocalizer.localize();
+//    LightLocalizer.localize();
+//    
+//    setOdometer();
+//    
+//    moveToBridge();
+//    
+//    odometer.printPositionXY();
+//    Helper.BeepNtimes(3);
+//    
   
 
   
