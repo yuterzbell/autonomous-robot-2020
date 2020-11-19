@@ -101,8 +101,25 @@ public class Main {
     }
 //    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
     
+    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
+    System.out.println("SearchZone is at: " + searchZone);
+    Navigation.navigateTo(searchZone);
+    Helper.BeepNtimes(3);
+    
+    odometer.setTheta(90);
+//    Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
+//    // then detect container
+//    while(!ObjectDetection.containerDetect()) {
+//      System.out.println("Keep searching");
+//      sleepFor(500);
+//    }
+    // when find the container
+    Helper.BeepNtimes(3);
+    
     odometer.printPositionXY();
     Helper.BeepNtimes(3);
+    
+    Navigation.searchInY();
     
   
 

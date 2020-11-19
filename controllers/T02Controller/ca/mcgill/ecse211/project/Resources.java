@@ -120,10 +120,10 @@ public class Resources {
   public static int[] top_dists = new int[9];
 
   /** Threshold to determine the block(cm). */
-  public static final double US_DIFF_THRESHOLD = 30;
+  public static final double US_DIFF_THRESHOLD = 40;
   
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
-  public static final int OBJTHRESH = 60;
+  public static final int OBJTHRESH = 30;
   
   /** Flag variable indicating object detect. */
   public static boolean DETECT_FLAG = false;
