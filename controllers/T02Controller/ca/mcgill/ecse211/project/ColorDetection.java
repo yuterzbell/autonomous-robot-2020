@@ -17,6 +17,9 @@ public class ColorDetection {
   /** Threshold to determine if euclidean distance is reasonable to conclude for the color */
   private static int eucDisThresh = 500;
   
+  /** Additional distance to move to detect water after line (in feet)*/
+  private static float distAfterBlackLine = (float) 0.02;
+  
   public static void getLightSensorReadings() {
     leftColorSensorSample.fetchSample(leftColorSensorData, 0);
     rightColorSensorSample.fetchSample(rightColorSensorData, 0);
@@ -158,7 +161,7 @@ public class ColorDetection {
       var xyt0 = odometer.getXyt();
       
       LightLocalizer.moveUntilBlackLineDetected();
-      Helper.moveStraightFor(0.02);
+      Helper.moveStraightFor(distAfterBlackLine);
       waterDetected = getIfBlueZone();
       if(waterDetected) {
         leftMotor.stop();
@@ -166,11 +169,10 @@ public class ColorDetection {
         System.out.println("WATER DETECTED");
         Navigation.moveStraightFor(-0.2);
         Navigation.turnBy(180);
-        
         break;
         //TODO what is the expected behavior if water is detected?
       }
-      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);        // TODO remember to change the speed here to FORWARD_SPEED
+      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST - distAfterBlackLine);        // TODO remember to change the speed here to FORWARD_SPEED
      
       var xyt1 = odometer.getXyt();
       
