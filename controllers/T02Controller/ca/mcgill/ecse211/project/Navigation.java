@@ -62,7 +62,24 @@ public class Navigation {
     Point ramp = new Point(xRamp, yRamp);
     
     travelTo(ramp);
+    moveRobotBackwardsFromRamp();
     
+  }
+
+  /**
+   * Moves the robot backwards one tile after dropping the container in the bin
+   */
+  public static void moveRobotBackwardsFromRamp(){
+    int bottomReading = -1;
+    while(true){
+      bottomReading = readUsDistance();
+      if(bottomReading > 80){
+        leftMotor.stop();
+        rightMotor.stop();
+        moveStraightFor(-TILE_SIZE);
+        break;
+      }
+    } 
   }
   
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
@@ -248,17 +265,5 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
   
-  public static void rampMovement(){
-    int bottomReading = -1;
-    while(true){
-      bottomReading = readUsDistance();
-      if(bottomReading > 80){
-        leftMotor.stop();
-        rightMotor.stop();
-        moveStraightFor(-TILE_SIZE);
-        break;
-      }
-    } 
 
-  }
 }
