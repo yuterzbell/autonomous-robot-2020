@@ -89,4 +89,18 @@ public class Testcontroller {
       sleepFor(500);
     }
   }
+  
+  public static void rampUp() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    
+    double x = 7;
+    double y = 3;
+    double theta = 0;
+    odometer.setXyt(x, y, theta);
+    
+    Navigation.goRamp();
+    
+    
+  }
 }

@@ -52,6 +52,19 @@ public class Navigation {
     }    
   }
   
+  /** Navigates the robot to the ramp. */
+  public static void goRamp() {
+    Point left = Ramp.left;
+    Point right = Ramp.right;
+    
+    double xRamp = (left.x + right.x)/2;
+    double yRamp = (left.y + right.y)/2;
+    Point ramp = new Point(xRamp, yRamp);
+    
+    travelTo(ramp);
+    
+  }
+  
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
   public static double getDestinationAngle(Point current, Point destination) {
     return (toDegrees(atan2(destination.x - current.x, destination.y - current.y)) + 360) % 360;
