@@ -32,10 +32,6 @@ public class ColorDetection {
   public static void getLightSensorReadings() {
     leftColorSensorSample.fetchSample(leftColorSensorData, 0);
     rightColorSensorSample.fetchSample(rightColorSensorData, 0);
-    //System.out.println( "Left: R: " + leftColorSensorData[0] + " G: " + leftColorSensorData[1] + " B: " + leftColorSensorData[2] + " : Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
-    //System.out.println( "Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
-    //getColorFromSensor(leftColorSensorData);
-    //System.out.println(getColorFromSensor(leftColorSensorData));
   }
   
   /**
