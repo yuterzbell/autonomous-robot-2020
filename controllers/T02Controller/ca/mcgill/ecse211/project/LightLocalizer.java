@@ -7,13 +7,9 @@ import simlejos.robotics.SampleProvider;
 
 public class LightLocalizer {
  
-  /** Color sensors are in RGB mode */
-  private static SampleProvider leftColorSensorSample = leftColorSensor.getRGBMode();
-  private static SampleProvider rightColorSensorSample = rightColorSensor.getRGBMode();
-  
   /** Buffer (array) to store US samples. */
-  private static float[] leftColorSensorData = new float[leftColorSensorSample.sampleSize()];
-  private static float[] rightColorSensorData = new float[rightColorSensorSample.sampleSize()];
+  private static float[] leftColorSensorData = new float[leftColorSensor.sampleSize()];
+  private static float[] rightColorSensorData = new float[rightColorSensor.sampleSize()];
   
   /** The discrete derivatives of each sensor. */
   private static int[] leftDerivative = new int[3];
@@ -33,133 +29,6 @@ public class LightLocalizer {
   
   /** Derivative threshold for valid change in readings. */
   private static int dThresh = 50;
-  
-  /** Threshold to determine if euclidean distance is reasonable to conclude for the color */
-  private static int eucDisThresh = 500;
-  
-  public static void getLightSensorReadings() {
-    leftColorSensorSample.fetchSample(leftColorSensorData, 0);
-    rightColorSensorSample.fetchSample(rightColorSensorData, 0);
-    //System.out.println( "Left: R: " + leftColorSensorData[0] + " G: " + leftColorSensorData[1] + " B: " + leftColorSensorData[2] + " : Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
-    //System.out.println( "Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
-    //getColorFromSensor(leftColorSensorData);
-    //System.out.println(getColorFromSensor(leftColorSensorData));
-  }
-  
-  public static boolean getIfBlueZone() {
-    boolean isBlueZone = false;
-    String color;
-    
-    getLightSensorReadings();
-    
-    color = getColorFromSensor(leftColorSensorData);
-    
-    isBlueZone = color.equals(COLOR_ARR[3] /*BLUE*/);
-    
-    if(!isBlueZone) {
-      color = getColorFromSensor(rightColorSensorData);
-      isBlueZone = color.equals(COLOR_ARR[3] /*BLUE*/);
-    }
-      
-    return isBlueZone;
-  }
-  
-  
-  public static String getColorFromSensor(float[] colorSensorData) {
-    float[] eucledianDistanceArr = new float[4];
-    int indexOfSmallest = 0; 
-    for(int i = 0; i < 4 ; i++) {
-      eucledianDistanceArr[i] = computeRGBEuclideanDistance(colorSensorData, COLOR_ARR[i]);
-    }
-    for(int i = 0 ; i < 3 ; i++) {
-      if(eucledianDistanceArr[indexOfSmallest] > eucledianDistanceArr[i+1]) {
-        indexOfSmallest = i + 1;
-      }
-    }
-    
-    //System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
-    
-    if( eucledianDistanceArr[indexOfSmallest] > eucDisThresh) {
-      return "UNCERTAIN";
-    }
-    
-    return COLOR_ARR[indexOfSmallest];
-  }
-  
-  // Pass a color from the COLOR_ARR (defined in Resources)
-  // We implement integer algebra from float values
-  public static float computeRGBEuclideanDistance(float[] colorSensorData, String color) {
-    float euclideanDistance;
-    int tmpsquare = 0;
-    float square = 0;
-    int r = (int)(colorSensorData[0] * 100);
-    int g = (int)(colorSensorData[1] * 100);
-    int b = (int)(colorSensorData[2] * 100);
-    int r_model; 
-    int g_model; 
-    int b_model; 
-    
-    switch(color) {
-      case "RED": {
-        r_model = (int) (R_mean_RED * 100);
-        g_model = (int) (G_mean_RED * 100);
-        b_model = (int) (B_mean_RED * 100);
-        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
-      }
-      break;
-      case "GREEN": {
-        r_model = (int) (R_mean_GREEN * 100);
-        g_model = (int) (G_mean_GREEN * 100);
-        b_model = (int) (B_mean_GREEN * 100);
-        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
-      }
-      break;
-      case "YELLOW": {
-        r_model = (int) (R_mean_YELLOW * 100);
-        g_model = (int) (G_mean_YELLOW * 100);
-        b_model = (int) (B_mean_YELLOW * 100);
-        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
-      }
-      break;
-      case "BLUE": {
-        r_model = (int) (R_mean_BLUE * 100);
-        g_model = (int) (G_mean_BLUE * 100);
-        b_model = (int) (B_mean_BLUE * 100);
-        tmpsquare = (r_model - r) * (r_model - r) + (g_model - g) * (g_model - g) + (b_model - b) * (b_model - b);
-      }
-      break;
-    }
-    square = (float) tmpsquare/(float) 100.0;
-    euclideanDistance = (float) Math.sqrt((double) square);
-    return euclideanDistance;
-  }
-  
-  public static void moveUntilWaterDetected() {
-    boolean isWaterDetected = false;
-   
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
-    
-    initilizeData();
-   
-    while (!isWaterDetected) {
-      rightMotor.setSpeed(ROTATE_SPEED);
-      leftMotor.setSpeed(ROTATE_SPEED);
-      
-      isWaterDetected = getIfBlueZone();
-      
-      if(isWaterDetected) {
-        leftMotor.stop();
-        rightMotor.stop();
-        Navigation.moveStraightFor(-0.2);
-        Navigation.turnBy(180);
-        System.out.println("WATER DETECTED STOP!");
-      } else {
-        leftMotor.forward();
-        rightMotor.forward();
-      } 
-    }
-  }
   
   /**
    * This method will bring the pivot point of the robot a the top right corner 
@@ -243,7 +112,7 @@ public class LightLocalizer {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    initilizeData();
+    initializeData();
    
     while (!isLeftWheelDetected || !isRightWheelDetected) {
       if (isLeftWheelDetected) {
@@ -301,7 +170,7 @@ public class LightLocalizer {
    * THis method initialize the window of two data readings from sensors.
    * @author Zichen Chang
    */
-  private static void initilizeData() {
+  private static void initializeData() {
     // initialize the window of our data
     int i = 0;                // counter of initializing dist[]
     while (i < leftValues.length) {
