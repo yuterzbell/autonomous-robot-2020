@@ -158,7 +158,31 @@ public class Resources {
   /** The object detector. */
   public static ObjectDetection detector = ObjectDetection.getObjectDetection();
 
+  /* ========================================== Self Wifi read-in parameters ================================ */
+  
+  /** Team number. */
+  public static int team = 2;
 
+  /** Robot starting corner. */
+  public static int Corner;
+
+  /** The edge when facing the Red ramp. */
+  public static RampEdge Ramp;
+
+  /** The Start Zone. */
+  public static Region startZone;
+
+  /** The Island. */
+  public static Region isLand;
+
+  /** The tunnel. */
+  public static Region tun;
+
+  /** The search zone. */
+  public static Region searchZone;
+
+  
+  
   // Wi-Fi parameters
 
   /** Container for the Wi-Fi parameters. */
