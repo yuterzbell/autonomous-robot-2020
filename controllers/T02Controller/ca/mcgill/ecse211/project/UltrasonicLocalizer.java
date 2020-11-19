@@ -11,9 +11,9 @@ public class UltrasonicLocalizer {
 
   // Instance and class variables
   /** Thresh of d. */
-  private static final int D_THRESH = 25;   // 30 cm
+  private static final int D_THRESH = 30;   // 30 cm
   /** Thresh to account for noise. */
-  private static final int K = 1;           // 1 cm
+  private static final int K = 2;           // 1 cm
   /** Array index of theta.*/
   private static final int THETA = 2;      
   /** The poll sleep time, in milliseconds. */

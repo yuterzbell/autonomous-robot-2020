@@ -34,23 +34,6 @@ public class Main {
 //    Testcontroller.readTop();
     
     
-    
-//    identifySelf();
-//    // first identify team and extract
-//    // then set odometer based on corner number  
-//    UltrasonicLocalizer.localize();
-//    LightLocalizer.localize();
-//    
-//    setOdometer();
-//    
-//    moveToBridge();
-//    
-//    odometer.printPositionXY();
-//    Helper.BeepNtimes(3);
-//    
-  
-
-  
     // testing for readings
 //    ReinitializeDoubleUsensors();
 //    int down = downMedianFiltering(down_dists);

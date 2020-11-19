@@ -196,11 +196,9 @@ public class Resources {
    */
   public static final String[] COLOR_ARR = { "RED", "GREEN", "YELLOW", "BLUE" };
 
-  /*
-   * ========================================== Self Wifi read-in parameters
-   * ================================
-   */
 
+  /* ========================================== Self Wifi read-in parameters ================================ */
+  
   /** Team number. */
   public static int team = 2;
 
@@ -222,6 +220,8 @@ public class Resources {
   /** The search zone. */
   public static Region searchZone;
 
+  
+  
   // Wi-Fi parameters
 
   /** Container for the Wi-Fi parameters. */
