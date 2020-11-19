@@ -148,7 +148,7 @@ public class LightLocalizer {
       if (leftDerivativeValid()) { // Should update the threshold to be a constant
         leftMotor.stop();
         isLeftWheelDetected = true;
-//        System.out.println("left black line detected");
+        System.out.println("left black line detected");
         clearLeftDerivatives();
       } else {
         leftMotor.forward();
@@ -157,7 +157,7 @@ public class LightLocalizer {
       if (rightDerivativeValid()) {
         rightMotor.stop();
         isRightWheelDetected = true;
-//        System.out.println("right black line detected");
+        System.out.println("right black line detected");
         clearRightDerivatives();
       } else {
         rightMotor.forward();

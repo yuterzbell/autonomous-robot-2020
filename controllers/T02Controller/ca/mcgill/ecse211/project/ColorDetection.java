@@ -146,7 +146,7 @@ public class ColorDetection {
    * @param moveInX integer indicating robot is move in x-direction if equal to 1
    * @param distance number of tiles (in feet) to move straight for
    */
-  public static void moveStraightWithLineCorrectionAndWaterDetection(int moveInX, double distance) { 
+  public static boolean moveStraightWithLineCorrectionAndWaterDetection(int moveInX, double distance) { 
     double inMeters = distance * TILE_SIZE;
     double distanceChange = 0;
     boolean waterDetected = false;
@@ -158,13 +158,16 @@ public class ColorDetection {
       var xyt0 = odometer.getXyt();
       
       LightLocalizer.moveUntilBlackLineDetected();
+      Helper.moveStraightFor(0.02);
       waterDetected = getIfBlueZone();
       if(waterDetected) {
         leftMotor.stop();
         rightMotor.stop();
+        System.out.println("WATER DETECTED");
         Navigation.moveStraightFor(-0.2);
         Navigation.turnBy(180);
-        System.out.println("WATER DETECTED STOP!");
+        
+        break;
         //TODO what is the expected behavior if water is detected?
       }
       Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);        // TODO remember to change the speed here to FORWARD_SPEED
@@ -191,8 +194,14 @@ public class ColorDetection {
       distanceChange = Math.sqrt(Math.pow((xyt0[1] - xyt1[1]), 2) + Math.pow((xyt0[0] - xyt1[0]), 2));
       inMeters -= distanceChange;
     }
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
-    Navigation.moveStraightFor(inMeters / TILE_SIZE);
-  }
+    
+    if(!waterDetected) {
+      leftMotor.setSpeed(FORWARD_SPEED);
+      rightMotor.setSpeed(FORWARD_SPEED);
+      Navigation.moveStraightFor(inMeters / TILE_SIZE);
+    }
+    
+    return !waterDetected;
+   }
+
 }
