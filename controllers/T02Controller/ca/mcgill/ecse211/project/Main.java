@@ -28,8 +28,11 @@ public class Main {
 //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
 
-    
-    
+    /*
+     * while(true) LightLocalizer.printLightSensorReadings();
+     */
+    ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(1,5);
+ /*   
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     if (redTeam == 2) {
@@ -139,8 +142,7 @@ public class Main {
     }
     // when find the container
     Helper.BeepNtimes(3);
-    */
-    
+    */   
   }
 
   /**
@@ -167,7 +169,7 @@ public class Main {
    * 
    * @author Michael Smith, Tharsan Ponnampalam, Younes Boubekeur, Olivier St-Martin Cormier
    */
-  public static void wifiExample() {
+/*  public static void wifiExample() {
     System.out.println("Running...");
 
     // Example 1: Print out all received data

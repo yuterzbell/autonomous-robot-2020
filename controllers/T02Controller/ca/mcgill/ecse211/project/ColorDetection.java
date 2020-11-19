@@ -165,6 +165,7 @@ public class ColorDetection {
         Navigation.moveStraightFor(-0.2);
         Navigation.turnBy(180);
         System.out.println("WATER DETECTED STOP!");
+        //TODO what is the expected behavior if water is detected?
       }
       Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST);        // TODO remember to change the speed here to FORWARD_SPEED
      

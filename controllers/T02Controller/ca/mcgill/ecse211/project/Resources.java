@@ -130,7 +130,8 @@ public class Resources {
   /** Flag variable indicating object detect. */
   public static boolean DETECT_FLAG = false;
 
-
+  /** Flag variable indicating water detection. */
+  public static boolean DETECT_WATER = false;
 
   // Hardware resources
 
