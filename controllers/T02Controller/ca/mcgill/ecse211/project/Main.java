@@ -23,10 +23,6 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-       
-   
-    
-    
     
     // Start the odometer thread
     new Thread(odometer).start();   
@@ -38,23 +34,6 @@ public class Main {
 //    Testcontroller.readTop();
     
     
-    
-    identifySelf();
-    // first identify team and extract
-    // then set odometer based on corner number  
-    UltrasonicLocalizer.localize();
-    LightLocalizer.localize();
-    
-    setOdometer();
-    
-//    moveToBridge();
-//    
-//    odometer.printPositionXY();
-//    Helper.BeepNtimes(3);
-    
-  
-
-  
     // testing for readings
 //    ReinitializeDoubleUsensors();
 //    int down = downMedianFiltering(down_dists);
@@ -75,7 +54,6 @@ public class Main {
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
     Helper.BeepNtimes(3);
-
   
     // first turn the robot to 180 deg
     odometer.setTheta(90);
