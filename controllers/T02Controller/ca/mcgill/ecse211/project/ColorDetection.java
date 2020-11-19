@@ -87,12 +87,20 @@ public class ColorDetection {
     return COLOR_ARR[indexOfSmallest];
   }
   
-  // Pass a color from the COLOR_ARR (defined in Resources)
-  // We implement integer algebra from float values
+  /**
+   * @author Andre-Walter Panzini
+   * 
+   * A function that computes the Euclidean distance of a data sample with respect to a given color.
+   * 
+   * @param colorSensorData data fetched by the color sensor (RGB values) 
+   * @param color string that indicates against which color should the data set be compared. Should be called from COLOR_ARR in Resources.
+   * @return float representing the Euclidean distance between the data set and the model set.
+   */
   public static float computeRGBEuclideanDistance(float[] colorSensorData, String color) {
     float euclideanDistance;
     int tmpsquare = 0;
     float square = 0;
+    // Integer arithmetic instead of float to reduce burden on processor.
     int r = (int)(colorSensorData[0] * 100);
     int g = (int)(colorSensorData[1] * 100);
     int b = (int)(colorSensorData[2] * 100);
@@ -135,6 +143,11 @@ public class ColorDetection {
     return euclideanDistance;
   }
   
+  /**
+   * @author Andre-Walter Panzini
+   * 
+   * Testing method to move until water is detected.
+   */
   public static void moveUntilWaterDetected() {
     boolean isWaterDetected = false;
    
@@ -161,11 +174,15 @@ public class ColorDetection {
   }
   
   /**
+   * @author Andre-Walter Panzini
+   * 
    * Moves the robot for a certain distance and corrects the orientation of the robot
-   * when it crosses a black line.
+   * when it crosses a black line. If the robot detects water, it will stop, move back and turn around to 180 degrees.
    * 
    * @param moveInX integer indicating robot is move in x-direction if equal to 1
    * @param distance number of tiles (in feet) to move straight for
+   * 
+   * @return boolean that confirms if the distance was covered. (false if water was detected and the move was stopped).
    */
   public static boolean moveStraightWithLineCorrectionAndWaterDetection(int moveInX, double distance) { 
     double inMeters = distance * TILE_SIZE;
