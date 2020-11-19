@@ -4,6 +4,12 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import simlejos.robotics.SampleProvider;
 
 
+/**
+ * @author Andre-Walter Panzini
+ * 
+ * This class is responsible for detecting the water
+ * Also anything related to using the color sensor values
+ */
 public class ColorDetection {
 
   /** Color sensors are in RGB mode */
@@ -20,6 +26,9 @@ public class ColorDetection {
   /** Additional distance to move to detect water after line (in feet)*/
   private static float distAfterBlackLine = (float) 0.02;
   
+  /**
+   * reads the value of the light sensor into the data variable 
+   */
   public static void getLightSensorReadings() {
     leftColorSensorSample.fetchSample(leftColorSensorData, 0);
     rightColorSensorSample.fetchSample(rightColorSensorData, 0);
