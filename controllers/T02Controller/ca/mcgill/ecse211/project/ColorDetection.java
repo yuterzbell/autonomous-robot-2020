@@ -92,6 +92,8 @@ public class ColorDetection {
   }
   
   /**
+   * @author Andre-Walter Panzini
+   * 
    * A function that computes the Euclidean distance of a data sample with respect to a given color.
    * 
    * @param colorSensorData data fetched by the color sensor (RGB values) 
@@ -146,6 +148,8 @@ public class ColorDetection {
   }
   
   /**
+   * @author Andre-Walter Panzini
+   * 
    * Testing method to move until water is detected.
    */
   public static void moveUntilWaterDetected() {
@@ -174,6 +178,8 @@ public class ColorDetection {
   }
   
   /**
+   * @author Andre-Walter Panzini
+   * 
    * Moves the robot for a certain distance and corrects the orientation of the robot
    * when it crosses a black line. If the robot detects water, it will stop, move back and turn around to 180 degrees.
    * 
