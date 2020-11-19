@@ -4,6 +4,12 @@ import static ca.mcgill.ecse211.project.Resources.*;
 import simlejos.robotics.SampleProvider;
 
 
+/**
+ * @author Andre-Walter Panzini
+ * 
+ * This class is responsible for detecting the water
+ * Also anything related to using the color sensor values
+ */
 public class ColorDetection {
 
   /** Color sensors are in RGB mode */
@@ -20,6 +26,9 @@ public class ColorDetection {
   /** Additional distance to move to detect water after line (in feet)*/
   private static float distAfterBlackLine = (float) 0.02;
   
+  /**
+   * reads the value of the light sensor into the data variable 
+   */
   public static void getLightSensorReadings() {
     leftColorSensorSample.fetchSample(leftColorSensorData, 0);
     rightColorSensorSample.fetchSample(rightColorSensorData, 0);
@@ -29,6 +38,13 @@ public class ColorDetection {
     //System.out.println(getColorFromSensor(leftColorSensorData));
   }
   
+  /**
+   * @author Andre-Walter Panzini
+   * 
+   * Checks to see if the light sensor detects a blue zone
+   * A blue zone in this case is water
+   * @return isBlueZone; true - if blue zone is detected, else false
+   */
   public static boolean getIfBlueZone() {
     boolean isBlueZone = false;
     String color;
@@ -47,7 +63,13 @@ public class ColorDetection {
     return isBlueZone;
   }
   
-  
+  /**
+   * @author Andre-Walter Panzini
+   * 
+   * Gets the color with the least euclidean distance from the sensor
+   * @param colorSensorData the light sensor color data
+   * @return a color with the smallest euclidean distance or BLACK if the smallest color is greater than the threshold
+   */
   public static String getColorFromSensor(float[] colorSensorData) {
     float[] eucledianDistanceArr = new float[4];
     int indexOfSmallest = 0; 
