@@ -34,22 +34,56 @@ public class LightLocalizer {
   /** Derivative threshold for valid change in readings. */
   private static int dThresh = 50;
   
-  public static void printLightSensorReadings() {
+  /** Threshold to determine if euclidean distance is reasonable to conclude for the color */
+  private static int eucDisThresh = 500;
+  
+  public static void getLightSensorReadings() {
     leftColorSensorSample.fetchSample(leftColorSensorData, 0);
     rightColorSensorSample.fetchSample(rightColorSensorData, 0);
     //System.out.println( "Left: R: " + leftColorSensorData[0] + " G: " + leftColorSensorData[1] + " B: " + leftColorSensorData[2] + " : Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
     //System.out.println( "Right: R: " + rightColorSensorData[0] + " G: " + rightColorSensorData[1] + " B: " + rightColorSensorData[2]);
-    getColorFromSensor(leftColorSensorData);
+    //getColorFromSensor(leftColorSensorData);
     //System.out.println(getColorFromSensor(leftColorSensorData));
   }
   
-  public static void getColorFromSensor(float[] colorSensorData) {
-    float[] eucledianDistanceArr = new float[4];
+  public static boolean getIfBlueZone() {
+    boolean isBlueZone = false;
+    String color;
     
+    getLightSensorReadings();
+    
+    color = getColorFromSensor(leftColorSensorData);
+    
+    isBlueZone = color.equals(COLOR_ARR[3] /*BLUE*/);
+    
+    if(!isBlueZone) {
+      color = getColorFromSensor(rightColorSensorData);
+      isBlueZone = color.equals(COLOR_ARR[3] /*BLUE*/);
+    }
+      
+    return isBlueZone;
+  }
+  
+  
+  public static String getColorFromSensor(float[] colorSensorData) {
+    float[] eucledianDistanceArr = new float[4];
+    int indexOfSmallest = 0; 
     for(int i = 0; i < 4 ; i++) {
       eucledianDistanceArr[i] = computeRGBEuclideanDistance(colorSensorData, COLOR_ARR[i]);
     }
-    System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
+    for(int i = 0 ; i < 3 ; i++) {
+      if(eucledianDistanceArr[indexOfSmallest] > eucledianDistanceArr[i+1]) {
+        indexOfSmallest = i + 1;
+      }
+    }
+    
+    //System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
+    
+    if( eucledianDistanceArr[indexOfSmallest] > eucDisThresh) {
+      return "UNCERTAIN";
+    }
+    
+    return COLOR_ARR[indexOfSmallest];
   }
   
   // Pass a color from the COLOR_ARR (defined in Resources)
@@ -100,6 +134,32 @@ public class LightLocalizer {
     return euclideanDistance;
   }
   
+  public static void moveUntilWaterDetected() {
+    boolean isWaterDetected = false;
+   
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    
+    initilizeData();
+   
+    while (!isWaterDetected) {
+      rightMotor.setSpeed(ROTATE_SPEED);
+      leftMotor.setSpeed(ROTATE_SPEED);
+      
+      isWaterDetected = getIfBlueZone();
+      
+      if(isWaterDetected) {
+        leftMotor.stop();
+        rightMotor.stop();
+        Navigation.moveStraightFor(-0.2);
+        Navigation.turnBy(180);
+        System.out.println("WATER DETECTED STOP!");
+      } else {
+        leftMotor.forward();
+        rightMotor.forward();
+      } 
+    }
+  }
   
   /**
    * This method will bring the pivot point of the robot a the top right corner 
@@ -186,7 +246,6 @@ public class LightLocalizer {
     initilizeData();
    
     while (!isLeftWheelDetected || !isRightWheelDetected) {
-      printLightSensorReadings();
       if (isLeftWheelDetected) {
         rightMotor.setSpeed(ROTATE_SPEED);
       } 
