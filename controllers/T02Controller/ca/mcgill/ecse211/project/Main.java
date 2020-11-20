@@ -24,22 +24,23 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-
+    identifySelf(); 
     // Start the odometer thread
     new Thread(odometer).start();
     // Navigation.moveStraightFor(3.0);
     // new Thread(detector).start();
 
-    leftMotor.setSpeed(ROTATE_SPEED);
-    rightMotor.setSpeed(ROTATE_SPEED);
-
-    leftMotor.forward();
+   Testcontroller.rampUp();
+    //Navigation.moveRobotBackwardsFromRamp();
+    /*leftMotor.forward();
     rightMotor.forward();
+    
     while (true) {
       var test = UltrasonicLocalizer.readUsDistance();
       System.out.println(test);
     }
-
+*/
+    
     // Testcontroller.readDown();
     // Testcontroller.readTop();
 

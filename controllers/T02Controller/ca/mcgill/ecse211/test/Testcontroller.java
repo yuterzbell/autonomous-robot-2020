@@ -94,11 +94,12 @@ public class Testcontroller {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    double x = 7;
-    double y = 3;
-    double theta = 0;
-    odometer.setXyt(x, y, theta);
+    double x = 8;
+    double y = 6;
+    double theta = 90;
+    odometer.setXytInTailSize(x, y, theta);
     
+    odometer.printPosition();
     Navigation.goRamp();
     
     

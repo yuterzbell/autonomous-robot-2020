@@ -56,13 +56,55 @@ public class Navigation {
   public static void goRamp() {
     Point left = Ramp.left;
     Point right = Ramp.right;
+    System.out.println();
+    var xyt = odometer.getXyt();
+    
     
     double xRamp = (left.x + right.x)/2;
     double yRamp = (left.y + right.y)/2;
-    Point ramp = new Point(xRamp, yRamp);
     
-    travelTo(ramp);
-    moveRobotBackwardsFromRamp();
+    /*
+  
+    if(xyt[0] / TILE_SIZE > xRamp) {
+      System.out.println("1");
+      xRamp = xRamp +1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(90);
+      //moveRobotBackwardsFromRamp();
+      
+    }
+    if(xyt[0] / TILE_SIZE < xRamp) {
+      System.out.println("2");
+      xRamp = xRamp -1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(270);
+      //moveRobotBackwardsFromRamp();
+    }
+    */
+   
+    if(xyt[1] / TILE_SIZE < yRamp) {
+      System.out.println("3");
+      yRamp = yRamp -1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(0);
+      //moveRobotBackwardsFromRamp();
+      
+    }
+    /*
+    if(xyt[1] / TILE_SIZE > yRamp) {
+      System.out.println("4");
+      yRamp = yRamp +1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(180);
+      //moveRobotBackwardsFromRamp();
+    }
+    */
+    
+    
     
   }
 
@@ -71,12 +113,15 @@ public class Navigation {
    */
   public static void moveRobotBackwardsFromRamp(){
     int bottomReading = -1;
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
     while(true){
+      forward();
       bottomReading = readUsDistance();
       if(bottomReading > 80){
         leftMotor.stop();
         rightMotor.stop();
-        moveStraightFor(-TILE_SIZE);
+        moveStraightFor(-(TILE_SIZE)*4);
         break;
       }
     } 
@@ -97,6 +142,19 @@ public class Navigation {
     }
     return dtheta;
   }
+  
+  /**
+   * Turns the robot with a minimal angle towards the given input angle in degrees, no matter what its current
+   * orientation is. This method is different from {@code turnBy()}.
+   * 
+   * @param angle final angle to turn to
+   */
+  public static void turnTo(double angle) {
+
+    turnBy(minimalAngle(Odometer.getOdometer().getXyt()[2], angle));
+
+  }
+
   
   /** Returns the distance between the two points in tile lengths. */
   public static double distanceBetween(Point p1, Point p2) {
