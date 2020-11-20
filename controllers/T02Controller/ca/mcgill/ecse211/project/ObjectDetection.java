@@ -114,4 +114,29 @@ public class ObjectDetection implements Runnable{
 //    }
 //    return false;
   }
+  
+  public static boolean detect() {
+    ReinitializeDoubleUsensors();
+    int down = downMedianFiltering(down_dists);
+    int top = topMedianFiltering(top_dists);
+    System.out.println("Top reads: " + top + "\nDown reads: " + down);
+    if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
+      OBJ_DIST = down;
+      System.out.println("Obstackle");
+      return true;
+    }
+    return false;
+  }
+  
+//  public static int detectDist() {
+//    ReinitializeDoubleUsensors();
+//    int down = downMedianFiltering(down_dists);
+//    int top = topMedianFiltering(top_dists);
+//    System.out.println("Top reads: " + top + "\nDown reads: " + down);
+//    if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
+//      System.out.println("Obstackle");
+//      return down;
+//    }
+//    return 0;
+//  }
 }
