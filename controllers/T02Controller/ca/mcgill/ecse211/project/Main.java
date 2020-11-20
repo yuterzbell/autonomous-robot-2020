@@ -23,23 +23,27 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-    
+
+/*  =================================== code up to run into searchZone =======================================
+    identifySelf();
     // Start the odometer thread
     new Thread(odometer).start();   
 //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
-
     
-//    Testcontroller.readDown();
-//    Testcontroller.readTop();
+    UltrasonicLocalizer.localize();
+    LightLocalizer.localize();
+    Helper.BeepNtimes(3);
     
+    setOdometer();
     
-    // testing for readings
-//    ReinitializeDoubleUsensors();
-//    int down = downMedianFiltering(down_dists);
-//    int top = topMedianFiltering(top_dists);
-//    System.out.println("Top readings:" + top + "\nDown readings: " + down);
-//    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
+    moveToBridge();
+    
+    moveToSearchZone();
+    Helper.BeepNtimes(3);
+    
+*/    
+    
    
      // start the detector thread after initial localizing
    
@@ -68,6 +72,39 @@ public class Main {
     */
     
   }
+  
+  public static void moveToSearchZone() {
+    if (isLand.ur.x < startZone.ll.x) {
+      // move leftwards
+      var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("searchzone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(270);
+    } else if (isLand.ll.x > startZone.ur.x) {
+      // move rightwards
+      var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("searchzone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(90);
+    } else if (isLand.ll.y > startZone.ur.y) {
+      // move upwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
+      System.out.println("searchZone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(0);
+    } else if (isLand.ur.y < startZone.ll.y) {
+      // move downwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
+      System.out.println("Bridge is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(180);
+    }
+  }
+  
   
   /**
    * This method will drive the robot in front of bridge.
@@ -120,7 +157,7 @@ public class Main {
     } else if (Corner == 3) {
       odometer.setXytInTailSize(1, 8, 90);
     } else {
-      throw new RuntimeException();
+      System.out.println("Error: Corner is not well identified");
     }
   }
 

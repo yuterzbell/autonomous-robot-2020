@@ -203,7 +203,7 @@ public class Resources {
   public static int team = 2;
 
   /** Robot starting corner. */
-  public static int Corner;
+  public static int Corner = -1;
 
   /** The edge when facing the Red ramp. */
   public static RampEdge Ramp;

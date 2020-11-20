@@ -1,10 +1,14 @@
 package ca.mcgill.ecse211.test;
 
+import static ca.mcgill.ecse211.project.Helper.ReinitializeDoubleUsensors;
+import static ca.mcgill.ecse211.project.Helper.downMedianFiltering;
+import static ca.mcgill.ecse211.project.Helper.topMedianFiltering;
 import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.*;
 import java.util.ArrayList;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.Navigation;
+import ca.mcgill.ecse211.project.ObjectDetection;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 
 public class Testcontroller {
@@ -64,6 +68,7 @@ public class Testcontroller {
   
   /**
    * This controller gathered the readings from double sensors to generate characteristic graph in testing document.
+   * @author Zichen Chang
    */
   public static void readDown(){
     leftMotor.setSpeed(MOTOR_LOW);
@@ -78,6 +83,7 @@ public class Testcontroller {
   
   /**
    * This controller gathered the readings from double sensors to generate characteristic graph in testing document.
+   * @author Zichen Chang
    */
   public static void readTop(){
     leftMotor.setSpeed(MOTOR_LOW);
@@ -88,5 +94,17 @@ public class Testcontroller {
       System.out.println(UltrasonicLocalizer.readUsDistance2());
       sleepFor(500);
     }
+  }
+  
+  /**
+   * This method tests the containerDetection method.
+   * @author Zichen Chang
+   */
+  public static void testContainerDetection() {
+    ReinitializeDoubleUsensors();
+    int down = downMedianFiltering(down_dists);
+    int top = topMedianFiltering(top_dists);
+    System.out.println("Top readings:" + top + "\nDown readings: " + down);
+    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
   }
 }
