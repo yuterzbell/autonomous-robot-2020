@@ -63,46 +63,46 @@ public class Navigation {
     double xRamp = (left.x + right.x)/2;
     double yRamp = (left.y + right.y)/2;
     
-    /*
+    
   
-    if(xyt[0] / TILE_SIZE > xRamp) {
+    if(left.y < right.y && left.x == right.x) {
       System.out.println("1");
       xRamp = xRamp +1;
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
-      turnTo(90);
-      //moveRobotBackwardsFromRamp();
+      turnTo(270);
+      moveRobotBackwardsFromRamp();
       
     }
-    if(xyt[0] / TILE_SIZE < xRamp) {
+    if(left.y > right.y && left.x == right.x) {
       System.out.println("2");
       xRamp = xRamp -1;
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
-      turnTo(270);
-      //moveRobotBackwardsFromRamp();
+      turnTo(90);
+      moveRobotBackwardsFromRamp();
     }
-    */
+    
    
-    if(xyt[1] / TILE_SIZE < yRamp) {
+    if(left.x < right.x && left.y == right.y) {
       System.out.println("3");
       yRamp = yRamp -1;
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(0);
-      //moveRobotBackwardsFromRamp();
+      moveRobotBackwardsFromRamp();
       
     }
-    /*
-    if(xyt[1] / TILE_SIZE > yRamp) {
+    
+    if(left.x > right.x && left.y == right.y) {
       System.out.println("4");
       yRamp = yRamp +1;
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(180);
-      //moveRobotBackwardsFromRamp();
+      moveRobotBackwardsFromRamp();
     }
-    */
+    
     
     
     
@@ -115,6 +115,7 @@ public class Navigation {
     int bottomReading = -1;
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
+    System.out.println("in");
     while(true){
       forward();
       bottomReading = readUsDistance();
