@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static java.lang.Math.*;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
 
@@ -66,6 +67,83 @@ public class Navigation {
     }    
   }
   
+  /** Navigates the robot to the ramp. */
+  public static void goRamp() {
+    Point left = Ramp.left;
+    Point right = Ramp.right;
+    System.out.println();
+    var xyt = odometer.getXyt();
+    
+    
+    double xRamp = (left.x + right.x)/2;
+    double yRamp = (left.y + right.y)/2;
+    
+    
+  
+    if(left.y < right.y && left.x == right.x) {
+      System.out.println("1");
+      xRamp = xRamp +1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(270);
+      //moveRobotBackwardsFromRamp();
+      
+    }
+    if(left.y > right.y && left.x == right.x) {
+      System.out.println("2");
+      xRamp = xRamp -1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(90);
+     // moveRobotBackwardsFromRamp();
+    }
+    
+   
+    if(left.x < right.x && left.y == right.y) {
+      System.out.println("3");
+      yRamp = yRamp -1;
+      System.out.println(xRamp);
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(0);
+      //moveRobotBackwardsFromRamp();
+      
+    }
+    
+    if(left.x > right.x && left.y == right.y) {
+      System.out.println("4");
+      yRamp = yRamp +1;
+      Point ramp = new Point(xRamp, yRamp);
+      navigateTo(ramp);
+      turnTo(180);
+     // moveRobotBackwardsFromRamp();
+    }
+    
+    
+    
+    
+  }
+
+  /**
+   * Moves the robot backwards one tile after dropping the container in the bin
+   */
+  public static void moveRobotBackwardsFromRamp(){
+    int bottomReading = -1;
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    System.out.println("in");
+    while(true){
+      forward();
+      bottomReading = readUsDistance();
+      if(bottomReading > 80){
+        leftMotor.stop();
+        rightMotor.stop();
+        moveStraightFor(-(TILE_SIZE)*4);
+        break;
+      }
+    } 
+  }
+  
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
   public static double getDestinationAngle(Point current, Point destination) {
     return (toDegrees(atan2(destination.x - current.x, destination.y - current.y)) + 360) % 360;
@@ -81,6 +159,19 @@ public class Navigation {
     }
     return dtheta;
   }
+  
+  /**
+   * Turns the robot with a minimal angle towards the given input angle in degrees, no matter what its current
+   * orientation is. This method is different from {@code turnBy()}.
+   * 
+   * @param angle final angle to turn to
+   */
+  public static void turnTo(double angle) {
+
+    turnBy(minimalAngle(Odometer.getOdometer().getXyt()[2], angle));
+
+  }
+
   
   /** Returns the distance between the two points in tile lengths. */
   public static double distanceBetween(Point p1, Point p2) {
@@ -250,6 +341,7 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
   
+
   
   public static void moveStraightWithObjectAvoidance(double distance, int travelFactorX, int travelFactorY) {
     
@@ -356,4 +448,5 @@ public class Navigation {
     Navigation.turnBy(90);
 
   }
+
 }

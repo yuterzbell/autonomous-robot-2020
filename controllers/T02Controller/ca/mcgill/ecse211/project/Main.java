@@ -16,13 +16,15 @@ import simlejos.hardware.ev3.LocalEV3;
 public class Main {
 
   /**
-   * The number of threads used in the program (main, odometer), other than the one used to perform physics steps.
+   * The number of threads used in the program (main, odometer), other than the
+   * one used to perform physics steps.
    */
-  public static final int NUMBER_OF_THREADS = 3;
+  public static final int NUMBER_OF_THREADS = 2;
 
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
+
 
 /*  =================================== code up to run into searchZone =======================================
     identifySelf();
@@ -46,31 +48,55 @@ public class Main {
     
    
      // start the detector thread after initial localizing
-   
-
-/*       
-    var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
-    System.out.println("Bridge is at: " + bridge);
-    Navigation.navigateTo(bridge);
-    odometer.setY((tnr.getHeight()/2 + tnr.ll.y) * TILE_SIZE);
-       
-    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
-    System.out.println("SearchZone is at: " + searchZone);
-    Navigation.navigateTo(searchZone);
-    Helper.BeepNtimes(3);
   
-    // first turn the robot to 180 deg
-    odometer.setTheta(90);
-    Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
-    // then detect container
-    while(!ObjectDetection.containerDetect()) {
-      System.out.println("Keep searching");
-      sleepFor(500);
-    }
-    // when find the container
-    Helper.BeepNtimes(3);
-    */
+    identifySelf(); 
+    // Start the odometer thread
+    new Thread(odometer).start();
+    // Navigation.moveStraightFor(3.0);
+    // new Thread(detector).start();
+
+   Testcontroller.rampUp();
+    //Navigation.moveRobotBackwardsFromRamp();
+    /*leftMotor.forward();
+    rightMotor.forward();
     
+    while (true) {
+      var test = UltrasonicLocalizer.readUsDistance();
+      System.out.println(test);
+
+    }
+*/
+    
+    // Testcontroller.readDown();
+    // Testcontroller.readTop();
+
+    // testing for readings
+    // ReinitializeDoubleUsensors();
+    // int down = downMedianFiltering(down_dists);
+    // int top = topMedianFiltering(top_dists);
+    // System.out.println("Top readings:" + top + "\nDown readings: " + down);
+    // System.out.println("Is there a container? " +
+    // ObjectDetection.containerDetect());
+
+    // start the detector thread after initial localizing
+
+    /*
+     * var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 +
+     * tnr.ll.y); System.out.println("Bridge is at: " + bridge);
+     * Navigation.navigateTo(bridge); odometer.setY((tnr.getHeight()/2 + tnr.ll.y) *
+     * TILE_SIZE);
+     * 
+     * var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 +
+     * tnr.ll.y); System.out.println("SearchZone is at: " + searchZone);
+     * Navigation.navigateTo(searchZone); Helper.BeepNtimes(3);
+     * 
+     * // first turn the robot to 180 deg odometer.setTheta(90);
+     * Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180)); //
+     * then detect container while(!ObjectDetection.containerDetect()) {
+     * System.out.println("Keep searching"); sleepFor(500); } // when find the
+     * container Helper.BeepNtimes(3);
+     */
+
   }
   
   public static void moveToSearchZone() {
@@ -105,9 +131,10 @@ public class Main {
     }
   }
   
-  
+
   /**
    * This method will drive the robot in front of bridge.
+   * 
    * @author Zichen Chang
    */
   private static void moveToBridge() {
@@ -144,6 +171,7 @@ public class Main {
 
   /**
    * Set the odometer value based on parameters passed to robot
+   * 
    * @author Zichen Chang
    */
   private static void setOdometer() {
@@ -163,6 +191,7 @@ public class Main {
 
   /**
    * This method process the parameters passed to robot in first.
+   * 
    * @author Zichen Chang
    */
   private static void identifySelf() {
@@ -182,32 +211,38 @@ public class Main {
       tun = tng;
       searchZone = szg;
     }
-    
+
   }
 
   /**
-   * Example using WifiConnection to communicate with a server and receive data concerning the competition such as the
-   * starting corner the robot is placed in.<br>
+   * Example using WifiConnection to communicate with a server and receive data
+   * concerning the competition such as the starting corner the robot is placed
+   * in.<br>
    * 
    * <p>
-   * Keep in mind that this class is an <b>example</b> of how to use the Wi-Fi code; you must use the WifiConnection
-   * class yourself in your own code as appropriate. In this example, we simply show how to get and process different
+   * Keep in mind that this class is an <b>example</b> of how to use the Wi-Fi
+   * code; you must use the WifiConnection class yourself in your own code as
+   * appropriate. In this example, we simply show how to get and process different
    * types of data.<br>
    * 
    * <p>
-   * There are two variables you MUST set manually (in Resources.java) before using this code:
+   * There are two variables you MUST set manually (in Resources.java) before
+   * using this code:
    * 
    * <ol>
-   * <li>SERVER_IP: The IP address of the computer running the server application. This will be your own laptop, until
-   * the beta beta demo or competition where this is the TA or professor's laptop. In that case, set the IP to the
-   * default (indicated in Resources).</li>
+   * <li>SERVER_IP: The IP address of the computer running the server application.
+   * This will be your own laptop, until the beta beta demo or competition where
+   * this is the TA or professor's laptop. In that case, set the IP to the default
+   * (indicated in Resources).</li>
    * <li>TEAM_NUMBER: your project team number.</li>
    * </ol>
    * 
    * <p>
-   * Note: You can disable printing from the Wi-Fi code via ENABLE_DEBUG_WIFI_PRINT.
+   * Note: You can disable printing from the Wi-Fi code via
+   * ENABLE_DEBUG_WIFI_PRINT.
    * 
-   * @author Michael Smith, Tharsan Ponnampalam, Younes Boubekeur, Olivier St-Martin Cormier
+   * @author Michael Smith, Tharsan Ponnampalam, Younes Boubekeur, Olivier
+   *         St-Martin Cormier
    */
   public static void wifiExample() {
     System.out.println("Running...");
@@ -233,10 +268,12 @@ public class Main {
   }
 
   /**
-   * Initializes the robot logic. It starts a new thread to perform physics steps regularly.
+   * Initializes the robot logic. It starts a new thread to perform physics steps
+   * regularly.
    */
   private static void initialize() {
-    // Run a few physics steps to make sure everything is initialized and has settled properly
+    // Run a few physics steps to make sure everything is initialized and has
+    // settled properly
     for (int i = 0; i < 50; i++) {
       performPhysicsStep();
     }

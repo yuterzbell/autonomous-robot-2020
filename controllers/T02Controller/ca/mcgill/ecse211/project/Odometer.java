@@ -83,6 +83,7 @@ public class Odometer implements Runnable {
       
       updateDeltaPosition(prevTacho, currTacho, theta, deltaPosition);
       updateOdometerValues();
+      
       //printPosition();
       waitUntilNextStep();
     }
