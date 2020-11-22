@@ -3,6 +3,8 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Helper.*;
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.UltrasonicLocalizer.convertAngle;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.readUsDistance;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.readUsDistance2;
 import static simlejos.ExecutionController.*;
 import java.lang.*;
 import java.util.ArrayList;
@@ -34,41 +36,18 @@ public class Main {
     //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
 
-//    Thread t3 = new Thread(driver);
-//    t3.start();
+    UltrasonicLocalizer.localize();
+    LightLocalizer.localize();
+    Helper.BeepNtimes(3);
 
+    setOdometer();
 
-//    // test if stop other thread in main will stop the whole program.
-//    long startTime = System.currentTimeMillis();
-//    while (true) {
-//      long elapsedTime = System.currentTimeMillis() - startTime;
-//      if(elapsedTime >= 3000) {
-//        try {
-//          t3.join();
-//        } catch (InterruptedException e) {
-//          // TODO Auto-generated catch block
-//          e.printStackTrace();
-//        }
-//        break;
-//      }
-//      System.out.println("main running");
-//      sleepFor(500);
-//    }
-//    System.out.println("Done");
+    moveToBridge();
 
+    moveToSearchZone();
+    Helper.BeepNtimes(3);
 
-        UltrasonicLocalizer.localize();
-        LightLocalizer.localize();
-        Helper.BeepNtimes(3);
-    
-        setOdometer();
-    
-        moveToBridge();
-    
-        moveToSearchZone();
-        Helper.BeepNtimes(3);
-        
-        moveAndSearch();
+    moveAndSearch();
 
     // start the detector thread after initial localizing
 
@@ -91,20 +70,25 @@ public class Main {
       rightMotor.setSpeed(FORWARD_SPEED);
       leftMotor.rotate(convertAngle(-90), true);
       rightMotor.rotate(-convertAngle(-90), true);
-      while (!isContainer && System.currentTimeMillis() - startTime < 5000) {      // polling
-        
-      }
-      System.out.println("print isContainer: " + isContainer);
-      if (isContainer) {
-        calculateAndPush();
-        isContainer = false;
+      while (System.currentTimeMillis() - startTime < 4000) {      // polling
+        int bottomSensorData = readUsDistance();
+        int topSensorData = readUsDistance2();
+        if (bottomSensorData < VALID_OFFSET) {
+
+          System.out.println("down sensor is in valid distance");
+          System.out.println("Top sensor " + topSensorData);
+          System.out.println("Down sensor " + bottomSensorData);
+
+          if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
+            calculateAndPush();
+            isContainer = false;
+          }
+        }
+        System.out.println("All position covered");
       }
     }
-
-    System.out.println("All position covered");
-
   }
-  
+
   /**
    * This method returns a list of search Point that the robot should be performing search at.
    * @return a list of search Point for robot to perform search.
@@ -122,12 +106,13 @@ public class Main {
 
   /**
    * This method calculate the container's position and push container up the ramp.
+   * @author Zichen Chang
    */
   public static void calculateAndPush() {
     var xyt = odometer.getXyt();
     double dist = ObjectDetection.getbottomSensorData() / 100d;   // dist in meter
-    double x = dist * Math.cos(xyt[2]);
-    double y = dist * Math.sin(xyt[2]);
+    double x = dist * Math.sin(Math.toRadians(xyt[2])); 
+    double y = dist * Math.cos(Math.toRadians(xyt[2]));
     Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
     System.out.println("The point is: " + target);
     Navigation.navigateTo(target);

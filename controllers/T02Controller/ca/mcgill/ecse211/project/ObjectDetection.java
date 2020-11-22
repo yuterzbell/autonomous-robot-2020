@@ -24,33 +24,30 @@ public class ObjectDetection implements Runnable{
   /**
    * Data from Top sensor in cm.
    */
-  private static int topSensorData = readUsDistance2();
+  public static int topSensorData = readUsDistance2();
 
   /**
    * Data from Bottom sensor in cm.
    */
-  private static int bottomSensorData = readUsDistance();
+  public static int bottomSensorData = readUsDistance();
 
   @Override
   public void run(){
     Helper.ReinitializeDoubleUsensors();
     while(true){
-//      detectObject();
-//      sleepFor(2000);
 //      bottomSensorData = downMedianFiltering(down_dists);
 //      topSensorData = topMedianFiltering(top_dists);
       bottomSensorData = readUsDistance();
       topSensorData = readUsDistance2();
       if (bottomSensorData < VALID_OFFSET) {
         objectInClose = true;
-        
-        
-        System.out.println("down sensor is in valid distance");
-        System.out.println("Top sensor " + topSensorData);
-        System.out.println("Down sensor " + bottomSensorData);
+         
+//        System.out.println("down sensor is in valid distance");
+//        System.out.println("Top sensor " + topSensorData);
+//        System.out.println("Down sensor " + bottomSensorData);
         
         if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
-          isContainer = true;
+          isContainer = true;   // TODO not really good design since thread are not synchronized
           sleepFor(500);        // when find a container, delay the update of the next cycle to boolean flags.
         }
       } else {
