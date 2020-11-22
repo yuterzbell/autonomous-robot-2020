@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.test;
 import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.*;
 import java.util.ArrayList;
+import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.project.LightLocalizer;
 import ca.mcgill.ecse211.project.Navigation;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
@@ -94,13 +95,48 @@ public class Testcontroller {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    double x = 8;
+    double x = 13;
     double y = 6;
-    double theta = 90;
+    double theta = 0;
     odometer.setXytInTailSize(x, y, theta);
     
     odometer.printPosition();
     Navigation.goRamp();
+    
+    
+  }
+  
+  public static void waterDetect() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    double x = 8;
+    double y = 7;
+    double theta = 180;
+    
+    double waterX = 8;
+    double waterY = 4;
+    
+    Point water = new Point(waterX, waterY);
+    
+    odometer.setXytInTailSize(x, y, theta);
+    Navigation.travelTo(water);
+    
+  }
+  
+  public static void obstacleDetection() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    double x = 1;
+    double y = 8;
+    double theta = 90;
+    
+    double finalX = 3;
+    double finalY = 7.5;
+    
+     
+    odometer.setXytInTailSize(x, y, theta);
+    Point finalD = new Point(finalX, finalY);
+    Navigation.travelTo(finalD);
     
     
   }
