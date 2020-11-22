@@ -44,7 +44,11 @@ public class Navigation {
     } else if (destination.y != xyt[1] / TILE_SIZE) {
       moveInX = 0;
     }
-    moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+    if(DETECT_WATER){
+      ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
+    }else{
+      moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+    }    
   }
   
   /** Returns the angle that the robot should point towards to face the destination in degrees. */

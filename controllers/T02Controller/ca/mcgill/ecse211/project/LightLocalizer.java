@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
+import simlejos.robotics.SampleProvider;
 
 
 public class LightLocalizer {
@@ -9,17 +10,23 @@ public class LightLocalizer {
   /** Buffer (array) to store US samples. */
   private static float[] leftColorSensorData = new float[leftColorSensor.sampleSize()];
   private static float[] rightColorSensorData = new float[rightColorSensor.sampleSize()];
+  
   /** The discrete derivatives of each sensor. */
   private static int[] leftDerivative = new int[3];
   private static int[] rightDerivative = new int[3];
+ 
   /** Values read from corresponding light sensor. */  
   private static int[] leftValues = new int[5];
   private static int[] rightValues = new int[5];
+ 
+  /** Counters */
   private static int i = 0;     // left counter
   private static int j = 0;     // right counter
+  
   /** Last readings from sensor. */
   private static int prevLeft;
   private static int prevRight;
+  
   /** Derivative threshold for valid change in readings. */
   private static int dThresh = 50;
   
@@ -105,7 +112,7 @@ public class LightLocalizer {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    initilizeData();
+    initializeData();
    
     while (!isLeftWheelDetected || !isRightWheelDetected) {
       if (isLeftWheelDetected) {
@@ -141,7 +148,7 @@ public class LightLocalizer {
       if (leftDerivativeValid()) { // Should update the threshold to be a constant
         leftMotor.stop();
         isLeftWheelDetected = true;
-//        System.out.println("left black line detected");
+        System.out.println("left black line detected");
         clearLeftDerivatives();
       } else {
         leftMotor.forward();
@@ -150,7 +157,7 @@ public class LightLocalizer {
       if (rightDerivativeValid()) {
         rightMotor.stop();
         isRightWheelDetected = true;
-//        System.out.println("right black line detected");
+        System.out.println("right black line detected");
         clearRightDerivatives();
       } else {
         rightMotor.forward();
@@ -163,7 +170,7 @@ public class LightLocalizer {
    * THis method initialize the window of two data readings from sensors.
    * @author Zichen Chang
    */
-  private static void initilizeData() {
+  private static void initializeData() {
     // initialize the window of our data
     int i = 0;                // counter of initializing dist[]
     while (i < leftValues.length) {

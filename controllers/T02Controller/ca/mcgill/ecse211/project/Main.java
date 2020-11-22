@@ -3,8 +3,9 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Helper.*;
 import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.*;
-import java.lang.Thread;
+import java.lang.*;
 import ca.mcgill.ecse211.playingfield.Point;
+import ca.mcgill.ecse211.test.Testcontroller;
 import simlejos.hardware.ev3.LocalEV3;
 
 /**
@@ -22,114 +23,28 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-       
+
+/*  =================================== code up to run into searchZone =======================================
+    identifySelf();
     // Start the odometer thread
     new Thread(odometer).start();   
 //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
-
-    
     
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
-    if (redTeam == 2) {
-      if (redCorner == 0) {
-        odometer.setXytInTailSize(1, 1, 0);
-        if (island.ll.x > red.ur.x) {
-          // move rightwards
-          var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
-        } else if (island.ll.y > red.ur.y) {
-          // move upwards
-          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ll.y - ROBOT_OFFSET);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
-        }   
-      } else if (redCorner == 1) {
-        odometer.setXytInTailSize(14, 1, 270);
-        if (island.ur.x < red.ll.x) {
-          // move leftwards
-          var bridge = new Point(tnr.ur.x + ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
-        } else if (island.ll.y > red.ur.y) {
-          // move upwards
-          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ll.y - ROBOT_OFFSET);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
-        }
-      } else if (redCorner == 2) {
-        odometer.setXytInTailSize(14, 8, 180);
-        if (island.ur.x < red.ll.x) {
-          // move leftwards
-          var bridge = new Point(tnr.ur.x + ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
-        } else if (island.ur.y < red.ll.y) {
-          // move downwards
-          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ur.y + ROBOT_OFFSET);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
-        }
-      } else if (redCorner == 3) {
-        odometer.setXytInTailSize(1, 8, 90);
-        if (island.ll.x > red.ur.x) {
-           
-//          System.out.println("Correct condition is running and current location is ");
-//          odometer.printPositionXY();
-                   
-          // move rightwards
-          var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, (tnr.ll.y + tnr.ur.y) / 2);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setY((tnr.ll.y + tnr.ur.y) / 2 * TILE_SIZE);
-        } else if (island.ur.y < red.ll.y) {
-          // move downwards
-          var bridge = new Point((tnr.ll.x + tnr.ur.x) / 2, tnr.ur.y + ROBOT_OFFSET);
-          System.out.println("Bridge is at: " + bridge);
-          Navigation.navigateTo(bridge);
-          odometer.setX((tnr.ll.x + tnr.ur.x) / 2 * TILE_SIZE);
-        }
-      }
-    }
-//    odometer.setXyt((red.ll.x + 1) * TILE_SIZE, (red.ur.y - 1) * TILE_SIZE, 90);
-    
-    var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 + tnr.ll.y);
-    System.out.println("SearchZone is at: " + searchZone);
-    Navigation.navigateTo(searchZone);
     Helper.BeepNtimes(3);
     
-    odometer.setTheta(90);
-//    Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180));
-//    // then detect container
-//    while(!ObjectDetection.containerDetect()) {
-//      System.out.println("Keep searching");
-//      sleepFor(500);
-//    }
-    // when find the container
+    setOdometer();
+    
+    moveToBridge();
+    
+    moveToSearchZone();
     Helper.BeepNtimes(3);
     
-    odometer.printPositionXY();
-    Helper.BeepNtimes(3);
+*/    
     
-    Navigation.searchInY();
-    
-  
 
-  
-    // testing for readings
-//    ReinitializeDoubleUsensors();
-//    int down = downMedianFiltering(down_dists);
-//    int top = topMedianFiltering(top_dists);
-//    System.out.println("Top readings:" + top + "\nDown readings: " + down);
-//    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
    
      // start the detector thread after initial localizing
    
@@ -144,7 +59,6 @@ public class Main {
     System.out.println("SearchZone is at: " + searchZone);
     Navigation.navigateTo(searchZone);
     Helper.BeepNtimes(3);
-
   
     // first turn the robot to 180 deg
     odometer.setTheta(90);
@@ -157,6 +71,118 @@ public class Main {
     // when find the container
     Helper.BeepNtimes(3);
     */
+    
+  }
+  
+  public static void moveToSearchZone() {
+    if (isLand.ur.x < startZone.ll.x) {
+      // move leftwards
+      var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("searchzone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(270);
+    } else if (isLand.ll.x > startZone.ur.x) {
+      // move rightwards
+      var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("searchzone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(90);
+    } else if (isLand.ll.y > startZone.ur.y) {
+      // move upwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
+      System.out.println("searchZone is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(0);
+    } else if (isLand.ur.y < startZone.ll.y) {
+      // move downwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
+      System.out.println("Bridge is at: " + sz);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(180);
+    }
+  }
+  
+  
+  /**
+   * This method will drive the robot in front of bridge.
+   * @author Zichen Chang
+   */
+  private static void moveToBridge() {
+    if (isLand.ur.x < startZone.ll.x) {
+      // move leftwards
+      var bridge = new Point(tun.ur.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("Bridge is at: " + bridge);
+      Navigation.navigateTo(bridge);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(270);
+    } else if (isLand.ll.x > startZone.ur.x) {
+      // move rightwards
+      var bridge = new Point(tun.ll.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      System.out.println("Bridge is at: " + bridge);
+      Navigation.navigateTo(bridge);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(90);
+    } else if (isLand.ll.y > startZone.ur.y) {
+      // move upwards
+      var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ll.y - ROBOT_OFFSET);
+      System.out.println("Bridge is at: " + bridge);
+      Navigation.navigateTo(bridge);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(0);
+    } else if (isLand.ur.y < startZone.ll.y) {
+      // move downwards
+      var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ur.y + ROBOT_OFFSET);
+      System.out.println("Bridge is at: " + bridge);
+      Navigation.navigateTo(bridge);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(180);
+    }
+  }
+
+  /**
+   * Set the odometer value based on parameters passed to robot
+   * @author Zichen Chang
+   */
+  private static void setOdometer() {
+    // TODO Auto-generated method stub
+    if (Corner == 0) {
+      odometer.setXytInTailSize(1, 1, 0);
+    } else if (Corner == 1) {
+      odometer.setXytInTailSize(14, 1, 270);
+    } else if (Corner == 2) {
+      odometer.setXytInTailSize(14, 8, 180);
+    } else if (Corner == 3) {
+      odometer.setXytInTailSize(1, 8, 90);
+    } else {
+      System.out.println("Error: Corner is not well identified");
+    }
+  }
+
+  /**
+   * This method process the parameters passed to robot in first.
+   * @author Zichen Chang
+   */
+  private static void identifySelf() {
+    // if self team is the redTeam
+    if (redTeam == team) {
+      Corner = redCorner;
+      Ramp = rr;
+      startZone = red;
+      isLand = island;
+      tun = tnr;
+      searchZone = szr;
+    } else if (greenTeam == team) {
+      Corner = greenCorner;
+      Ramp = gr;
+      startZone = green;
+      isLand = island;
+      tun = tng;
+      searchZone = szg;
+    }
     
   }
 
