@@ -21,7 +21,6 @@ public class ObjectDetection implements Runnable{
     return detect;
   }
 
-
   /**
    * Data from Top sensor in cm.
    */
@@ -34,12 +33,37 @@ public class ObjectDetection implements Runnable{
 
   @Override
   public void run(){
+    Helper.ReinitializeDoubleUsensors();
     while(true){
-      detectObject();
-      sleepFor(2000);
+//      detectObject();
+//      sleepFor(2000);
+//      bottomSensorData = downMedianFiltering(down_dists);
+//      topSensorData = topMedianFiltering(top_dists);
+      bottomSensorData = readUsDistance();
+      topSensorData = readUsDistance2();
+      if (bottomSensorData < VALID_OFFSET) {
+        objectInClose = true;
+        
+        
+        System.out.println("down sensor is in valid distance");
+        System.out.println("Top sensor " + topSensorData);
+        System.out.println("Down sensor " + bottomSensorData);
+        
+        if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
+          isContainer = true;
+          sleepFor(500);        // when find a container, delay the update of the next cycle to boolean flags.
+        }
+      } else {
+        objectInClose = false;
+        isContainer = false;
+      }
+      sleepFor(500);
     }
   }   
 
+  /**
+   * This method detect a valid object.
+   */
   public static void detectObject(){
     topSensorData = readUsDistance2();
 //    System.out.println("Top readings: " + topSensorData);
@@ -106,18 +130,16 @@ public class ObjectDetection implements Runnable{
       return true;
     }
     return false;
-//    moveStraight();
-//    while(down > 20) {
-//      down = downMedianFiltering(down_dists);
-//    }
-//    stop();
-//    down = downMedianFiltering(down_dists);
-//    top = topMedianFiltering(top_dists);
-//    if (top > down + US_DIFF_THRESHOLD) {
-//      return true;
-//    }
-//    return false;
   }
+  
+  /**
+   * Getter method.
+   * @return int botoomSensorData
+   */
+  public static int getbottomSensorData() {
+    return bottomSensorData;
+  }
+  
   
   public static boolean detect() {
     ReinitializeDoubleUsensors();

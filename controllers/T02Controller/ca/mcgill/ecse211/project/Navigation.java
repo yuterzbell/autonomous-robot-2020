@@ -162,6 +162,16 @@ public class Navigation {
     rightMotor.rotate(-convertAngle(angle), false);
   }
   
+  /**
+   * Turns the robot to the specified angle.
+   * @param angle target angle.
+   */
+  public static void turnTo(double angle) {
+    var xyt = odometer.getXyt();
+    var currentTheta = xyt[2];
+    
+    turnBy(minimalAngle(currentTheta, angle));
+  }
  
   
   /** Rotates motors clockwise. */

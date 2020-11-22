@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Resources.*;
 import simlejos.hardware.ev3.LocalEV3;
 import static simlejos.ExecutionController.*;
+import ca.mcgill.ecse211.playingfield.Point;
 
 public class Helper {
 
@@ -141,6 +142,18 @@ public class Helper {
 
     // return the filtered data
     return UltrasonicLocalizer.getMedian(arr);
+  }
+  
+  
+  /**
+   * This method returns current location of robot as a Point.
+   * @return current Location as Point.
+   * @author Zichen Chang
+   */
+  public static Point curLocation() {
+    var xyt = odometer.getXyt();
+    var cur = new Point(xyt[0] / TILE_SIZE, xyt[1] / TILE_SIZE);
+    return cur;
   }
   
   
