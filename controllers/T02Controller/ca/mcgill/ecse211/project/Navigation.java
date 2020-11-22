@@ -355,7 +355,7 @@ public class Navigation {
     double stepFactor = 0;
     
     while (distance != 0) {
-      if (ObjectDetection.detect()) {
+      if (ObjectDetection.obstacleDetect()) {
         stepFactor = dodge(travelFactorX, travelFactorY);
         if (travelFactorY == 0) {
           curr_odo = odometer.getXyt()[0] / TILE_SIZE;

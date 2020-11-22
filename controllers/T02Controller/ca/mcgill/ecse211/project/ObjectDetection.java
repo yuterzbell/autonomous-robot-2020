@@ -115,7 +115,7 @@ public class ObjectDetection implements Runnable{
 //    return false;
   }
   
-  public static boolean detect() {
+  public static boolean obstacleDetect() {
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
     int top = topMedianFiltering(top_dists);
