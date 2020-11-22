@@ -137,7 +137,10 @@ public class ObjectDetection implements Runnable{
     return bottomSensorData;
   }
   
-  
+  /**
+   * prototype method to detect a potential object
+   * @return boolean true if object detected
+   */
   public static boolean detect() {
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
@@ -150,6 +153,9 @@ public class ObjectDetection implements Runnable{
     return false;
   }
   
+  /**
+   * prototype method to avoid obstacle while moving along x axis
+   */
   public static void avoidObjectInX(boolean up, boolean down) {
     
     double curr_x = odometer.getXyt()[0] / TILE_SIZE;
@@ -216,6 +222,9 @@ public class ObjectDetection implements Runnable{
     }
   }
   
+  /**
+   * prototype method to avoid obstacle by moving in half square to left along x axis
+   */
   public static void cutLeftInX(boolean up, boolean down) {
     //Note Theta is not updated after each turn as it restores to it intial value
     double curr_x = odometer.getXyt()[0] / TILE_SIZE;
@@ -255,6 +264,9 @@ public class ObjectDetection implements Runnable{
    
   }
   
+  /**
+   * prototype method to avoid obstacle by moving in half square to right along x axis
+   */
   public static void cutRightInX(boolean up, boolean down) {
     //Note Theta is not updated after each turn as it restores to it intial value
     double curr_x = odometer.getXyt()[0] / TILE_SIZE;
@@ -290,6 +302,10 @@ public class ObjectDetection implements Runnable{
     }
   }
   
+  /**
+   * Detect potential obstacle at close range (within 1 tile)
+   * @return boolean true if obstacle detected
+   */
   public static boolean obstacleDetect() {
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);

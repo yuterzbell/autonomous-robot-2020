@@ -342,7 +342,13 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
 
-  
+  /**
+   * Moves robot in a straight while checking each tile for potential obstacle and avoiding it accordingly
+   * 
+   * @param distance the distance to be moved in a straight line
+   * @param travelFactorX indicates if robot is moving along x axis (-1 for -x and +1 for +x)
+   * @param travelFactorY indicates if robot is moving along y axis (-1 for -y and +1 for +y)
+   */
   public static void moveStraightWithObjectAvoidance(double distance, int travelFactorX, int travelFactorY) {
     
     double curr_odo = 0;
@@ -391,6 +397,12 @@ public class Navigation {
 
   }
   
+  /**
+   * Moves the robot in a half square motion (updating all odometer values) to avoid collision with a potential obstacle
+   * 
+   * @param travelFactorX indicates if robot is moving along x axis (-1 for -x and +1 for +x)
+   * @param travelFactorY indicates if robot is moving along y axis (-1 for -y and +1 for +y)
+   */
   public static double dodge(int travelFactorX, int travelFactorY) { //0 for up, 1 for right, 2 for down, 3 for left
     
 //    double stepFactor = 3.5 * (OBJ_DIST / 100) / TILE_SIZE; 
