@@ -5,6 +5,11 @@ import static ca.mcgill.ecse211.project.UltrasonicLocalizer.*;
 import static simlejos.ExecutionController.sleepFor;
 import static ca.mcgill.ecse211.project.LightLocalizer.*;
 
+
+/**
+ * The ObjectDetection class provides method which utilizes the Ultrasonic Sensor to detect potential obstacles and containers 
+ * 
+ */
 public class ObjectDetection implements Runnable{
 
   /** The singleton odometer instance. */

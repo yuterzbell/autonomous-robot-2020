@@ -6,6 +6,10 @@ import static ca.mcgill.ecse211.project.UltrasonicLocalizer.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
 
+/**
+ * The Navigation class mainly provides several motion modes for the robot to move in different scenarios. 
+ * 
+ */
 public class Navigation {
   
   /** Do not instantiate this class. */

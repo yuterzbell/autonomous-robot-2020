@@ -5,10 +5,11 @@ import simlejos.robotics.SampleProvider;
 
 
 /**
- * @author Andre-Walter Panzini
- * 
  * This class is responsible for detecting the water
  * Also anything related to using the color sensor values
+ * 
+ * @author Andre-Walter Panzini
+ * 
  */
 public class ColorDetection {
 
