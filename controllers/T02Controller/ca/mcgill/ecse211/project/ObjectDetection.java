@@ -94,7 +94,7 @@ public class ObjectDetection implements Runnable{
       Helper.turnBy(-180);
       moveStraightFor(TILE_SIZE);
     } else {
-
+      //
     }
   }
   
@@ -290,14 +290,13 @@ public class ObjectDetection implements Runnable{
     }
   }
   
-  public static boolean detect() {
+  public static boolean obstacleDetect() {
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
     int top = topMedianFiltering(top_dists);
     System.out.println("Top reads: " + top + "\nDown reads: " + down);
     if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
       OBJ_DIST = down;
-      System.out.println("Obstackle");
       return true;
     }
     return false;
