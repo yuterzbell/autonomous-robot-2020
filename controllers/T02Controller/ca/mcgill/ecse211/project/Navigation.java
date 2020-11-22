@@ -17,21 +17,35 @@ public class Navigation {
    */
   public static void navigateTo(Point destination) {
     var xyt = odometer.getXyt();
+    
+    int travelY = 0;
+    int travelX = 0;
+    if (xyt[1] / TILE_SIZE > destination.y) {
+      travelY = -1;
+    } else if (xyt[1] / TILE_SIZE < destination.y){
+      travelY = 1;
+    }
+    if (xyt[0] / TILE_SIZE > destination.x) {
+      travelX = -1;
+    } else if (xyt[0] / TILE_SIZE < destination.x) {
+      travelX = 1;
+    }
+    
     // move in y first 
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
-    travelTo(pointX);
+    travelTo(pointX, 0, travelY);
 //    System.out.println("Finished y-direction move");
 //    odometer.printPositionXY();
     // move in x then
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
-    travelTo(pointY);
+    travelTo(pointY, travelX, 0);
 //    System.out.println("Finished x-direction move");
 //    odometer.printPositionXY();
   }
   
   /** Travels to the given destination. */
-  public static void travelTo(Point destination) {
+  public static void travelTo(Point destination, int travelFactorX, int travelFactorY) {
     var xyt = odometer.getXyt();
     var currentLocation = new Point(xyt[0] / TILE_SIZE, xyt[1] / TILE_SIZE);
     var currentTheta = xyt[2];
@@ -47,7 +61,8 @@ public class Navigation {
     if(DETECT_WATER){
       ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
     }else{
-      moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+//      moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+        moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
     }    
   }
   
@@ -131,6 +146,7 @@ public class Navigation {
     }
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
+    System.out.println("Here");
     moveStraightFor(inMeters / TILE_SIZE);
   }
   
@@ -234,4 +250,110 @@ public class Navigation {
     rightMotor.setAcceleration(acceleration);
   }
   
+  
+  public static void moveStraightWithObjectAvoidance(double distance, int travelFactorX, int travelFactorY) {
+    
+    double curr_odo = 0;
+    if (travelFactorY == 0) {
+      curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+    } else {
+      curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+    }
+    
+    while (distance != 0) {
+      if (ObjectDetection.detect()) {
+        dodge(travelFactorX, travelFactorY);
+        if (travelFactorY == 0) {
+          curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+        } else {
+          curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+        }
+        distance = distance - 2.5;
+      } else {
+        if (distance > 1) {
+          moveStraightFor(1);
+          if (travelFactorY == 0) {
+            curr_odo = curr_odo + (travelFactorX);
+            distance--;
+            odometer.setX(curr_odo * TILE_SIZE);
+          } else {
+            curr_odo = curr_odo + (travelFactorY);
+            distance--;
+            odometer.setY(curr_odo * TILE_SIZE);
+          }
+        } else {
+          moveStraightFor(distance);
+          if (travelFactorY == 0) {
+            curr_odo = curr_odo + (travelFactorX * distance);
+            odometer.setX(curr_odo * TILE_SIZE);
+          } else {
+            curr_odo = curr_odo + (travelFactorY * distance);
+            odometer.setY(curr_odo * TILE_SIZE);
+          }
+          break;
+        }
+      }
+    }
+
+  }
+  
+  public static void dodge(int travelFactorX, int travelFactorY) { //0 for up, 1 for right, 2 for down, 3 for left
+    
+//    double stepFactor = 3.5 * (OBJ_DIST / 100) / TILE_SIZE; 
+//    System.out.println("dist= " + OBJ_DIST + "step= " + stepFactor);
+    double stepFactor = 0;
+    if (OBJ_DIST > 15) {
+      stepFactor = 2.5;
+    } else {
+      stepFactor = 2;
+    }
+    
+    double straight_odo = 0;
+    double lateral_odo = 0;
+
+    if (travelFactorY == 0) {
+      straight_odo = odometer.getXyt()[0] / TILE_SIZE;
+      lateral_odo = odometer.getXyt()[1] / TILE_SIZE;
+    } else {
+      straight_odo = odometer.getXyt()[1] / TILE_SIZE;
+      lateral_odo = odometer.getXyt()[0] / TILE_SIZE;
+    }
+    
+    turnBy(90);
+    
+    moveStraightFor(1);
+    if (travelFactorY == 0) {
+      lateral_odo = lateral_odo + (-travelFactorX);
+      odometer.setY(lateral_odo * TILE_SIZE);
+    } else {
+      lateral_odo = lateral_odo + (-travelFactorY);
+      odometer.setX(lateral_odo * TILE_SIZE);
+    }
+
+    turnBy(-90);
+    
+    Navigation.moveStraightFor(stepFactor);
+    if (travelFactorY == 0) {
+      straight_odo = straight_odo + (stepFactor * travelFactorX);
+      odometer.setX(straight_odo * TILE_SIZE);
+    } else {
+      straight_odo = straight_odo + (2.5 * travelFactorY);
+      odometer.setY(straight_odo * TILE_SIZE);;
+    }
+
+    //Restore x and theta
+    Navigation.turnBy(-90);
+    
+    Navigation.moveStraightFor(1);
+    if (travelFactorY == 0) {
+      lateral_odo = lateral_odo + (travelFactorX);
+      odometer.setY(lateral_odo * TILE_SIZE);
+    } else {
+      lateral_odo = lateral_odo + (travelFactorY);
+      odometer.setX(lateral_odo * TILE_SIZE);
+    }
+    
+    Navigation.turnBy(90);
+
+  }
 }
