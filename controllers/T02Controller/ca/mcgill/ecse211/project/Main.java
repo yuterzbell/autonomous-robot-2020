@@ -2,9 +2,15 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Helper.*;
 import static ca.mcgill.ecse211.project.Resources.*;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.convertAngle;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.readUsDistance;
+import static ca.mcgill.ecse211.project.UltrasonicLocalizer.readUsDistance2;
 import static simlejos.ExecutionController.*;
 import java.lang.*;
+import java.util.ArrayList;
+import java.util.Set;
 import ca.mcgill.ecse211.playingfield.Point;
+import ca.mcgill.ecse211.playingfield.Region;
 import ca.mcgill.ecse211.test.Testcontroller;
 import simlejos.hardware.ev3.LocalEV3;
 
@@ -26,79 +32,99 @@ public class Main {
     initialize();
 
 
-/*  =================================== code up to run into searchZone =======================================
     identifySelf();
     // Start the odometer thread
     new Thread(odometer).start();   
-//    Navigation.moveStraightFor(3.0);
+    //    Navigation.moveStraightFor(3.0);
     new Thread(detector).start();
-    
+
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     Helper.BeepNtimes(3);
-    
+
     setOdometer();
-    
+
     moveToBridge();
-    
+
     moveToSearchZone();
     Helper.BeepNtimes(3);
-    
-*/    
-    
-   
-     // start the detector thread after initial localizing
-  
-    identifySelf(); 
-    // Start the odometer thread
-    new Thread(odometer).start();
-    // Navigation.moveStraightFor(3.0);
-    // new Thread(detector).start();
 
-   Testcontroller.rampUp();
-    //Navigation.moveRobotBackwardsFromRamp();
-    /*leftMotor.forward();
-    rightMotor.forward();
-    
-    while (true) {
-      var test = UltrasonicLocalizer.readUsDistance();
-      System.out.println(test);
-
-    }
-*/
-    
-    // Testcontroller.readDown();
-    // Testcontroller.readTop();
-
-    // testing for readings
-    // ReinitializeDoubleUsensors();
-    // int down = downMedianFiltering(down_dists);
-    // int top = topMedianFiltering(top_dists);
-    // System.out.println("Top readings:" + top + "\nDown readings: " + down);
-    // System.out.println("Is there a container? " +
-    // ObjectDetection.containerDetect());
+    moveAndSearch();
 
     // start the detector thread after initial localizing
 
-    /*
-     * var bridge = new Point(tnr.ll.x - ROBOT_OFFSET, tnr.getHeight() / 2 +
-     * tnr.ll.y); System.out.println("Bridge is at: " + bridge);
-     * Navigation.navigateTo(bridge); odometer.setY((tnr.getHeight()/2 + tnr.ll.y) *
-     * TILE_SIZE);
-     * 
-     * var searchZone = new Point(szr.ll.x + ROBOT_OFFSET, tnr.getHeight() / 2 +
-     * tnr.ll.y); System.out.println("SearchZone is at: " + searchZone);
-     * Navigation.navigateTo(searchZone); Helper.BeepNtimes(3);
-     * 
-     * // first turn the robot to 180 deg odometer.setTheta(90);
-     * Navigation.turnBy(Navigation.minimalAngle(odometer.getXyt()[2], 180)); //
-     * then detect container while(!ObjectDetection.containerDetect()) {
-     * System.out.println("Keep searching"); sleepFor(500); } // when find the
-     * container Helper.BeepNtimes(3);
-     */
 
   }
-  
+
+
+
+  /**
+   * This method adjust the robot to new location and searching for container.
+   */
+  public static void moveAndSearch() {
+    for (Point p : getWayPoints()) {
+      System.out.println("Next search Point is: " + p);
+      Navigation.navigateTo(p);
+      Navigation.turnTo(90);
+      // sweep for 360 deg
+      long startTime = System.currentTimeMillis();
+      leftMotor.setSpeed(FORWARD_SPEED);
+      rightMotor.setSpeed(FORWARD_SPEED);
+      leftMotor.rotate(convertAngle(-90), true);
+      rightMotor.rotate(-convertAngle(-90), true);
+      while (System.currentTimeMillis() - startTime < 4000) {      // polling
+        int bottomSensorData = readUsDistance();
+        int topSensorData = readUsDistance2();
+        if (bottomSensorData < VALID_OFFSET) {
+
+          System.out.println("down sensor is in valid distance");
+          System.out.println("Top sensor " + topSensorData);
+          System.out.println("Down sensor " + bottomSensorData);
+
+          if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
+            calculateAndPush();
+            isContainer = false;
+          }
+        }
+        System.out.println("All position covered");
+      }
+    }
+
+  }
+
+  /**
+   * This method returns a list of search Point that the robot should be performing search at.
+   * @return a list of search Point for robot to perform search.
+   * @author Zichen Chang
+   */
+  public static ArrayList<Point> getWayPoints(){
+    ArrayList<Point> wayPoints = new ArrayList<Point>();
+    for (double i = searchZone.ll.x + 0.5; i < searchZone.ur.x; i += 2) {
+      for (double j = searchZone.ll.y + 0.5; j < searchZone.ur.y; j += 2) {
+        wayPoints.add(new Point(i, j));
+      }
+    }
+    return wayPoints;
+  }
+
+  /**
+   * This method calculate the container's position and push container up the ramp.
+   * @author Zichen Chang
+   */
+  public static void calculateAndPush() {
+    var xyt = odometer.getXyt();
+    double dist = ObjectDetection.getbottomSensorData() / 100d;   // dist in meter
+    double x = dist * Math.sin(Math.toRadians(xyt[2])); 
+    double y = dist * Math.cos(Math.toRadians(xyt[2]));
+    Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
+    System.out.println("The point is: " + target);
+    Navigation.navigateTo(target);
+  }
+
+
+  /**
+   * This method drive the robot to the starting point of the searchZone.
+   */
   public static void moveToSearchZone() {
     if (isLand.ur.x < startZone.ll.x) {
       // move leftwards
@@ -130,7 +156,7 @@ public class Main {
       odometer.setTheta(180);
     }
   }
-  
+
 
   /**
    * This method will drive the robot in front of bridge.

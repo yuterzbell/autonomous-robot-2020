@@ -269,6 +269,7 @@ public class Navigation {
     rightMotor.rotate(-convertAngle(angle), false);
   }
   
+
  
   
   /** Rotates motors clockwise. */
@@ -340,7 +341,6 @@ public class Navigation {
     leftMotor.setAcceleration(acceleration);
     rightMotor.setAcceleration(acceleration);
   }
-  
 
   
   public static void moveStraightWithObjectAvoidance(double distance, int travelFactorX, int travelFactorY) {
@@ -449,4 +449,66 @@ public class Navigation {
 
   }
 
+
+  public static void searchInY() {
+    
+    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+    
+    if ((szr.ur.y - curr_y) < (curr_y - szr.ll.y)) {
+      searchUpwards();
+      searchDownwards();
+    } else {
+      searchDownwards();
+      searchUpwards();
+    }
+     
+  }
+  
+  public static void searchUpwards() {
+    
+    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+    
+    //Searching Upwards
+    turnBy(-90);
+    odometer.setTheta(0);    
+    
+    while ((szr.ur.y - curr_y) > 1) {
+      if (!ObjectDetection.detect()) {
+        moveStraightFor(1);
+        curr_y = curr_y + 1;
+        odometer.setY(curr_y * TILE_SIZE);
+      } else {
+        if ((szr.ur.y - (curr_y + 1) < 1)) { //Checking if obstacle is at top of column
+          break;
+        } else {
+          ObjectDetection.avoidObjectInX(true, false);
+          curr_y = odometer.getXyt()[1] / TILE_SIZE;
+        }
+      }
+    }
+  }
+  
+  public static void searchDownwards() {
+    
+    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+    
+    //Searching Downwards
+    turnBy(180);
+    odometer.setTheta(180);
+    
+    while ((curr_y - szr.ll.y) > 1) {
+      if (!ObjectDetection.detect()) {
+        moveStraightFor(1);
+        curr_y = curr_y - 1;
+        odometer.setY(curr_y * TILE_SIZE);
+      } else {
+        if (((curr_y - 1) - szr.ll.y < 1)) { //Checking if obstacle is at bottom of column
+          break;
+        } else {
+          ObjectDetection.avoidObjectInX(false, true);
+          curr_y = odometer.getXyt()[1] / TILE_SIZE;
+        }
+      }
+    }
+  }
 }

@@ -114,6 +114,15 @@ public class Resources {
 
   /** Robot offset. */
   public static final double ROBOT_OFFSET = 0.7;
+  
+  /** The max valid distance for us sensors to have a reliable reading. */
+  public static final double VALID_OFFSET = 1.5 * TILE_SIZE * 100;
+  
+  /** The flag inidcating an object close enough. */
+  public static boolean objectInClose = false;
+  
+  /** The flag indicating a container. */
+  public static boolean isContainer = false;
 
   /** Open ground threshold. */
   public static final double OPEN_THRESH = 200;
@@ -127,11 +136,13 @@ public class Resources {
   /** The window of data measured by top_usensor. */
   public static int[] top_dists = new int[9];
 
-  /** Threshold to determine the block(cm). */
-  public static final double US_DIFF_THRESHOLD = 40;
+
+  /** Threshold to determine the container(cm). */
+  public static final double US_DIFF_THRESHOLD = 20;
 
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 30;
+
 
   /** Flag variable indicating object detect. */
   public static boolean DETECT_FLAG = false;

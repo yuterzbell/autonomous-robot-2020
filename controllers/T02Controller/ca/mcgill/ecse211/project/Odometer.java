@@ -2,7 +2,7 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static simlejos.ExecutionController.waitUntilNextStep;
-
+import java.util.Set;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -74,8 +74,23 @@ public class Odometer implements Runnable {
   public void run() {
     leftMotor.resetTachoCount();                                    
     rightMotor.resetTachoCount();
+    long startTime = System.currentTimeMillis();
+    
     
     while (true) {
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      if(elapsedTime >= 270000) {
+        /* Move back to start point */
+        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+        for (Thread t : threads) {
+          String name = t.getName();
+          if (name.equals("main")) {
+//            t.suspend();
+          }
+        }
+        System.out.println("time out");
+        
+      }
       prevTacho[LEFT] = currTacho[LEFT];
       prevTacho[RIGHT] = currTacho[RIGHT];
       currTacho[LEFT] = leftMotor.getTachoCount();
