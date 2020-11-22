@@ -71,7 +71,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(270);
-      moveRobotBackwardsFromRamp();
+      //moveRobotBackwardsFromRamp();
       
     }
     if(left.y > right.y && left.x == right.x) {
@@ -80,17 +80,18 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(90);
-      moveRobotBackwardsFromRamp();
+     // moveRobotBackwardsFromRamp();
     }
     
    
     if(left.x < right.x && left.y == right.y) {
       System.out.println("3");
       yRamp = yRamp -1;
+      System.out.println(xRamp);
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(0);
-      moveRobotBackwardsFromRamp();
+      //moveRobotBackwardsFromRamp();
       
     }
     
@@ -100,7 +101,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(180);
-      moveRobotBackwardsFromRamp();
+     // moveRobotBackwardsFromRamp();
     }
     
     
