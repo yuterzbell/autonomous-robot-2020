@@ -4,6 +4,9 @@ import simlejos.hardware.ev3.LocalEV3;
 import static simlejos.ExecutionController.*;
 import ca.mcgill.ecse211.playingfield.Point;
 
+/**
+ * Abstracted utility methods used over the codebase
+ */
 public class Helper {
 
    /**

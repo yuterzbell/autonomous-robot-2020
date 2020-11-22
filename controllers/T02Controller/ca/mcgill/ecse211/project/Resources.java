@@ -16,11 +16,6 @@ import simlejos.hardware.sensor.EV3ColorSensor;
 import simlejos.hardware.sensor.EV3UltrasonicSensor;
 import simlejos.robotics.RegulatedMotor;
 
-/* (non-Javadoc comment)
- * TODO Integrate this carefully with your existing Resources class (See below for where to add
- * your code from your current Resources file). The order in which things are declared matters!
- */
-
 /**
  * Class for static resources (things that stay the same throughout the entire
  * program execution), like constants and hardware. <br>

@@ -2,9 +2,10 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import java.util.Arrays;
-import simlejos.robotics.SampleProvider;
 
-
+/**
+ * Uses the lightsensor to perform light localization.
+ */
 public class LightLocalizer {
  
   /** Buffer (array) to store US samples. */
