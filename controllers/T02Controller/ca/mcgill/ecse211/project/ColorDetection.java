@@ -36,10 +36,9 @@ public class ColorDetection {
   }
   
   /**
-   * @author Andre-Walter Panzini
-   * 
    * Checks to see if the light sensor detects a blue zone
    * A blue zone in this case is water
+   * @author Andre-Walter Panzini
    * @return isBlueZone; true - if blue zone is detected, else false
    */
   public static boolean getIfBlueZone() {
@@ -61,9 +60,8 @@ public class ColorDetection {
   }
   
   /**
-   * @author Andre-Walter Panzini
-   * 
    * Gets the color with the least euclidean distance from the sensor
+   * @author Andre-Walter Panzini
    * @param colorSensorData the light sensor color data
    * @return a color with the smallest euclidean distance or BLACK if the smallest color is greater than the threshold
    */
@@ -88,11 +86,9 @@ public class ColorDetection {
     return COLOR_ARR[indexOfSmallest];
   }
   
-  /**
-   * @author Andre-Walter Panzini
-   * 
+  /** 
    * A function that computes the Euclidean distance of a data sample with respect to a given color.
-   * 
+   * @author Andre-Walter Panzini
    * @param colorSensorData data fetched by the color sensor (RGB values) 
    * @param color string that indicates against which color should the data set be compared. Should be called from COLOR_ARR in Resources.
    * @return float representing the Euclidean distance between the data set and the model set.
@@ -145,9 +141,8 @@ public class ColorDetection {
   }
   
   /**
-   * @author Andre-Walter Panzini
-   * 
    * Testing method to move until water is detected.
+   * @author Andre-Walter Panzini
    */
   public static void moveUntilWaterDetected() {
     boolean isWaterDetected = false;
@@ -175,11 +170,9 @@ public class ColorDetection {
   }
   
   /**
-   * @author Andre-Walter Panzini
-   * 
    * Moves the robot for a certain distance and corrects the orientation of the robot
    * when it crosses a black line. If the robot detects water, it will stop, move back and turn around to 180 degrees.
-   * 
+   * @author Andre-Walter Panzini
    * @param moveInX integer indicating robot is move in x-direction if equal to 1
    * @param distance number of tiles (in feet) to move straight for
    * 
@@ -206,9 +199,9 @@ public class ColorDetection {
         Navigation.moveStraightFor(-0.2);
         Navigation.turnBy(180);
         break;
-        //TODO what is the expected behavior if water is detected?
+        
       }
-      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST - distAfterBlackLine);        // TODO remember to change the speed here to FORWARD_SPEED
+      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST - distAfterBlackLine);        
      
       var xyt1 = odometer.getXyt();
       

@@ -99,7 +99,7 @@ public class LightLocalizer {
   } 
   */
   
-  /*
+  /**
    * Moves the robot straight until a black line is detected by both left and right color sensors.
    * Motors will stop once the black line is detected to correct the path. 
    * This method using Zero-crossing concept to detect black line.

@@ -12,6 +12,9 @@ import ca.mcgill.ecse211.project.Navigation;
 import ca.mcgill.ecse211.project.ObjectDetection;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
 
+/**
+ * This class serves for testing functions of robot.
+ */
 public class Testcontroller {
   /**
    * This method test the characteristic of USsensor locates at corner after rotating 360 deg.
@@ -42,7 +45,7 @@ public class Testcontroller {
     }
   }
 
-  /*
+  /**
    * Moves the robot straight until a black line is detected by both left and right color sensors.
    * Motors will stop once the black line is detected to correct the path. 
    * 
@@ -109,6 +112,9 @@ public class Testcontroller {
     System.out.println("Is there a container? " + ObjectDetection.containerDetect());
 }
 
+  /**
+   * This method test the robot's ability to drive up ramp.
+   */
   public static void rampUp() {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
@@ -124,6 +130,9 @@ public class Testcontroller {
     
   }
   
+  /**
+   * This method test the ability of robot to detect water.
+   */
   public static void waterDetect() {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
@@ -137,10 +146,13 @@ public class Testcontroller {
     Point water = new Point(waterX, waterY);
     
     odometer.setXytInTailSize(x, y, theta);
-    Navigation.travelTo(water);
+//    Navigation.travelTo(water);
     
   }
   
+  /**
+   * This method test the ability of robot to avoid obstacle.
+   */
   public static void obstacleDetection() {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
@@ -154,7 +166,7 @@ public class Testcontroller {
      
     odometer.setXytInTailSize(x, y, theta);
     Point finalD = new Point(finalX, finalY);
-    Navigation.travelTo(finalD);
+//    Navigation.travelTo(finalD);
     
   }
 }
