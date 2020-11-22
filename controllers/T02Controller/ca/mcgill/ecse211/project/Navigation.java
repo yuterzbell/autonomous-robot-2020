@@ -352,15 +352,17 @@ public class Navigation {
       curr_odo = odometer.getXyt()[1] / TILE_SIZE;
     }
     
+    double stepFactor = 0;
+    
     while (distance != 0) {
       if (ObjectDetection.detect()) {
-        dodge(travelFactorX, travelFactorY);
+        stepFactor = dodge(travelFactorX, travelFactorY);
         if (travelFactorY == 0) {
           curr_odo = odometer.getXyt()[0] / TILE_SIZE;
         } else {
           curr_odo = odometer.getXyt()[1] / TILE_SIZE;
         }
-        distance = distance - 2.5;
+        distance = distance - stepFactor;
       } else {
         if (distance > 1) {
           moveStraightFor(1);
@@ -389,7 +391,7 @@ public class Navigation {
 
   }
   
-  public static void dodge(int travelFactorX, int travelFactorY) { //0 for up, 1 for right, 2 for down, 3 for left
+  public static double dodge(int travelFactorX, int travelFactorY) { //0 for up, 1 for right, 2 for down, 3 for left
     
 //    double stepFactor = 3.5 * (OBJ_DIST / 100) / TILE_SIZE; 
 //    System.out.println("dist= " + OBJ_DIST + "step= " + stepFactor);
@@ -429,7 +431,7 @@ public class Navigation {
       straight_odo = straight_odo + (stepFactor * travelFactorX);
       odometer.setX(straight_odo * TILE_SIZE);
     } else {
-      straight_odo = straight_odo + (2.5 * travelFactorY);
+      straight_odo = straight_odo + (stepFactor * travelFactorY);
       odometer.setY(straight_odo * TILE_SIZE);;
     }
 
@@ -446,7 +448,8 @@ public class Navigation {
     }
     
     Navigation.turnBy(90);
-
+    
+    return stepFactor;
   }
 
 }

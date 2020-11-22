@@ -70,7 +70,7 @@ public class ObjectDetection implements Runnable{
       Helper.turnBy(-180);
       moveStraightFor(TILE_SIZE);
     } else {
-
+      //
     }
   }
   
@@ -122,7 +122,6 @@ public class ObjectDetection implements Runnable{
     System.out.println("Top reads: " + top + "\nDown reads: " + down);
     if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
       OBJ_DIST = down;
-      System.out.println("Obstackle");
       return true;
     }
     return false;
