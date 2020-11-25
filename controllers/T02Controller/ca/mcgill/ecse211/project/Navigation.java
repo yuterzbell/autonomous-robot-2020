@@ -71,7 +71,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(270);
-      //moveRobotBackwardsFromRamp();
+      pushBlockRamp();
       
     }
     if(left.y > right.y && left.x == right.x) {
@@ -80,7 +80,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(90);
-     // moveRobotBackwardsFromRamp();
+      pushBlockRamp();
     }
     
    
@@ -91,7 +91,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(0);
-      //moveRobotBackwardsFromRamp();
+      pushBlockRamp();
       
     }
     
@@ -101,7 +101,7 @@ public class Navigation {
       Point ramp = new Point(xRamp, yRamp);
       navigateTo(ramp);
       turnTo(180);
-     // moveRobotBackwardsFromRamp();
+      pushBlockRamp();
     }
     
     
@@ -112,7 +112,7 @@ public class Navigation {
   /**
    * Moves the robot backwards one tile after dropping the container in the bin
    */
-  public static void moveRobotBackwardsFromRamp(){
+  public static void pushBlockRamp(){
     int bottomReading = -1;
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
