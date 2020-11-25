@@ -178,28 +178,24 @@ public class Main {
       System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
-      odometer.setTheta(270);
     } else if (isLand.ll.x > startZone.ur.x) {
       // move rightwards
       var bridge = new Point(tun.ll.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
       System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
-      odometer.setTheta(90);
     } else if (isLand.ll.y > startZone.ur.y) {
       // move upwards
       var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ll.y - ROBOT_OFFSET);
       System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
-      odometer.setTheta(0);
     } else if (isLand.ur.y < startZone.ll.y) {
       // move downwards
       var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ur.y + ROBOT_OFFSET);
       System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
-      odometer.setTheta(180);
     }
   }
 
@@ -214,6 +210,7 @@ public class Main {
       odometer.setXytInTailSize(1, 1, 0);
     } else if (Corner == 1) {
       odometer.setXytInTailSize(14, 1, 270);
+      odometer.printPositionXY();
     } else if (Corner == 2) {
       odometer.setXytInTailSize(14, 8, 180);
     } else if (Corner == 3) {
