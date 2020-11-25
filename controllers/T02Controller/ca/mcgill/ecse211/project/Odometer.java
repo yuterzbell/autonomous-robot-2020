@@ -96,6 +96,20 @@ public class Odometer implements Runnable {
       currTacho[LEFT] = leftMotor.getTachoCount();
       currTacho[RIGHT] = rightMotor.getTachoCount();
       
+      if(STORE_TORQUE) {
+        
+        double torqueLeft = Math.abs(leftMotor.getTorque()); // gives Newton per meters
+        double torqueRight = Math.abs(rightMotor.getTorque());// gives Newton per meters
+        double torque = (torqueLeft + torqueRight) / 2;// to print
+        
+        if(torque < 0.5) {
+        allTorque.add(torque);
+          }
+        }
+        
+        
+      
+      
       updateDeltaPosition(prevTacho, currTacho, theta, deltaPosition);
       updateOdometerValues();
       

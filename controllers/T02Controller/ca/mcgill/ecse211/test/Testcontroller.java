@@ -169,4 +169,49 @@ public class Testcontroller {
 //    Navigation.travelTo(finalD);
     
   }
+  
+  /**
+   * This method test the ability of the robot to simply go up the ramp. Hardware test
+   */
+  public static void rampTestHardware() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    
+    Navigation.forward();
+  
+  }
+  
+  /**
+   * This method test the ability of the robot to avoid obstacles.
+   */
+  public static void obstacleAvoid() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    double x = 1;
+    double y = 8;
+    double theta = 90;
+    
+    double xDest = 3.5;
+    double yDest = 7.5;
+    
+    Point finalD = new Point(xDest, yDest);
+    odometer.setXytInTailSize(x, y, theta);
+    Navigation.navigateTo(finalD);
+  
+    
+  }
+  
+  /**
+   * This method test the ability to get container mass.
+   */
+  public static void getMass() {
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    
+    STORE_TORQUE = true;
+    Navigation.moveStraightFor(2.0);
+    STORE_TORQUE = false;
+    Navigation.calculateMass();
+    
+  }
 }

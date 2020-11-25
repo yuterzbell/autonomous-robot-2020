@@ -5,6 +5,7 @@ import static ca.mcgill.ecse211.project.Resources.usSensortop;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
@@ -146,6 +147,12 @@ public class Resources {
    *  Set 'true' only when wanted to check for water.
    */
   public static boolean DETECT_WATER = false;
+  
+  /** Flag variable indicating if mass of container should be printed */
+  public static boolean STORE_TORQUE = false;
+  
+  /**Stored torques while pushing a block. */
+  public static ArrayList<Double> allTorque = new ArrayList<Double>();
   
   /** variable to store object distance from robot when need to dodge */
   public static double OBJ_DIST = 0;

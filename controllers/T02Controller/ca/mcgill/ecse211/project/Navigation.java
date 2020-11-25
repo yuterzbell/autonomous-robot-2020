@@ -2,6 +2,7 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static java.lang.Math.*;
+import java.util.ArrayList;
 import static ca.mcgill.ecse211.project.UltrasonicLocalizer.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
@@ -67,8 +68,8 @@ public class Navigation {
     if(DETECT_WATER){
       ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
     }else{
-            moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
-//      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
+         //   moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
     }    
   }
 
@@ -539,5 +540,52 @@ public class Navigation {
         }
       }
     }
+  }
+  
+
+/** Method calculates the mass of the container*/
+  
+  public static void calculateMass() {
+    
+    double mass =0;
+    double averageTorque = 0;
+    double sum = 0;
+    double count = 0;
+    int floor = (int) Math.round(allTorque.size()*0.3);
+    int sealing = (int) Math.round(allTorque.size()*0.8);
+    for (int i = floor; i <sealing; i++) {
+      //System.out.println(allTorque.get(i));
+      sum += allTorque.get(i);
+      count++;
+    }
+
+    averageTorque = sum / count;
+    
+   // System.out.println("sum"+sum);
+   // System.out.println("count"+count);
+   // System.out.println(averageTorque);
+    
+    if(averageTorque < 0.18) {
+      mass = 0.5;
+      System.out.println("Container with weight "+mass+"kg identified");
+      
+    }
+    
+    if(averageTorque < 0.22 && averageTorque > 0.18) {
+      mass = 1.0;
+      System.out.println("Container with weight "+mass+"kg identified");
+    }
+    
+    if(averageTorque < 0.26 && averageTorque > 0.22) {
+      mass = 2.0;
+      System.out.println("Container with weight "+mass+"kg identified");
+    }
+    
+    if(averageTorque > 0.26) {
+      mass = 3.0;
+      System.out.println("Container with weight "+mass+"kg identified");
+    }
+    allTorque.clear();
+    
   }
 }

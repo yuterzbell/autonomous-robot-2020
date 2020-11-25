@@ -27,7 +27,11 @@ public class Main {
    */
   public static final int NUMBER_OF_THREADS = 3;
 
+  
+  
+  
   /** Main entry point. */
+  
   public static void main(String[] args) {
     initialize();
 
@@ -36,6 +40,10 @@ public class Main {
     new Thread(odometer).start();   
     // Start the detector thread
     new Thread(detector).start();
+    
+    Testcontroller.getMass();
+    
+    /*
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -52,10 +60,8 @@ public class Main {
 
     // start the detector thread after initial localizing
 
-
+*/
   }
-
-
 
   /**
    * This method adjust the robot to new location and searching for container.
