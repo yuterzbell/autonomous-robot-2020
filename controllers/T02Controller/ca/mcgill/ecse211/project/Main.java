@@ -25,17 +25,16 @@ public class Main {
    * The number of threads used in the program (main, odometer), other than the
    * one used to perform physics steps.
    */
-  public static final int NUMBER_OF_THREADS = 2;
+  public static final int NUMBER_OF_THREADS = 3;
 
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
 
-
     identifySelf();
     // Start the odometer thread
     new Thread(odometer).start();   
-    //    Navigation.moveStraightFor(3.0);
+    // Start the detector thread
     new Thread(detector).start();
 
     UltrasonicLocalizer.localize();
@@ -65,31 +64,32 @@ public class Main {
     for (Point p : getWayPoints()) {
       System.out.println("Next search Point is: " + p);
       Navigation.navigateTo(p);
-      Navigation.turnTo(90);
-      // sweep for 360 deg
+      Navigation.turnTo(135);
+      // sweep for 90 degree sector
       long startTime = System.currentTimeMillis();
       leftMotor.setSpeed(FORWARD_SPEED);
       rightMotor.setSpeed(FORWARD_SPEED);
+
+      ReinitializeDoubleUsensors();
+
       leftMotor.rotate(convertAngle(-90), true);
       rightMotor.rotate(-convertAngle(-90), true);
       while (System.currentTimeMillis() - startTime < 4000) {      // polling
-        int bottomSensorData = readUsDistance();
-        int topSensorData = readUsDistance2();
+        int bottomSensorData = downMedianFiltering(down_dists);
+        int topSensorData = topMedianFiltering(top_dists);
         if (bottomSensorData < VALID_OFFSET) {
-
           System.out.println("down sensor is in valid distance");
-          System.out.println("Top sensor " + topSensorData);
-          System.out.println("Down sensor " + bottomSensorData);
-
+          System.out.println("Top sensor: " + topSensorData);
+          System.out.println("Down sensor: " + bottomSensorData);
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
-            calculateAndPush();
+            calculateAndPush(bottomSensorData);
             isContainer = false;
           }
-        }
-        System.out.println("All position covered");
+        } 
       }
-    }
 
+    }
+    System.out.println("All position covered, moveAndSearch done");
   }
 
   /**
@@ -109,13 +109,21 @@ public class Main {
 
   /**
    * This method calculate the container's position and push container up the ramp.
+   * @param int botReading the reading get from bot sensor, filtered in cm
    * @author Zichen Chang
    */
-  public static void calculateAndPush() {
+  public static void calculateAndPush(int botReading) {
     var xyt = odometer.getXyt();
-    double dist = ObjectDetection.getbottomSensorData() / 100d;   // dist in meter
+
+    odometer.printPositionXY();
+
+    double dist = botReading / 100d;
     double x = dist * Math.sin(Math.toRadians(xyt[2])); 
     double y = dist * Math.cos(Math.toRadians(xyt[2]));
+
+    System.out.print("the delta x is: " + x);
+    System.out.println("\tthe delta y is: " + y);
+
     Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
     System.out.println("The point is: " + target);
     Navigation.navigateTo(target);

@@ -133,7 +133,7 @@ public class Resources {
 
 
   /** Threshold to determine the container(cm). */
-  public static final double US_DIFF_THRESHOLD = 20;
+  public static final double US_DIFF_THRESHOLD = 30;    // TODO should be increased larger
 
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 30;

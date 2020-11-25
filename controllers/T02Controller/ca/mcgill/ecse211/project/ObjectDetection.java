@@ -44,21 +44,21 @@ public class ObjectDetection implements Runnable{
 //      topSensorData = topMedianFiltering(top_dists);
       bottomSensorData = readUsDistance();
       topSensorData = readUsDistance2();
-      if (bottomSensorData < VALID_OFFSET) {
-        objectInClose = true;
-         
+//      if (bottomSensorData < VALID_OFFSET) {
+//        objectInClose = true;
+//         
 //        System.out.println("down sensor is in valid distance");
 //        System.out.println("Top sensor " + topSensorData);
 //        System.out.println("Down sensor " + bottomSensorData);
-        
-        if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
-          isContainer = true;   // TODO not really good design since thread are not synchronized
-          sleepFor(500);        // when find a container, delay the update of the next cycle to boolean flags.
-        }
-      } else {
-        objectInClose = false;
-        isContainer = false;
-      }
+//        
+//        if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
+//          isContainer = true;   // TODO not really good design since thread are not synchronized
+//          sleepFor(500);        // when find a container, delay the update of the next cycle to boolean flags.
+//        }
+//      } else {
+//        objectInClose = false;
+//        isContainer = false;
+//      }
       sleepFor(500);
     }
   }   

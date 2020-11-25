@@ -39,17 +39,18 @@ public class Navigation {
     // move in y first 
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX, 0, travelY);
-    //    System.out.println("Finished y-direction move");
-    //    odometer.printPositionXY();
     // move in x then
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
     travelTo(pointY, travelX, 0);
-    //    System.out.println("Finished x-direction move");
-    //    odometer.printPositionXY();
   }
 
-  /** Travels to the given destination. */
+  /** Travels to the given destination. 
+   * 
+   * @param Point destination
+   * @param int travelFactorX  1 indicating to right, -1 indicating to left
+   * @param int travelFactorY  1 indicating to up, -1 indicating to bottom  
+   */
   public static void travelTo(Point destination, int travelFactorX, int travelFactorY) {
     var xyt = odometer.getXyt();
     var currentLocation = new Point(xyt[0] / TILE_SIZE, xyt[1] / TILE_SIZE);
@@ -66,8 +67,8 @@ public class Navigation {
     if(DETECT_WATER){
       ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
     }else{
-      //      moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
-      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
+            moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+//      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
     }    
   }
 
