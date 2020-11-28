@@ -137,7 +137,7 @@ public class Resources {
   public static final double US_DIFF_THRESHOLD = 30;    // TODO should be increased larger
 
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
-  public static final int OBJTHRESH = 25;
+  public static final int OBJTHRESH = 10;
 
 
   /** Flag variable indicating object detect. */
@@ -156,6 +156,8 @@ public class Resources {
   
   /** variable to store object distance from robot when need to dodge */
   public static double OBJ_DIST = 0;
+  
+  public static boolean AVOID_FLAG = true;
 
   // Hardware resources
 

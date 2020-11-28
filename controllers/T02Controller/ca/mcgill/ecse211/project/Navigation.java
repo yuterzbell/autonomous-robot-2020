@@ -356,51 +356,64 @@ public class Navigation {
    * @param travelFactorY indicates if robot is moving along y axis (-1 for -y and +1 for +y)
    */
   public static void moveStraightWithObjectAvoidanceAndLineCorrection(double distance, int travelFactorX, int travelFactorY) {
-
-    double curr_odo = 0;
-    if (travelFactorY == 0) {
-      curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-    } else {
-      curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-    }
-
-    double stepFactor = 0;
-
-    while (distance != 0) {
-      if (ObjectDetection.obstacleDetect()) {
-        stepFactor = dodge(travelFactorX, travelFactorY);
-        if (travelFactorY == 0) {
-          curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-        } else {
-          curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-        }
-        distance = distance - stepFactor;
+    
+    if (AVOID_FLAG) {
+      double curr_odo = 0;
+      if (travelFactorY == 0) {
+        curr_odo = odometer.getXyt()[0] / TILE_SIZE;
       } else {
-        if (distance > 1) {
-          //moveStraightFor(1);
-          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
-          if (travelFactorY == 0) {
-            curr_odo = curr_odo + (travelFactorX);
-            distance--;
-            odometer.setX(curr_odo * TILE_SIZE);
+        curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+      }
+  
+      double stepFactor = 0;
+  
+      while (distance != 0) {
+        if (ObjectDetection.obstacleDetect(10)) {
+          if (distance > TILE_SIZE) {
+            stepFactor = dodge(travelFactorX, travelFactorY);
+            if (stepFactor == -99) {
+              System.out.println("Fatal Error!");
+              return;
+            }
+            if (travelFactorY == 0) {
+              curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+            } else {
+              curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+            }
           } else {
-            curr_odo = curr_odo + (travelFactorY);
-            distance--;
-            odometer.setY(curr_odo * TILE_SIZE);
+            System.out.println("test");
+            distance = 0;
           }
+          distance = distance - stepFactor;
         } else {
-          //moveStraightFor(distance);
-          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
-          if (travelFactorY == 0) {
-            curr_odo = curr_odo + (travelFactorX * distance);
-            odometer.setX(curr_odo * TILE_SIZE);
+          if (distance > 0.2) {
+            //moveStraightFor(1);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+            if (travelFactorY == 0) {
+              curr_odo = curr_odo + (travelFactorX * 0.2);
+              distance = distance - 0.2;
+              odometer.setX(curr_odo * TILE_SIZE);
+            } else {
+              curr_odo = curr_odo + (travelFactorY * 0.2);
+              distance = distance - 0.2;
+              odometer.setY(curr_odo * TILE_SIZE);
+            }
           } else {
-            curr_odo = curr_odo + (travelFactorY * distance);
-            odometer.setY(curr_odo * TILE_SIZE);
+            //moveStraightFor(distance);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
+            if (travelFactorY == 0) {
+              curr_odo = curr_odo + (travelFactorX * distance);
+              odometer.setX(curr_odo * TILE_SIZE);
+            } else {
+              curr_odo = curr_odo + (travelFactorY * distance);
+              odometer.setY(curr_odo * TILE_SIZE);
+            }
+            break;
           }
-          break;
         }
       }
+    } else {
+      ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
     }
 
   }
@@ -421,7 +434,7 @@ public class Navigation {
     } else {
       stepFactor = 2;
     }
-
+    
     double straight_odo = 0;
     double lateral_odo = 0;
 
@@ -432,8 +445,41 @@ public class Navigation {
       straight_odo = odometer.getXyt()[1] / TILE_SIZE;
       lateral_odo = odometer.getXyt()[0] / TILE_SIZE;
     }
+    
+    int dodgeFactor = 0;
+    while (dodgeFactor == 0) {
+      turnBy(90);
+      if (!ObjectDetection.obstacleDetect(20)) {
+        dodgeFactor = 1; //Cut to left
+        turnBy(-90);
+        break;
+      } else {
+        turnBy(-180);
+        if (!ObjectDetection.obstacleDetect(20)) {
+          dodgeFactor = -1; //Cut to right
+          turnBy(90);
+          break;
+        } 
+        turnBy(90);
+      }
+      turnBy(180);
+      moveStraightFor(0.2);
+      if (travelFactorY == 0) {
+        straight_odo = straight_odo + (stepFactor * travelFactorX);
+        odometer.setX(straight_odo * TILE_SIZE);
+      } else {
+        straight_odo = straight_odo + (stepFactor * travelFactorY);
+        odometer.setY(straight_odo * TILE_SIZE);;
+      }
+      if (ObjectDetection.obstacleDetect(10)) {
+        return -99;
+      }
+      turnBy(-180);
+      stepFactor++;
+    }
+    
 
-    turnBy(90);
+    turnBy(dodgeFactor*90);
 
     //moveStraightFor(1);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorY), 1);
@@ -445,7 +491,7 @@ public class Navigation {
       odometer.setX(lateral_odo * TILE_SIZE);
     }
 
-    turnBy(-90);
+    turnBy(dodgeFactor*-90);
 
     //moveStraightFor(stepFactor);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), stepFactor);
@@ -458,7 +504,7 @@ public class Navigation {
     }
 
     //Restore x and theta
-    turnBy(-90);
+    turnBy(dodgeFactor*-90);
 
     //moveStraightFor(1);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
@@ -470,7 +516,7 @@ public class Navigation {
       odometer.setX(lateral_odo * TILE_SIZE);
     }
 
-    Navigation.turnBy(90);
+    turnBy(dodgeFactor*90);
 
     return stepFactor;
   }

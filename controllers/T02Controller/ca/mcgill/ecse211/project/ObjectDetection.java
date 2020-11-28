@@ -309,14 +309,15 @@ public class ObjectDetection implements Runnable{
   
   /**
    * Detect potential obstacle at close range (within 1 tile)
+   * @param int threshold for the down sensor to trigger a response
    * @return boolean true if obstacle detected
    */
-  public static boolean obstacleDetect() {
+  public static boolean obstacleDetect(int downThreshold) {
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
     int top = topMedianFiltering(top_dists);
     System.out.println("Top reads: " + top + "\nDown reads: " + down);
-    if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
+    if ((down < downThreshold) && ((top - down) < US_DIFF_THRESHOLD)) {
       OBJ_DIST = down;
       return true;
     }
