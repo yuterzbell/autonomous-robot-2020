@@ -356,60 +356,64 @@ public class Navigation {
    * @param travelFactorY indicates if robot is moving along y axis (-1 for -y and +1 for +y)
    */
   public static void moveStraightWithObjectAvoidanceAndLineCorrection(double distance, int travelFactorX, int travelFactorY) {
-
-    double curr_odo = 0;
-    if (travelFactorY == 0) {
-      curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-    } else {
-      curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-    }
-
-    double stepFactor = 0;
-
-    while (distance != 0) {
-      if (ObjectDetection.obstacleDetect(10)) {
-        if (distance > TILE_SIZE) {
-          stepFactor = dodge(travelFactorX, travelFactorY);
-          if (stepFactor == -99) {
-            System.out.println("Fatal Error!");
-            return;
-          }
-          if (travelFactorY == 0) {
-            curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-          } else {
-            curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-          }
-        } else {
-          System.out.println("test");
-          distance = 0;
-        }
-        distance = distance - stepFactor;
+    
+    if (AVOID_FLAG) {
+      double curr_odo = 0;
+      if (travelFactorY == 0) {
+        curr_odo = odometer.getXyt()[0] / TILE_SIZE;
       } else {
-        if (distance > 0.2) {
-          //moveStraightFor(1);
-          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
-          if (travelFactorY == 0) {
-            curr_odo = curr_odo + (travelFactorX * 0.2);
-            distance = distance - 0.2;
-            odometer.setX(curr_odo * TILE_SIZE);
+        curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+      }
+  
+      double stepFactor = 0;
+  
+      while (distance != 0) {
+        if (ObjectDetection.obstacleDetect(10)) {
+          if (distance > TILE_SIZE) {
+            stepFactor = dodge(travelFactorX, travelFactorY);
+            if (stepFactor == -99) {
+              System.out.println("Fatal Error!");
+              return;
+            }
+            if (travelFactorY == 0) {
+              curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+            } else {
+              curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+            }
           } else {
-            curr_odo = curr_odo + (travelFactorY * 0.2);
-            distance = distance - 0.2;
-            odometer.setY(curr_odo * TILE_SIZE);
+            System.out.println("test");
+            distance = 0;
           }
+          distance = distance - stepFactor;
         } else {
-          //moveStraightFor(distance);
-          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
-          if (travelFactorY == 0) {
-            curr_odo = curr_odo + (travelFactorX * distance);
-            odometer.setX(curr_odo * TILE_SIZE);
+          if (distance > 0.2) {
+            //moveStraightFor(1);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+            if (travelFactorY == 0) {
+              curr_odo = curr_odo + (travelFactorX * 0.2);
+              distance = distance - 0.2;
+              odometer.setX(curr_odo * TILE_SIZE);
+            } else {
+              curr_odo = curr_odo + (travelFactorY * 0.2);
+              distance = distance - 0.2;
+              odometer.setY(curr_odo * TILE_SIZE);
+            }
           } else {
-            curr_odo = curr_odo + (travelFactorY * distance);
-            odometer.setY(curr_odo * TILE_SIZE);
+            //moveStraightFor(distance);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
+            if (travelFactorY == 0) {
+              curr_odo = curr_odo + (travelFactorX * distance);
+              odometer.setX(curr_odo * TILE_SIZE);
+            } else {
+              curr_odo = curr_odo + (travelFactorY * distance);
+              odometer.setY(curr_odo * TILE_SIZE);
+            }
+            break;
           }
-          break;
         }
       }
+    } else {
+      ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
     }
 
   }
