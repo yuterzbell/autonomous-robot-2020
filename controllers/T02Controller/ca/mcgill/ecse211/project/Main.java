@@ -41,7 +41,11 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
     
-    Testcontroller.rampUp();;
+    //Testcontroller.rampUp();
+    
+    leftMotor.setSpeed(ROTATE_SPEED);
+    rightMotor.setSpeed(ROTATE_SPEED);
+    Navigation.turnBy(90);
     
     /*
 
