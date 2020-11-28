@@ -23,7 +23,7 @@ endif
 # WEBOTS_HOME_PATH is commonly defined in the caller Makefile
 # but as it is not necessary on non-windows OS, it seems safer to reconstruct it there if required
 ifndef WEBOTS_HOME_PATH
- WEBOTS_HOME_PATH=$(strip $(subst % ,\ ,$(strip $(subst \,/,$(WEBOTS_HOME)))))
+WEBOTS_HOME_PATH=C:/Program\ Files/Webots
 endif
 
 
@@ -31,7 +31,7 @@ endif
 ### OS determination and OS specific commands
 ###-----------------------------------------------------------------------------
 
-include $(WEBOTS_HOME_PATH)/resources/Makefile.os.include
+include C:\Webots\Webots\resources/Makefile.os.include
 
 ###-----------------------------------------------------------------------------
 ### Paths

@@ -68,8 +68,8 @@ public class Navigation {
     if(DETECT_WATER){
       ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
     }else{
-         //   moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
-      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
+         moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
+    //  moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
     }    
   }
 
@@ -77,32 +77,32 @@ public class Navigation {
    * When odometer is facing 90 degrees
    */
   public static void alignToTheRightSide(){
-    moveStraightFor(-0.7);
+    moveStraightFor(-0.4);
     turnBy(-90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
     turnBy(90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
     turnBy(90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
   }
 
   /**
    * When odometer is facing 270
    */
   public static void alignToTheLeftSide(){
-    moveStraightFor(-0.7);
+    moveStraightFor(-0.4);
     turnBy(90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
     turnBy(-90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
     turnBy(- 90);
-    moveStraightFor(0.7);
+    moveStraightFor(0.8);
   }
 
     /**
    * When odometer is facing 0  
    */
-  public static void alignBottomToTheTopSide(){
+  public static void alignReserve(){
     moveStraightFor(-0.7);
     turnBy(90);
     moveStraightFor(0.7);
@@ -114,114 +114,255 @@ public class Navigation {
     moveStraightFor(0.7);
   }
 
-  public static void determineMovement(double deltaLocation[], double theta){
+  public static void determineMovement(double deltaLocation[], double theta, boolean flag){
     //Case to move down and move left
-    if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
-      if(!(theta>175 && theta<185)){
-        if(theta>260 && theta < 280){
-          alignToTheLeftSide();
+    if(flag) {
+      if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
+        System.out.println("1");
+        if(!(theta>170 && theta<190)){
+          if(theta>350 || theta<10){
+            alignReserve();
+          }
+          else if(theta>85 && theta<95){
+            alignToTheRightSide();
+          }
+          else if(theta>260 && theta<280){
+            alignToTheLeftSide();
+          }
         }
-        else if(theta>350 || theta<10){
-          alignBottomToTheTopSide();
-        }
-        else if(theta>80 && theta<100){
-          alignToTheRightSide();
-        }
-      }
-        // movement along y-axis
+     // movement along y-axis
         moveStraightFor(Math.abs(deltaLocation[1]));
         // realign the robot to the right side
         alignToTheRightSide();
         // movement along x-axis
         moveStraightFor(Math.abs(deltaLocation[0]));
+        //adjust final heading
+       // turnTo(heading);
+
+      //Case to move down and move RIGHT
+      if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
+        System.out.println("2");
+        if(!(theta>170 && theta<190)){
+          if(theta>260 && theta < 280){
+            alignToTheLeftSide();
+          }
+          else if(theta>350 || theta<10){
+            alignReserve();
+          }
+          else if(theta>85 && theta<95){
+            alignToTheRightSide();
+          }
+        }
+     // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheLeftSide();
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+        //adjust final heading
+       // turnTo(heading);
+       }
+
+        //Case to move up and move RIGHT
+      if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
+        System.out.println("3");
+        if(!(theta>350 || theta<10)){
+          if(theta>85 && theta < 100){
+            alignToTheLeftSide();
+          }
+          else if(theta>170 && theta<190){
+            alignReserve();
+          }
+          else if(theta>260 || theta<2800){
+            alignToTheRightSide();
+          }
+        }
+        
+        System.out.println(deltaLocation[1]);
+        System.out.println(deltaLocation[0]);
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheRightSide();
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+        //adjust final heading
+       // turnTo(heading);
+       }
+
+
+       //Case to move up and move RIGHT
+      if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
+        System.out.println("4");
+        if(!(theta>350 || theta<10)){
+          if(theta>85 && theta < 100){
+            alignToTheLeftSide();
+          }
+          else if(theta>170 && theta<190){
+            alignReserve();
+          }
+          else if(theta>350 || theta<10){
+            alignToTheRightSide();
+          }
+        }
+        
+        System.out.println(deltaLocation[1]);
+        System.out.println(deltaLocation[0]);
+          // movement along x-axis
+          moveStraightFor(Math.abs(deltaLocation[1]));
+          // realign the robot to the right side
+          alignToTheLeftSide();
+          // movement along y-axis
+          moveStraightFor(Math.abs(deltaLocation[0]));
+          //adjust final heading
+         // turnTo(heading);
+       }
+      
+      
+      
+      
+    }else {
+      
+    
+    if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
+      System.out.println("1");
+      if(!(theta>260 && theta<280)){
+        if(theta>350 || theta<10){
+          alignToTheLeftSide();
+        }
+        else if(theta>85 && theta<95){
+          alignReserve();
+        }
+        else if(theta>175 && theta<185){
+          alignToTheRightSide();
+        }
+      }
+   // movement along x-axis
+      moveStraightFor(Math.abs(deltaLocation[0] + 0.5));
+      // realign the robot to the right side
+      alignToTheLeftSide();
+      // movement along y-axis
+      moveStraightFor(Math.abs(deltaLocation[1]));
+      //adjust final heading
+     // turnTo(heading);
      }
 
     //Case to move down and move RIGHT
     if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
-      if(!(theta>175 && theta<185)){
+      System.out.println("2");
+      if(!(theta>85 && theta<95)){
         if(theta>260 && theta < 280){
-          alignToTheLeftSide();
+          alignReserve();
         }
         else if(theta>350 || theta<10){
-          alignBottomToTheTopSide();
-        }
-        else if(theta>80 && theta<100){
           alignToTheRightSide();
         }
+        else if(theta>175 && theta<185){
+          alignToTheLeftSide();
+        }
       }
-        // movement along y-axis
-        moveStraightFor(Math.abs(deltaLocation[1]));
-        // realign the robot to the right side
-        alignToTheLeftSide();
-        // movement along x-axis
-        moveStraightFor(Math.abs(deltaLocation[0]));
+   // movement along y-axis
+      moveStraightFor(Math.abs(deltaLocation[0] - 0.5));
+      // realign the robot to the right side
+      alignToTheRightSide();
+      // movement along x-axis
+      moveStraightFor(Math.abs(deltaLocation[1]));
+      //adjust final heading
+     // turnTo(heading);
      }
 
       //Case to move up and move RIGHT
     if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
-      if(!(theta>350 || theta<10)){
+      System.out.println("3");
+      if(!(theta<80 && theta>100)){
         if(theta>260 && theta < 280){
-          alignToTheLeftSide();
+          alignReserve();
         }
         else if(theta>170 && theta<190){
-          alignBottomToTheTopSide();
+          alignToTheLeftSide();
         }
-        else if(theta>80 && theta<100){
+        else if(theta>350 || theta<10){
           alignToTheRightSide();
         }
       }
-        // movement along y-axis
-        moveStraightFor(Math.abs(deltaLocation[1]));
+      
+      System.out.println(deltaLocation[1]);
+      System.out.println(deltaLocation[0]);
+      // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0] - 0.3));
         // realign the robot to the right side
         alignToTheLeftSide();
-        // movement along x-axis
-        moveStraightFor(Math.abs(deltaLocation[0]));
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        //adjust final heading
+       // turnTo(heading);
      }
 
 
      //Case to move up and move RIGHT
     if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
-      if(!(theta>350 || theta<10)){
-        if(theta>260 && theta < 280){
+      System.out.println("4");
+      if(!(theta>260 && theta < 280)){
+        if(theta>350 || theta<10){
           alignToTheLeftSide();
         }
         else if(theta>170 && theta<190){
-          alignBottomToTheTopSide();
+          alignToTheRightSide();
         }
         else if(theta>80 && theta<100){
-          alignToTheRightSide();
+          alignReserve();
         }
       }
         // movement along y-axis
-        moveStraightFor(Math.abs(deltaLocation[1]));
+        moveStraightFor(Math.abs(deltaLocation[0] + 0.5));
         // realign the robot to the right side
         alignToTheRightSide();
         // movement along x-axis
-        moveStraightFor(Math.abs(deltaLocation[0]));
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        //adjust final heading
+       // turnTo(heading);
      }
     
+    }
 
   }
 
   /** Navigates the robot to the ramp. */
   public static void goRamp() {
+    
     Point left = Ramp.left;
     Point right = Ramp.right;
-    System.out.println();
+    double heading = 0;
     var xyt = odometer.getXyt();
     double xRamp = (left.x + right.x)/2;
     double yRamp = (left.y + right.y)/2;
     var USReadingsLower = readUsDistance();
     var USReadingsUpper = readUsDistance2();
     double blockLocation[] = new double[2];
+    boolean onSide = false;
     xyt = odometer.getXyt();
-    if(USReadingsLower<15 && USReadingsUpper > 25){
+ //   if(USReadingsLower<15 && USReadingsUpper > 25){
       blockLocation[0] = odometer.getXytInTileSize()[0];
       blockLocation[1] = odometer.getXytInTileSize()[1];
+  //  }
+   
+    // case 270 - up towards the left
+    if(left.y < right.y && left.x == right.x) {
+      onSide = true;
     }
-    // boolean moveHere = false;
+    
+    if(left.y > right.y && left.x == right.x) {
+     onSide = true;
+    }
+    
+    
+    
+    System.out.println("yramp"+yRamp);
+    System.out.println(blockLocation[1]);
     double deltaLocation[] = {xRamp - blockLocation[0],yRamp - blockLocation[1]};
-    determineMovement(deltaLocation, xyt[2]);
+    System.out.println(deltaLocation[0]);
+    System.out.println(deltaLocation[1]);
+    determineMovement(deltaLocation, xyt[2], onSide);
 
 
     // // case 270 - up towards the left

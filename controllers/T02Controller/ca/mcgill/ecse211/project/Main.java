@@ -41,7 +41,7 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
     
-    Testcontroller.getMass();
+    Testcontroller.rampUp();;
     
     /*
 
