@@ -91,7 +91,7 @@ public class Resources {
   public static final int FORWARD_SPEED = 500;
 
   /** The speed at which the robot rotates in degrees per second. */
-  public static final int ROTATE_SPEED = 300;
+  public static final int ROTATE_SPEED = 150;
 
   /** Light Detection speed. */
   public static final int MOTOR_LOW = 125;
