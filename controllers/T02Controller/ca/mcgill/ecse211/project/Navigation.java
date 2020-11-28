@@ -73,60 +73,197 @@ public class Navigation {
     }    
   }
 
+  /**
+   * When odometer is facing 90 degrees
+   */
+  public static void alignToTheRightSide(){
+    moveStraightFor(-0.7);
+    turnBy(-90);
+    moveStraightFor(0.7);
+    turnBy(90);
+    moveStraightFor(0.7);
+    turnBy(90);
+    moveStraightFor(0.7);
+  }
+
+  /**
+   * When odometer is facing 270
+   */
+  public static void alignToTheLeftSide(){
+    moveStraightFor(-0.7);
+    turnBy(90);
+    moveStraightFor(0.7);
+    turnBy(-90);
+    moveStraightFor(0.7);
+    turnBy(- 90);
+    moveStraightFor(0.7);
+  }
+
+    /**
+   * When odometer is facing 0  
+   */
+  public static void alignBottomToTheTopSide(){
+    moveStraightFor(-0.7);
+    turnBy(90);
+    moveStraightFor(0.7);
+    turnBy(-90);
+    moveStraightFor(1.4);
+    turnBy(- 90);
+    moveStraightFor(0.7);
+    turnBy(- 90);
+    moveStraightFor(0.7);
+  }
+
+  public static void determineMovement(double deltaLocation[], double theta){
+    //Case to move down and move left
+    if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
+      if(!(theta>175 && theta<185)){
+        if(theta>260 && theta < 280){
+          alignToTheLeftSide();
+        }
+        else if(theta>350 || theta<10){
+          alignBottomToTheTopSide();
+        }
+        else if(theta>80 && theta<100){
+          alignToTheRightSide();
+        }
+      }
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheRightSide();
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+     }
+
+    //Case to move down and move RIGHT
+    if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
+      if(!(theta>175 && theta<185)){
+        if(theta>260 && theta < 280){
+          alignToTheLeftSide();
+        }
+        else if(theta>350 || theta<10){
+          alignBottomToTheTopSide();
+        }
+        else if(theta>80 && theta<100){
+          alignToTheRightSide();
+        }
+      }
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheLeftSide();
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+     }
+
+      //Case to move up and move RIGHT
+    if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
+      if(!(theta>350 || theta<10)){
+        if(theta>260 && theta < 280){
+          alignToTheLeftSide();
+        }
+        else if(theta>170 && theta<190){
+          alignBottomToTheTopSide();
+        }
+        else if(theta>80 && theta<100){
+          alignToTheRightSide();
+        }
+      }
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheLeftSide();
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+     }
+
+
+     //Case to move up and move RIGHT
+    if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
+      if(!(theta>350 || theta<10)){
+        if(theta>260 && theta < 280){
+          alignToTheLeftSide();
+        }
+        else if(theta>170 && theta<190){
+          alignBottomToTheTopSide();
+        }
+        else if(theta>80 && theta<100){
+          alignToTheRightSide();
+        }
+      }
+        // movement along y-axis
+        moveStraightFor(Math.abs(deltaLocation[1]));
+        // realign the robot to the right side
+        alignToTheRightSide();
+        // movement along x-axis
+        moveStraightFor(Math.abs(deltaLocation[0]));
+     }
+    
+
+  }
+
   /** Navigates the robot to the ramp. */
   public static void goRamp() {
     Point left = Ramp.left;
     Point right = Ramp.right;
     System.out.println();
     var xyt = odometer.getXyt();
-
-
     double xRamp = (left.x + right.x)/2;
     double yRamp = (left.y + right.y)/2;
-
-
-
-    if(left.y < right.y && left.x == right.x) {
-      System.out.println("1");
-      xRamp = xRamp +1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(270);
-      //moveRobotBackwardsFromRamp();
-
+    var USReadingsLower = readUsDistance();
+    var USReadingsUpper = readUsDistance2();
+    double blockLocation[] = new double[2];
+    xyt = odometer.getXyt();
+    if(USReadingsLower<15 && USReadingsUpper > 25){
+      blockLocation[0] = odometer.getXytInTileSize()[0];
+      blockLocation[1] = odometer.getXytInTileSize()[1];
     }
-    if(left.y > right.y && left.x == right.x) {
-      System.out.println("2");
-      xRamp = xRamp -1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(90);
-      // moveRobotBackwardsFromRamp();
-    }
+    // boolean moveHere = false;
+    double deltaLocation[] = {xRamp - blockLocation[0],yRamp - blockLocation[1]};
+    determineMovement(deltaLocation, xyt[2]);
 
 
-    if(left.x < right.x && left.y == right.y) {
-      System.out.println("3");
-      yRamp = yRamp -1;
-      System.out.println(xRamp);
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(0);
-      //moveRobotBackwardsFromRamp();
+    // // case 270 - up towards the left
+    // if(left.y < right.y && left.x == right.x) {
+    //   System.out.println("1");
+    //   xRamp = xRamp +1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(270);
+    //   //moveRobotBackwardsFromRamp();
 
-    }
+    // }
+    // // case 90 - up on the right
+    // if(left.y > right.y && left.x == right.x) {
+    //   System.out.println("2");
+    //   xRamp = xRamp -1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(90);
+    //   // moveRobotBackwardsFromRamp();
+    // }
 
-    if(left.x > right.x && left.y == right.y) {
-      System.out.println("4");
-      yRamp = yRamp +1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(180);
-      // moveRobotBackwardsFromRamp();
-    }
+    // // case 0 - going up north
+    // if(left.x < right.x && left.y == right.y) {
+    //   System.out.println("3");
+    //   yRamp = yRamp -1;
+    //   System.out.println(xRamp);
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(0);
+    //   //moveRobotBackwardsFromRamp();
 
-
-
+    // }
+    // // case 180 - going down 
+    // if(left.x > right.x && left.y == right.y) {
+    //   System.out.println("4");
+    //   yRamp = yRamp +1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(180);
+    //   // moveRobotBackwardsFromRamp();
+    // }
 
   }
 

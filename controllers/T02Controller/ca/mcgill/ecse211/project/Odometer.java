@@ -246,6 +246,14 @@ public class Odometer implements Runnable {
     }
   }
 
+  public double[] getXytInTileSize(){
+    var result = odometer.getXyt();
+    var xVal = result[0] / TILE_SIZE;
+    var yVal = result[1] / TILE_SIZE;
+    double resultValues[] = {xVal, yVal, result[2]}; 
+    return resultValues;
+  }
+
   /**
    * Overwrites x. Use for odometry correction.
    * 
