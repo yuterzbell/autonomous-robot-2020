@@ -296,5 +296,13 @@ public class Odometer implements Runnable {
       lock.unlock();
     }
   }
+  
+  public double[] getXytInTileSize(){
+    var result = odometer.getXyt();
+    var xVal = result[0] / TILE_SIZE;
+    var yVal = result[1] / TILE_SIZE;
+    double resultValues[] = {xVal, yVal, result[2]}; 
+    return resultValues;
+  }
 
 }

@@ -36,14 +36,19 @@ public class Navigation {
     } else if (xyt[0] / TILE_SIZE < destination.x) {
       travelX = 1;
     }
-
-    // move in y first 
+    double differenceX = destination.x - odometer.getXytInTileSize()[0];
+    double differenceY = destination.y - odometer.getXytInTileSize()[1];
+    // move in y first
+    if(Math.abs(differenceY) > 0.1) {
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX, 0, travelY);
+    }
     // move in x then
+    if(Math.abs(differenceX) > 0.1) {
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
     travelTo(pointY, travelX, 0);
+    }
   }
 
   /** Travels to the given destination. 
@@ -73,7 +78,369 @@ public class Navigation {
     }    
   }
 
+  /**
+   * When odometer is facing 90 degrees
+   */
+  public static void alignToTheRightSide(){
+    moveStraightFor(-0.4);
+    turnBy(-90);
+    moveStraightFor(0.8);
+    turnBy(90);
+    moveStraightFor(0.8);
+    turnBy(90);
+    moveStraightFor(0.8);
+  }
+
+  /**
+   * When odometer is facing 270
+   */
+  public static void alignToTheLeftSide(){
+    moveStraightFor(-0.4);
+    turnBy(90);
+    moveStraightFor(0.8);
+    turnBy(-90);
+    moveStraightFor(0.8);
+    turnBy(- 90);
+    moveStraightFor(0.8);
+  }
+
+    /**
+   * When odometer is facing 0  
+   */
+  public static void alignReserve(){
+    moveStraightFor(-0.3);
+    turnBy(90);
+    moveStraightFor(0.7);
+    turnBy(-90);
+    moveStraightFor(1.5);
+    turnBy(- 90);
+    moveStraightFor(0.7);
+    turnBy(- 90);
+    moveStraightFor(0.7);
+  }
+
+  public static void determineMovement(double deltaLocation[], double theta, boolean flag, double rampx, double rampy){
+    //Case to move down and move left
+    if(flag == true) {
+      if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
+        System.out.println("1.1");
+        if(!(theta>170 && theta<190)){        
+        
+          if(theta>350 || theta<10){
+            alignReserve();
+          }
+          else if(theta>85 && theta<95){
+            alignToTheRightSide();
+          }
+          else if(theta>260 && theta<280){
+            alignToTheLeftSide();
+          }
+          
+        }
+        
+        double difference = rampy - odometer.getXytInTileSize()[1];
+        double travelY = difference + odometer.getXytInTileSize()[1] + 0.3;
+        double travelX = odometer.getXytInTileSize()[0];
+        Point goTo = new Point(travelX, travelY);
+        navigateTo(goTo);
+        alignToTheRightSide();
+        moveStraightFor(Math.abs(deltaLocation[0])-1);
+        
+        }
+        
+      
+      //Case to move down and move RIGHT
+      if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
+        System.out.println("2.1");
+        
+        if(!(theta>170 && theta<190)) {
+          
+          if(theta>260 && theta < 280){
+            alignToTheLeftSide();
+        
+          }
+          else if(theta>350 || theta<10){
+            alignReserve();
+         
+          }
+          else if(theta>85 && theta<95){
+            alignToTheRightSide();
+            
+            }
+          double difference = rampy - odometer.getXytInTileSize()[1];
+          double travelY = difference + odometer.getXytInTileSize()[1] + 0.3;
+          double travelX = odometer.getXytInTileSize()[0];
+          Point goTo = new Point(travelX, travelY);
+          navigateTo(goTo);
+          alignToTheLeftSide();
+          moveStraightFor(Math.abs(deltaLocation[0])-1);
+          
+          }
+        }
+  
+       
+
+        //Case to move up and move RIGHT
+      if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
+        System.out.println("3.1");
+        if(!(theta>350 || theta<10)){
+          if(theta>85 && theta < 100){
+            alignToTheLeftSide();
+            
+          }
+          else if(theta>170 && theta<190){
+            alignReserve();
+            
+          }
+          else if(theta>260 || theta<280){
+            alignToTheRightSide();
+            
+          }
+          
+          double difference = rampy - odometer.getXytInTileSize()[1];
+          double travelY = difference + odometer.getXytInTileSize()[1] - 0.3;
+          double travelX = odometer.getXytInTileSize()[0];
+          Point goTo = new Point(travelX, travelY);
+          navigateTo(goTo);
+          alignToTheRightSide();
+          moveStraightFor(Math.abs(deltaLocation[0])-1);
+        }
+       }
+
+      if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
+        System.out.println("4.1");
+        if(!(theta>350 || theta<10)){
+          if(theta>85 && theta < 100){
+            alignToTheLeftSide();
+          
+          }
+          else if(theta>170 && theta<190){
+            alignReserve();
+            
+          }
+          else if(theta>350 || theta<10){
+            alignToTheRightSide();
+            
+          }
+          double difference = rampy - odometer.getXytInTileSize()[1];
+          double travelY = difference + odometer.getXytInTileSize()[1] - 0.3;
+          double travelX = odometer.getXytInTileSize()[0];
+          Point goTo = new Point(travelX, travelY);
+          navigateTo(goTo);
+          alignToTheLeftSide();
+          moveStraightFor(Math.abs(deltaLocation[0])-1);
+        }
+        
+       }
+      
+      
+      
+      
+    }else {
+      
+    
+    if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
+      System.out.println("1");
+      if(!(theta>260 && theta<280)){
+        if(theta>350 || theta<10){
+          alignToTheLeftSide();
+        }
+        else if(theta>85 && theta<95){
+          alignReserve();
+        }
+        else if(theta>175 && theta<185){
+          alignToTheRightSide();
+        }
+      }
+      double difference = rampx - odometer.getXytInTileSize()[0];
+      double travelX = difference + odometer.getXytInTileSize()[0] + 0.3;
+      double travelY = odometer.getXytInTileSize()[1];
+      Point goTo = new Point(travelX, travelY);
+      navigateTo(goTo);
+      alignToTheRightSide();
+      moveStraightFor(Math.abs(deltaLocation[1]));
+     }
+
+    //Case to move down and move RIGHT
+    if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
+      System.out.println("2");
+      if(!(theta>85 && theta<95)){
+        if(theta>260 && theta < 280){
+          alignReserve();
+        }
+        else if(theta>350 || theta<10){
+          alignToTheRightSide();
+        }
+        else if(theta>175 && theta<185){
+          alignToTheLeftSide();
+        }
+      }
+      double difference = rampx - odometer.getXytInTileSize()[0];
+      double travelX = difference + odometer.getXytInTileSize()[0] - 0.3;
+      double travelY = odometer.getXytInTileSize()[1];
+      Point goTo = new Point(travelX, travelY);
+      navigateTo(goTo);
+      alignToTheRightSide();
+      moveStraightFor(Math.abs(deltaLocation[1]));
+     }
+
+      //Case to move up and move RIGHT
+    if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
+      System.out.println("3");
+      if(!(theta<80 && theta>100)){
+        if(theta>260 && theta < 280){
+          alignReserve();
+        }
+        else if(theta>170 && theta<190){
+          alignToTheLeftSide();
+        }
+        else if(theta>350 || theta<10){
+          alignToTheRightSide();
+        }
+      }
+        double difference = rampx - odometer.getXytInTileSize()[0];
+        double travelX = difference + odometer.getXytInTileSize()[0] - 0.3; 
+        double travelY = odometer.getXytInTileSize()[1];
+        Point goTo = new Point(travelX, travelY);
+        navigateTo(goTo);
+        alignToTheLeftSide();
+        moveStraightFor(Math.abs(deltaLocation[1]));
+       
+     }
+
+
+     //Case to move up and move RIGHT
+    if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
+      System.out.println("4");
+      if(!(theta>260 && theta < 280)){
+        if(theta>350 || theta<10){
+          alignToTheLeftSide();
+        }
+        else if(theta>170 && theta<190){
+          alignToTheRightSide();
+        }
+        else if(theta>80 && theta<100){
+          alignReserve();
+        }
+      }
+      
+      double difference = rampx - odometer.getXytInTileSize()[0];
+      double travelX = difference + odometer.getXytInTileSize()[0] + 0.3;
+      double travelY = odometer.getXytInTileSize()[1];
+      Point goTo = new Point(travelX, travelY);
+      navigateTo(goTo);
+      alignToTheRightSide();
+      moveStraightFor(Math.abs(deltaLocation[1]));
+     }
+    
+    }
+    
+  }
+
   /** Navigates the robot to the ramp. */
+  public static void goRamp() {
+    
+    Point left = Ramp.left;
+    Point right = Ramp.right;
+    double heading = 0;
+    var xyt = odometer.getXyt();
+    double xRamp = (left.x + right.x)/2;
+    double yRamp = (left.y + right.y)/2;
+    var USReadingsLower = readUsDistance();
+    var USReadingsUpper = readUsDistance2();
+    double blockLocation[] = new double[2];
+    boolean onSide = false;
+    xyt = odometer.getXyt();
+ //   if(USReadingsLower<15 && USReadingsUpper > 25){
+      blockLocation[0] = odometer.getXytInTileSize()[0];
+      blockLocation[1] = odometer.getXytInTileSize()[1];
+  //  }
+   
+    // case 270 - up towards the left
+    if(left.y < right.y && left.x == right.x) {
+      onSide = true;
+    }
+    
+    if(left.y > right.y && left.x == right.x) {
+     onSide = true;
+    }
+    
+    System.out.println(onSide);
+    
+    System.out.println("yramp"+yRamp);
+    System.out.println(blockLocation[1]);
+    double deltaLocation[] = {xRamp - blockLocation[0],yRamp - blockLocation[1]};
+    System.out.println(deltaLocation[0]);
+    System.out.println(deltaLocation[1]);
+    determineMovement(deltaLocation, xyt[2], onSide, xRamp, yRamp);
+
+
+    // // case 270 - up towards the left
+    // if(left.y < right.y && left.x == right.x) {
+    //   System.out.println("1");
+    //   xRamp = xRamp +1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(270);
+    //   //moveRobotBackwardsFromRamp();
+
+    // }
+    // // case 90 - up on the right
+    // if(left.y > right.y && left.x == right.x) {
+    //   System.out.println("2");
+    //   xRamp = xRamp -1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(90);
+    //   // moveRobotBackwardsFromRamp();
+    // }
+
+    // // case 0 - going up north
+    // if(left.x < right.x && left.y == right.y) {
+    //   System.out.println("3");
+    //   yRamp = yRamp -1;
+    //   System.out.println(xRamp);
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(0);
+    //   //moveRobotBackwardsFromRamp();
+
+    // }
+    // // case 180 - going down 
+    // if(left.x > right.x && left.y == right.y) {
+    //   System.out.println("4");
+    //   yRamp = yRamp +1;
+    //   Point ramp = new Point(xRamp, yRamp);
+    //   navigateTo(ramp);
+    //   turnTo(180);
+    //   // moveRobotBackwardsFromRamp();
+    // }
+
+  }
+
+  /**
+   * Moves the robot backwards one tile after dropping the container in the bin
+   */
+  /*
+  public static void moveRobotBackwardsFromRamp(){
+    int bottomReading = -1;
+    leftMotor.setSpeed(FORWARD_SPEED);
+    rightMotor.setSpeed(FORWARD_SPEED);
+    System.out.println("in");
+    while(true){
+      forward();
+      bottomReading = readUsDistance();
+      if(bottomReading > 80){
+        leftMotor.stop();
+        rightMotor.stop();
+        moveStraightFor(-(TILE_SIZE)*4);
+        break;
+      }
+    } 
+  }
+  */
+  /** Navigates the robot to the ramp. */
+  /*
   public static void goRamp() {
     Point left = Ramp.left;
     Point right = Ramp.right;
@@ -128,7 +495,7 @@ public class Navigation {
 
 
 
-  }
+  }*/
 
   /**
    * Moves the robot backwards one tile after dropping the container in the bin
