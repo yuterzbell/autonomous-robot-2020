@@ -69,7 +69,7 @@ public class Navigation {
       ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
     }else{
          //   moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
-      moveStraightWithObjectAvoidance(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
+      moveStraightWithObjectAvoidanceAndLineCorrection(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
     }    
   }
 
@@ -355,7 +355,7 @@ public class Navigation {
    * @param travelFactorX indicates if robot is moving along x axis (-1 for -x and +1 for +x)
    * @param travelFactorY indicates if robot is moving along y axis (-1 for -y and +1 for +y)
    */
-  public static void moveStraightWithObjectAvoidance(double distance, int travelFactorX, int travelFactorY) {
+  public static void moveStraightWithObjectAvoidanceAndLineCorrection(double distance, int travelFactorX, int travelFactorY) {
 
     double curr_odo = 0;
     if (travelFactorY == 0) {
@@ -377,7 +377,8 @@ public class Navigation {
         distance = distance - stepFactor;
       } else {
         if (distance > 1) {
-          moveStraightFor(1);
+          //moveStraightFor(1);
+          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
           if (travelFactorY == 0) {
             curr_odo = curr_odo + (travelFactorX);
             distance--;
@@ -388,7 +389,8 @@ public class Navigation {
             odometer.setY(curr_odo * TILE_SIZE);
           }
         } else {
-          moveStraightFor(distance);
+          //moveStraightFor(distance);
+          ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
           if (travelFactorY == 0) {
             curr_odo = curr_odo + (travelFactorX * distance);
             odometer.setX(curr_odo * TILE_SIZE);
@@ -433,7 +435,8 @@ public class Navigation {
 
     turnBy(90);
 
-    moveStraightFor(1);
+    //moveStraightFor(1);
+    ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorY), 1);
     if (travelFactorY == 0) {
       lateral_odo = lateral_odo + (-travelFactorX);
       odometer.setY(lateral_odo * TILE_SIZE);
@@ -444,7 +447,8 @@ public class Navigation {
 
     turnBy(-90);
 
-    Navigation.moveStraightFor(stepFactor);
+    //moveStraightFor(stepFactor);
+    ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), stepFactor);
     if (travelFactorY == 0) {
       straight_odo = straight_odo + (stepFactor * travelFactorX);
       odometer.setX(straight_odo * TILE_SIZE);
@@ -454,9 +458,10 @@ public class Navigation {
     }
 
     //Restore x and theta
-    Navigation.turnBy(-90);
+    turnBy(-90);
 
-    Navigation.moveStraightFor(1);
+    //moveStraightFor(1);
+    ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
     if (travelFactorY == 0) {
       lateral_odo = lateral_odo + (travelFactorX);
       odometer.setY(lateral_odo * TILE_SIZE);

@@ -184,9 +184,9 @@ public class ColorDetection {
     boolean waterDetected = false;
 
     while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
-      if (DETECT_FLAG) {
-        ObjectDetection.objectAvoidance();
-      }
+//      if (DETECT_FLAG) {
+//        ObjectDetection.objectAvoidance();
+//      }
       var xyt0 = odometer.getXyt();
       
       LightLocalizer.moveUntilBlackLineDetected();
