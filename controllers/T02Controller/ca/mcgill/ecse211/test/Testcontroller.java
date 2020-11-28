@@ -8,6 +8,7 @@ import static simlejos.ExecutionController.*;
 import java.util.ArrayList;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.project.LightLocalizer;
+import ca.mcgill.ecse211.project.Main;
 import ca.mcgill.ecse211.project.Navigation;
 import ca.mcgill.ecse211.project.ObjectDetection;
 import ca.mcgill.ecse211.project.UltrasonicLocalizer;
@@ -211,7 +212,15 @@ public class Testcontroller {
     STORE_TORQUE = true;
     Navigation.moveStraightFor(2.0);
     STORE_TORQUE = false;
-    Navigation.calculateMass();
-    
+    Navigation.calculateMass();    
+  }
+  
+  /**
+   * This method test the ability of robot to self driving and searching for containers.
+   */
+  public static void moveAndSearchTest() {
+    odometer.setXytInTailSize(6.5, 7.5, 90);
+    odometer.printPositionXY();
+    Main.moveAndSearch();
   }
 }

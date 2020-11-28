@@ -16,8 +16,9 @@ import simlejos.hardware.ev3.LocalEV3;
 
 /**
  * Main class of the program.
- * 
- * TODO Describe your project overview in detail here (in this Javadoc comment).
+ * This the mainly entry of Team02 Atom's project. In this Main class, a sequential controller is responsible for 
+ * all avtivities of robot during the competition. Beside the Main class, it has other 8 classes to support any 
+ * methods inside this class. Three threads: main, odometer, detector is running parallelly during the project.
  */
 public class Main {
 
@@ -41,9 +42,9 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
     
-    Testcontroller.getMass();
+//    Testcontroller.moveAndSearchTest();
     
-    /*
+   
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -60,7 +61,7 @@ public class Main {
 
     // start the detector thread after initial localizing
 
-*/
+
   }
 
   /**
