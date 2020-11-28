@@ -45,7 +45,7 @@ public class Main {
     
     leftMotor.setSpeed(ROTATE_SPEED);
     rightMotor.setSpeed(ROTATE_SPEED);
-    Navigation.turnBy(90);
+    Navigation.turnBy(360);
     
     /*
 
