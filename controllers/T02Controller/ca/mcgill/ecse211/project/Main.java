@@ -76,11 +76,17 @@ public class Main {
    * This method adjust the robot to new location and searching for container.
    */
   public static void moveAndSearch() {
-    for (Point p : getWayPoints()) {
+//    for (Point p : getWayPoints()) {
+    ArrayList<Point> points = getWayPoints();
+    boolean successPush = false;
+    int i = 0;
+    while (i < points.size()) {
+      successPush = false;
       elapsedTime = System.currentTimeMillis() - startTime;
       if(elapsedTime > 270000) {
         return;
       }
+      Point p = points.get(i);
       Navigation.navigateTo(p);
       Navigation.turnTo(135);
       // sweep for 90 degree sector
@@ -92,17 +98,21 @@ public class Main {
 
       leftMotor.rotate(convertAngle(-90), true);
       rightMotor.rotate(-convertAngle(-90), true);
-      while (System.currentTimeMillis() - startTime < 4000) {      // polling
+      while (System.currentTimeMillis() - startTime < 3500) {      // polling
         int bottomSensorData = downMedianFiltering(down_dists);
         int topSensorData = topMedianFiltering(top_dists);
         if (bottomSensorData < VALID_OFFSET) {
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
             calculateAndPush(bottomSensorData);
             Navigation.goRamp();
+            i = 0;      // reset to first search point after finish a success push
+            successPush = true;
           }
         } 
       }
-
+      
+      if(!successPush)
+        i++;
     }
     System.out.println("All position covered, moveAndSearch done");
   }
@@ -114,8 +124,8 @@ public class Main {
    */
   public static ArrayList<Point> getWayPoints(){
     ArrayList<Point> wayPoints = new ArrayList<Point>();
-    for (double i = searchZone.ll.x + 0.5; i < searchZone.ur.x; i += 2) {
-      for (double j = searchZone.ll.y + 0.5; j < searchZone.ur.y; j += 2) {
+    for (double i = searchZone.ll.x + 0.5; i < Ramp.left.x; i += 2) {
+      for (double j = searchZone.ll.y + 0.5; j < Ramp.right.y; j += 2) {
         wayPoints.add(new Point(i, j));
       }
     }
@@ -145,6 +155,7 @@ public class Main {
     if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
       target.x = target.x - 0.9;
       Navigation.navigateTo(target);
+//      System.out.println("This is when finished \n");
     } else if(xyt[0]/TILE_SIZE > target.x) {    // if robot to the right of container
       target.x = target.x + 0.9;
       Navigation.navigateTo(target);
@@ -317,6 +328,21 @@ public class Main {
     if (redTeam == team) {
       Corner = redCorner;
       Ramp = rr;
+      Point left = Ramp.left;
+      Point right = Ramp.right;
+      if (left.x == right.x) {
+        if (left.y < right.y) {
+          orient = "EAST";
+        } else {
+          orient = "WEST";
+        }
+      } else if (left.y == right.y) {
+        if (left.x < right.x) {
+          orient = "SOUTH";
+        } else {
+          orient = "NORTH";
+        }
+      }
       startZone = red;
       isLand = island;
       tun = tnr;

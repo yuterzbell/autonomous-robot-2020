@@ -250,6 +250,9 @@ public class Resources {
   /** initial Point */
   public static Point initial;
   
+  /** Orientation of the ramp*/
+  public static String orient;
+  
   
   // Wi-Fi parameters
 

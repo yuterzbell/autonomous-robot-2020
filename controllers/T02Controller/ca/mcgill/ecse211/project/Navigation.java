@@ -345,12 +345,12 @@ public class Navigation {
         alignToTheLeftSide();
         
         double difference2 = rampy - odometer.getXytInTileSize()[1];
-        double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 1;
+        double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 0.4;
         double travelX2 = odometer.getXytInTileSize()[0];
         System.out.println("nextY:"+travelY2);
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
-       
+        moveRobotBackwardsFromRamp();
      }
 
 
@@ -556,7 +556,7 @@ public class Navigation {
    */
   public static void moveRobotBackwardsFromRamp(){
   
-    moveStraightFor(0.9);
+    moveStraightFor(1);
     moveStraightFor(-1.5);
     /*
     int bottomReading = -1;
