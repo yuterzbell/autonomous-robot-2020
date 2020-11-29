@@ -157,7 +157,7 @@ public class Resources {
   /** variable to store object distance from robot when need to dodge */
   public static double OBJ_DIST = 0;
   
-  public static boolean AVOID_FLAG = true;
+  public static boolean AVOID_FLAG = false;
 
   // Hardware resources
 

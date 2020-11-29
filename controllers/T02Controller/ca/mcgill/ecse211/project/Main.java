@@ -42,9 +42,9 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
     
-//    Testcontroller.moveAndSearchTest();
+    Testcontroller.rampUp();
     
-   
+/**   
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -58,7 +58,7 @@ public class Main {
     Helper.BeepNtimes(3);
 
     moveAndSearch();
-
+*/
     // start the detector thread after initial localizing
 
 
