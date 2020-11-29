@@ -34,8 +34,7 @@ public class Main {
   
   /** Main entry point. */
   
-  public static void main(String[] args) {
-    
+  public static void main(String[] args) {    
     initialize();
 
     identifySelf();
@@ -44,6 +43,7 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
 
+    /*
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     Helper.BeepNtimes(3);
@@ -54,22 +54,24 @@ public class Main {
 
     moveToSearchZone();
     Helper.BeepNtimes(3);
+    */
 
-    moveAndSearch();
-
-    moveBackToBridge();
-        
-    moveToInitial();
+    Testcontroller.moveAndSearchTest();
     
-    Helper.BeepNtimes(5);
-   
+//    moveAndSearch();
+//
+//    moveBackToBridge();
+//        
+//    moveToInitial();
+//    
+//    Helper.BeepNtimes(5);
+  
   }
 
   /**
    * This method adjust the robot to new location and searching for container.
    */
   public static void moveAndSearch() {
-//    for (Point p : getWayPoints()) {
     ArrayList<Point> points = getWayPoints();
     boolean successPush = false;
     int i = 0;
@@ -96,6 +98,8 @@ public class Main {
         int bottomSensorData = downMedianFiltering(down_dists);      
         if (bottomSensorData < VALID_OFFSET) {
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
+            System.out.println("Top: " + topSensorData);
+            System.out.println("Bottom: " + bottomSensorData);
             calculateAndPush(bottomSensorData);
             Navigation.goRamp();
             i = 0;      // reset to first search point after finish a success push
@@ -108,7 +112,6 @@ public class Main {
         i++;
       }
     }
-//    System.out.println("All position covered, moveAndSearch done");
   }
 
   /**
@@ -151,7 +154,7 @@ public class Main {
         wayPoints.add(new Point(i, j));
       }
     }
-    System.out.println(wayPoints);
+//    System.out.println(wayPoints);
     return wayPoints;
   }
 
@@ -168,12 +171,10 @@ public class Main {
     double dist = botReading / 100d + BOTTOM_CENTER;        // in meter
     double x = dist * Math.sin(Math.toRadians(xyt[2])); 
     double y = dist * Math.cos(Math.toRadians(xyt[2]));
-
-    System.out.print("the delta x is: " + x);
-    System.out.println("\tthe delta y is: " + y);
-
+//    System.out.print("the delta x is: " + x);
+//    System.out.println("\tthe delta y is: " + y);
     Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
-    System.out.println("The point is: " + target);
+//    System.out.println("The point is: " + target);
     
     if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
 
@@ -293,25 +294,21 @@ public class Main {
     if (isLand.ur.x < startZone.ll.x) {
       // move leftwards
       var bridge = new Point(tun.ur.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
-      System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
     } else if (isLand.ll.x > startZone.ur.x) {
       // move rightwards
       var bridge = new Point(tun.ll.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
-      System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
     } else if (isLand.ll.y > startZone.ur.y) {
       // move upwards
       var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ll.y - ROBOT_OFFSET);
-      System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
     } else if (isLand.ur.y < startZone.ll.y) {
       // move downwards
       var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ur.y + ROBOT_OFFSET);
-      System.out.println("Bridge is at: " + bridge);
       Navigation.navigateTo(bridge);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
     }

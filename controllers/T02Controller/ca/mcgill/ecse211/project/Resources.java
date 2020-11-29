@@ -91,7 +91,7 @@ public class Resources {
   public static final int FORWARD_SPEED = 500;
 
   /** The speed at which the robot rotates in degrees per second. */
-  public static final int ROTATE_SPEED = 300;
+  public static final int ROTATE_SPEED = 250;
 
   /** Light Detection speed. */
   public static final int MOTOR_LOW = 125;
@@ -134,7 +134,7 @@ public class Resources {
 
 
   /** Threshold to determine the container(cm). */
-  public static final double US_DIFF_THRESHOLD = 30;    // TODO should be increased larger
+  public static final double US_DIFF_THRESHOLD = 60;    // TODO should be increased larger
 
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 10;

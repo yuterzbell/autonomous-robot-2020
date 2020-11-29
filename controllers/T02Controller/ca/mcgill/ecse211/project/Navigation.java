@@ -43,13 +43,13 @@ public class Navigation {
     if(Math.abs(differenceY) > 0.1) {flagY = true;}
     if(Math.abs(differenceX) > 0.1) {flagX = true;}
     // move in y first
-    System.out.println("abssY"+Math.abs(differenceY));
+//    System.out.println("abssY"+Math.abs(differenceY));
     if(flagY) {
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX, 0, travelY);
     }
     // move in x then
-    System.out.println("abssX"+Math.abs(differenceX));
+//    System.out.println("abssX"+Math.abs(differenceX));
     if(flagX) {
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
@@ -125,7 +125,7 @@ public class Navigation {
     //Case to move down and move left
     if(flag == true) {
       if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
-        System.out.println("1.1");
+//        System.out.println("1.1");
         if(!(theta>170 && theta<190)){        
         
           if(theta>350 || theta<10){
@@ -162,7 +162,7 @@ public class Navigation {
       
       //Case to move down and move RIGHT
       if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
-        System.out.println("2.1");
+//        System.out.println("2.1");
         
         if(!(theta>170 && theta<190)) {
           
@@ -202,7 +202,7 @@ public class Navigation {
 
         //Case to move up and move RIGHT
       if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
-        System.out.println("3.1");
+//        System.out.println("3.1");
         if(!(theta>350 || theta<10)){
           if(theta>85 && theta < 100){
             alignToTheLeftSide();
@@ -237,7 +237,7 @@ public class Navigation {
        }
 
       if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
-        System.out.println("4.1");
+//        System.out.println("4.1");
         if(!(theta>350 || theta<10)){
           if(theta>85 && theta < 100){
             alignToTheLeftSide();
@@ -280,7 +280,7 @@ public class Navigation {
       
     
     if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
-      System.out.println("1");
+//      System.out.println("1");
       if(!(theta>260 && theta<280)){
         if(theta>350 || theta<10){
           alignToTheLeftSide();
@@ -312,7 +312,7 @@ public class Navigation {
 
     //Case to move down and move RIGHT
     if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
-      System.out.println("2");
+//      System.out.println("2");
       if(!(theta>85 && theta<95)){
         if(theta>260 && theta < 280){
           alignReserve();
@@ -344,7 +344,7 @@ public class Navigation {
 
       //Case to move up and move RIGHT
     if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
-      System.out.println("3");
+//      System.out.println("3");
       if(!(theta<80 && theta>100)){
         if(theta>260 && theta < 280){
           alignReserve();
@@ -369,7 +369,7 @@ public class Navigation {
         double difference2 = rampy - odometer.getXytInTileSize()[1];
         double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 0.4;
         double travelX2 = odometer.getXytInTileSize()[0];
-        System.out.println("nextY:"+travelY2);
+//        System.out.println("nextY:"+travelY2);
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
         moveRobotBackwardsFromRamp();
@@ -379,7 +379,7 @@ public class Navigation {
 
      //Case to move up and move RIGHT
     if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
-      System.out.println("4");
+//      System.out.println("4");
       if(!(theta>260 && theta < 280)){
         if(theta>350 || theta<10){
           alignToTheLeftSide();
@@ -442,13 +442,13 @@ public class Navigation {
      onSide = true;
     }
     
-    System.out.println(onSide);
+//    System.out.println(onSide);
     
-    System.out.println("yramp"+yRamp);
-    System.out.println(blockLocation[1]);
+//    System.out.println("yramp"+yRamp);
+//    System.out.println(blockLocation[1]);
     double deltaLocation[] = {xRamp - blockLocation[0],yRamp - blockLocation[1]};
-    System.out.println(deltaLocation[0]);
-    System.out.println(deltaLocation[1]);
+//    System.out.println(deltaLocation[0]);
+//    System.out.println(deltaLocation[1]);
     determineMovement(deltaLocation, xyt[2], onSide, xRamp, yRamp);
 
 
@@ -695,7 +695,6 @@ public class Navigation {
     }
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
-    System.out.println("Here");
     moveStraightFor(inMeters / TILE_SIZE);
   }
 
