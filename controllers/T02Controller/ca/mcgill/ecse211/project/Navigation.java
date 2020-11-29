@@ -820,7 +820,22 @@ public class Navigation {
       double stepFactor = 0;
   
       while (distance != 0) {
-        if (ObjectDetection.obstacleDetect(10)) {
+        if (ObjectDetection.obstacleDetect(36)) {
+          while (!ObjectDetection.obstacleDetect(12)) {
+            if (distance > 0.2) {
+                //moveStraightFor(1);
+                ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+                if (travelFactorY == 0) {
+                  curr_odo = curr_odo + (travelFactorX * 0.2);
+                  distance = distance - 0.2;
+                  odometer.setX(curr_odo * TILE_SIZE);
+                } else {
+                  curr_odo = curr_odo + (travelFactorY * 0.2);
+                  distance = distance - 0.2;
+                  odometer.setY(curr_odo * TILE_SIZE);
+                }
+            }
+          }
           if (distance > TILE_SIZE) {
             stepFactor = dodge(travelFactorX, travelFactorY);
             if (stepFactor == -99) {
@@ -838,16 +853,16 @@ public class Navigation {
           }
           distance = distance - stepFactor;
         } else {
-          if (distance > 0.2) {
+          if (distance > 1.2) {
             //moveStraightFor(1);
-            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1.2);
             if (travelFactorY == 0) {
-              curr_odo = curr_odo + (travelFactorX * 0.2);
-              distance = distance - 0.2;
+              curr_odo = curr_odo + (travelFactorX * 1.2);
+              distance = distance - 1.2;
               odometer.setX(curr_odo * TILE_SIZE);
             } else {
-              curr_odo = curr_odo + (travelFactorY * 0.2);
-              distance = distance - 0.2;
+              curr_odo = curr_odo + (travelFactorY * 1.2);
+              distance = distance - 1.2;
               odometer.setY(curr_odo * TILE_SIZE);
             }
           } else {
