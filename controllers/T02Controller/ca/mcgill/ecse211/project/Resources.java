@@ -141,6 +141,12 @@ public class Resources {
   
   /** Offset between bottom sensor and center of the robot*/
   public static final double BOTTOM_CENTER = 0.074;  
+  
+  /** start time. */
+  public static long startTime;
+  
+  /** elapsed time. */
+  public static long elapsedTime;
 
 
   /** Flag variable indicating object detect. */
@@ -240,7 +246,9 @@ public class Resources {
 
   /** The search zone. */
   public static Region searchZone;
-
+  
+  /** initial Point */
+  public static Point initial;
   
   
   // Wi-Fi parameters

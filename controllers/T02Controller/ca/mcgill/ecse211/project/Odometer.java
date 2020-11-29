@@ -86,6 +86,7 @@ public class Odometer implements Runnable {
           String name = t.getName();
           if (name.equals("main")) {
 //            t.suspend();
+            
           }
         }
         System.out.println("time out");
