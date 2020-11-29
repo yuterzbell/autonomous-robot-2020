@@ -810,12 +810,12 @@ public class Navigation {
   public static void moveStraightWithObjectAvoidanceAndLineCorrection(double distance, int travelFactorX, int travelFactorY) {
     
     if (AVOID_FLAG) {
-      double curr_odo = 0;
-      if (travelFactorY == 0) {
-        curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-      } else {
-        curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-      }
+//      double curr_odo = 0;
+//      if (travelFactorY == 0) {
+//        curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+//      } else {
+//        curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+//      }
   
       double stepFactor = 0;
   
@@ -825,15 +825,16 @@ public class Navigation {
             if (distance > 0.2) {
                 //moveStraightFor(1);
                 ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
-                if (travelFactorY == 0) {
-                  curr_odo = curr_odo + (travelFactorX * 0.2);
-                  distance = distance - 0.2;
-                  odometer.setX(curr_odo * TILE_SIZE);
-                } else {
-                  curr_odo = curr_odo + (travelFactorY * 0.2);
-                  distance = distance - 0.2;
-                  odometer.setY(curr_odo * TILE_SIZE);
-                }
+//                if (travelFactorY == 0) {
+//                  curr_odo = curr_odo + (travelFactorX * 0.2);
+//                  distance = distance - 0.2;
+//                  odometer.setX(curr_odo * TILE_SIZE);
+//                } else {
+//                  curr_odo = curr_odo + (travelFactorY * 0.2);
+//                  distance = distance - 0.2;
+//                  odometer.setY(curr_odo * TILE_SIZE);
+//                }
+                distance = distance - 0.2;
             }
           }
           if (distance > TILE_SIZE) {
@@ -842,13 +843,13 @@ public class Navigation {
               System.out.println("Fatal Error!");
               return;
             }
-            if (travelFactorY == 0) {
-              curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-            } else {
-              curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-            }
+//            if (travelFactorY == 0) {
+//              curr_odo = odometer.getXyt()[0] / TILE_SIZE;
+//            } else {
+//              curr_odo = odometer.getXyt()[1] / TILE_SIZE;
+//            }
           } else {
-            System.out.println("test");
+//            System.out.println("test");
             distance = 0;
           }
           distance = distance - stepFactor;
@@ -856,25 +857,26 @@ public class Navigation {
           if (distance > 1.2) {
             //moveStraightFor(1);
             ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1.2);
-            if (travelFactorY == 0) {
-              curr_odo = curr_odo + (travelFactorX * 1.2);
-              distance = distance - 1.2;
-              odometer.setX(curr_odo * TILE_SIZE);
-            } else {
-              curr_odo = curr_odo + (travelFactorY * 1.2);
-              distance = distance - 1.2;
-              odometer.setY(curr_odo * TILE_SIZE);
-            }
+//            if (travelFactorY == 0) {
+//              curr_odo = curr_odo + (travelFactorX * 1.2);
+//              distance = distance - 1.2;
+//              odometer.setX(curr_odo * TILE_SIZE);
+//            } else {
+//              curr_odo = curr_odo + (travelFactorY * 1.2);
+//              distance = distance - 1.2;
+//              odometer.setY(curr_odo * TILE_SIZE);
+//            }
+            distance = distance - 1.2;
           } else {
             //moveStraightFor(distance);
             ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
-            if (travelFactorY == 0) {
-              curr_odo = curr_odo + (travelFactorX * distance);
-              odometer.setX(curr_odo * TILE_SIZE);
-            } else {
-              curr_odo = curr_odo + (travelFactorY * distance);
-              odometer.setY(curr_odo * TILE_SIZE);
-            }
+//            if (travelFactorY == 0) {
+//              curr_odo = curr_odo + (travelFactorX * distance);
+//              odometer.setX(curr_odo * TILE_SIZE);
+//            } else {
+//              curr_odo = curr_odo + (travelFactorY * distance);
+//              odometer.setY(curr_odo * TILE_SIZE);
+//            }
             break;
           }
         }
@@ -902,16 +904,16 @@ public class Navigation {
       stepFactor = 2;
     }
     
-    double straight_odo = 0;
-    double lateral_odo = 0;
-
-    if (travelFactorY == 0) {
-      straight_odo = odometer.getXyt()[0] / TILE_SIZE;
-      lateral_odo = odometer.getXyt()[1] / TILE_SIZE;
-    } else {
-      straight_odo = odometer.getXyt()[1] / TILE_SIZE;
-      lateral_odo = odometer.getXyt()[0] / TILE_SIZE;
-    }
+//    double straight_odo = 0;
+//    double lateral_odo = 0;
+//
+//    if (travelFactorY == 0) {
+//      straight_odo = odometer.getXyt()[0] / TILE_SIZE;
+//      lateral_odo = odometer.getXyt()[1] / TILE_SIZE;
+//    } else {
+//      straight_odo = odometer.getXyt()[1] / TILE_SIZE;
+//      lateral_odo = odometer.getXyt()[0] / TILE_SIZE;
+//    }
     
     int dodgeFactor = 0;
     while (dodgeFactor == 0) {
@@ -931,13 +933,13 @@ public class Navigation {
       }
       turnBy(180);
       moveStraightFor(0.2);
-      if (travelFactorY == 0) {
-        straight_odo = straight_odo + (stepFactor * travelFactorX);
-        odometer.setX(straight_odo * TILE_SIZE);
-      } else {
-        straight_odo = straight_odo + (stepFactor * travelFactorY);
-        odometer.setY(straight_odo * TILE_SIZE);;
-      }
+//      if (travelFactorY == 0) {
+//        straight_odo = straight_odo + (stepFactor * travelFactorX);
+//        odometer.setX(straight_odo * TILE_SIZE);
+//      } else {
+//        straight_odo = straight_odo + (stepFactor * travelFactorY);
+//        odometer.setY(straight_odo * TILE_SIZE);;
+//      }
       if (ObjectDetection.obstacleDetect(10)) {
         return -99;
       }
@@ -950,38 +952,38 @@ public class Navigation {
 
     //moveStraightFor(1);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorY), 1);
-    if (travelFactorY == 0) {
-      lateral_odo = lateral_odo + (-travelFactorX);
-      odometer.setY(lateral_odo * TILE_SIZE);
-    } else {
-      lateral_odo = lateral_odo + (-travelFactorY);
-      odometer.setX(lateral_odo * TILE_SIZE);
-    }
+//    if (travelFactorY == 0) {
+//      lateral_odo = lateral_odo + (-travelFactorX);
+//      odometer.setY(lateral_odo * TILE_SIZE);
+//    } else {
+//      lateral_odo = lateral_odo + (-travelFactorY);
+//      odometer.setX(lateral_odo * TILE_SIZE);
+//    }
 
     turnBy(dodgeFactor*-90);
 
     //moveStraightFor(stepFactor);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), stepFactor);
-    if (travelFactorY == 0) {
-      straight_odo = straight_odo + (stepFactor * travelFactorX);
-      odometer.setX(straight_odo * TILE_SIZE);
-    } else {
-      straight_odo = straight_odo + (stepFactor * travelFactorY);
-      odometer.setY(straight_odo * TILE_SIZE);;
-    }
+//    if (travelFactorY == 0) {
+//      straight_odo = straight_odo + (stepFactor * travelFactorX);
+//      odometer.setX(straight_odo * TILE_SIZE);
+//    } else {
+//      straight_odo = straight_odo + (stepFactor * travelFactorY);
+//      odometer.setY(straight_odo * TILE_SIZE);;
+//    }
 
     //Restore x and theta
     turnBy(dodgeFactor*-90);
 
     //moveStraightFor(1);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
-    if (travelFactorY == 0) {
-      lateral_odo = lateral_odo + (travelFactorX);
-      odometer.setY(lateral_odo * TILE_SIZE);
-    } else {
-      lateral_odo = lateral_odo + (travelFactorY);
-      odometer.setX(lateral_odo * TILE_SIZE);
-    }
+//    if (travelFactorY == 0) {
+//      lateral_odo = lateral_odo + (travelFactorX);
+//      odometer.setY(lateral_odo * TILE_SIZE);
+//    } else {
+//      lateral_odo = lateral_odo + (travelFactorY);
+//      odometer.setX(lateral_odo * TILE_SIZE);
+//    }
 
     turnBy(dodgeFactor*90);
 
@@ -991,75 +993,75 @@ public class Navigation {
   /**
    * Method Drives robot in Y.
    */
-  public static void searchInY() {
-
-    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-
-    if ((szr.ur.y - curr_y) < (curr_y - szr.ll.y)) {
-      searchUpwards();
-      searchDownwards();
-    } else {
-      searchDownwards();
-      searchUpwards();
-    }
-
-  }
+//  public static void searchInY() {
+//
+//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+//
+//    if ((szr.ur.y - curr_y) < (curr_y - szr.ll.y)) {
+//      searchUpwards();
+//      searchDownwards();
+//    } else {
+//      searchDownwards();
+//      searchUpwards();
+//    }
+//
+//  }
   
   /**
    * Method drives robot upwards.
    */
-  public static void searchUpwards() {
-
-    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-
-    //Searching Upwards
-    turnBy(-90);
-    odometer.setTheta(0);    
-
-    while ((szr.ur.y - curr_y) > 1) {
-      if (!ObjectDetection.detect()) {
-        moveStraightFor(1);
-        curr_y = curr_y + 1;
-        odometer.setY(curr_y * TILE_SIZE);
-      } else {
-        if ((szr.ur.y - (curr_y + 1) < 1)) { //Checking if obstacle is at top of column
-          break;
-        } else {
-          ObjectDetection.avoidObjectInX(true, false);
-          curr_y = odometer.getXyt()[1] / TILE_SIZE;
-        }
-      }
-    }
-  }
+//  public static void searchUpwards() {
+//
+//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+//
+//    //Searching Upwards
+//    turnBy(-90);
+//    odometer.setTheta(0);    
+//
+//    while ((szr.ur.y - curr_y) > 1) {
+//      if (!ObjectDetection.detect()) {
+//        moveStraightFor(1);
+//        curr_y = curr_y + 1;
+//        odometer.setY(curr_y * TILE_SIZE);
+//      } else {
+//        if ((szr.ur.y - (curr_y + 1) < 1)) { //Checking if obstacle is at top of column
+//          break;
+//        } else {
+//          ObjectDetection.avoidObjectInX(true, false);
+//          curr_y = odometer.getXyt()[1] / TILE_SIZE;
+//        }
+//      }
+//    }
+//  }
   
   
   /**
    * Method drives robot downwards.
    */
-  public static void searchDownwards() {
-
-    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-
-    //Searching Downwards
-    turnBy(180);
-    odometer.setTheta(180);
-
-    while ((curr_y - szr.ll.y) > 1) {
-      if (!ObjectDetection.detect()) {
-        moveStraightFor(1);
-        curr_y = curr_y - 1;
-        odometer.setY(curr_y * TILE_SIZE);
-      } else {
-        if (((curr_y - 1) - szr.ll.y < 1)) { //Checking if obstacle is at bottom of column
-          break;
-        } else {
-          ObjectDetection.avoidObjectInX(false, true);
-          curr_y = odometer.getXyt()[1] / TILE_SIZE;
-        }
-      }
-    }
-  }
-  
+//  public static void searchDownwards() {
+//
+//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
+//
+//    //Searching Downwards
+//    turnBy(180);
+//    odometer.setTheta(180);
+//
+//    while ((curr_y - szr.ll.y) > 1) {
+//      if (!ObjectDetection.detect()) {
+//        moveStraightFor(1);
+//        curr_y = curr_y - 1;
+//        odometer.setY(curr_y * TILE_SIZE);
+//      } else {
+//        if (((curr_y - 1) - szr.ll.y < 1)) { //Checking if obstacle is at bottom of column
+//          break;
+//        } else {
+//          ObjectDetection.avoidObjectInX(false, true);
+//          curr_y = odometer.getXyt()[1] / TILE_SIZE;
+//        }
+//      }
+//    }
+//  }
+//  
 
 /** Method calculates the mass of the container*/
   
