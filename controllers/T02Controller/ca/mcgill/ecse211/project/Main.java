@@ -34,6 +34,7 @@ public class Main {
   /** Main entry point. */
   
   public static void main(String[] args) {
+    
     initialize();
 
     identifySelf();
@@ -59,8 +60,14 @@ public class Main {
     Helper.BeepNtimes(3);
 
     moveAndSearch();
-  
-*/
+    
+    /* Then go back to initial */
+    moveBackToBridge();
+    
+    
+    moveToInitial();
+
+
     // start the detector thread after initial localizing
 
 
@@ -70,8 +77,17 @@ public class Main {
    * This method adjust the robot to new location and searching for container.
    */
   public static void moveAndSearch() {
-    for (Point p : getWayPoints()) {
-      System.out.println("Next search Point is: " + p);
+//    for (Point p : getWayPoints()) {
+    ArrayList<Point> points = getWayPoints();
+    boolean successPush = false;
+    int i = 0;
+    while (i < points.size()) {
+      successPush = false;
+      elapsedTime = System.currentTimeMillis() - startTime;
+      if(elapsedTime > 270000) {
+        return;
+      }
+      Point p = points.get(i);
       Navigation.navigateTo(p);
       Navigation.turnTo(135);
       // sweep for 90 degree sector
@@ -83,21 +99,21 @@ public class Main {
 
       leftMotor.rotate(convertAngle(-90), true);
       rightMotor.rotate(-convertAngle(-90), true);
-      while (System.currentTimeMillis() - startTime < 4000) {      // polling
+      while (System.currentTimeMillis() - startTime < 3500) {      // polling
         int bottomSensorData = downMedianFiltering(down_dists);
         int topSensorData = topMedianFiltering(top_dists);
         if (bottomSensorData < VALID_OFFSET) {
-          System.out.println("down sensor is in valid distance");
-          System.out.println("Top sensor: " + topSensorData);
-          System.out.println("Down sensor: " + bottomSensorData);
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
             calculateAndPush(bottomSensorData);
             Navigation.goRamp();
-//            isContainer = false;
+            i = 0;      // reset to first search point after finish a success push
+            successPush = true;
           }
         } 
       }
-
+      
+      if(!successPush)
+        i++;
     }
     System.out.println("All position covered, moveAndSearch done");
   }
@@ -109,8 +125,8 @@ public class Main {
    */
   public static ArrayList<Point> getWayPoints(){
     ArrayList<Point> wayPoints = new ArrayList<Point>();
-    for (double i = searchZone.ll.x + 0.5; i < searchZone.ur.x; i += 2) {
-      for (double j = searchZone.ll.y + 0.5; j < searchZone.ur.y; j += 2) {
+    for (double i = searchZone.ll.x + 0.5; i < Ramp.left.x; i += 2) {
+      for (double j = searchZone.ll.y + 0.5; j < Ramp.right.y; j += 2) {
         wayPoints.add(new Point(i, j));
       }
     }
@@ -140,6 +156,7 @@ public class Main {
     if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
       target.x = target.x - 0.9;
       Navigation.navigateTo(target);
+//      System.out.println("This is when finished \n");
     } else if(xyt[0]/TILE_SIZE > target.x) {    // if robot to the right of container
       target.x = target.x + 0.9;
       Navigation.navigateTo(target);
@@ -149,40 +166,102 @@ public class Main {
 
   /**
    * This method drive the robot to the starting point of the searchZone.
+   * @author Zichen Chang
    */
   public static void moveToSearchZone() {
     if (isLand.ur.x < startZone.ll.x) {
       // move leftwards
       var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
-      System.out.println("searchzone is at: " + sz);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(270);
     } else if (isLand.ll.x > startZone.ur.x) {
       // move rightwards
       var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
-      System.out.println("searchzone is at: " + sz);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(90);
     } else if (isLand.ll.y > startZone.ur.y) {
       // move upwards
       var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
-      System.out.println("searchZone is at: " + sz);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(0);
     } else if (isLand.ur.y < startZone.ll.y) {
       // move downwards
       var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
-      System.out.println("Bridge is at: " + sz);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(180);
     }
   }
 
+  /**
+   * This method drive the robot to the InitialPosition.
+   * @author Zichen Chang
+   */
+  public static void moveToInitial() {
+    if (startZone.ur.x < isLand.ll.x) {
+      // move leftwards
+      var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(270);
+      Navigation.navigateTo(initial);
+    } else if (startZone.ll.x > isLand.ur.x) {
+      // move rightwards
+      var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      Navigation.navigateTo(sz);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+      odometer.setTheta(90);
+      Navigation.navigateTo(initial);
+    } else if (startZone.ll.y > isLand.ur.y) {
+      // move upwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(0);
+      Navigation.navigateTo(initial);
+    } else if (startZone.ur.y < isLand.ll.y) {
+      // move downwards
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
+      Navigation.navigateTo(sz);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+      odometer.setTheta(180);
+      Navigation.navigateTo(initial);
+    }
+  }
 
+  /**
+   * This method will drive the robot in front of bridge when driving back.
+   * 
+   * @author Zichen Chang
+   */
+  private static void moveBackToBridge() {
+    if (startZone.ur.x < isLand.ll.x) {
+      // move leftwards
+      var bridge = new Point(tun.ur.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      Navigation.navigateTo(bridge);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+    } else if (startZone.ll.x > isLand.ur.x) {
+      // move rightwards
+      var bridge = new Point(tun.ll.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      Navigation.navigateTo(bridge);
+      odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
+    } else if (startZone.ll.y > isLand.ur.y) {
+      // move upwards
+      var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ll.y - ROBOT_OFFSET);
+      Navigation.navigateTo(bridge);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+    } else if (startZone.ur.y < isLand.ll.y) {
+      // move downwards
+      var bridge = new Point((tun.ur.x + tun.ll.x) / 2, tun.ur.y + ROBOT_OFFSET);
+      Navigation.navigateTo(bridge);
+      odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
+    }
+  }
+  
+  
   /**
    * This method will drive the robot in front of bridge.
    * 
@@ -222,16 +301,19 @@ public class Main {
    * @author Zichen Chang
    */
   private static void setOdometer() {
-    // TODO Auto-generated method stub
     if (Corner == 0) {
       odometer.setXytInTailSize(1, 1, 0);
+      initial = new Point(1, 1);
     } else if (Corner == 1) {
       odometer.setXytInTailSize(14, 1, 270);
       odometer.printPositionXY();
+      initial = new Point(14, 1);
     } else if (Corner == 2) {
       odometer.setXytInTailSize(14, 8, 180);
+      initial = new Point(14, 8);
     } else if (Corner == 3) {
       odometer.setXytInTailSize(1, 8, 90);
+      initial = new Point(1, 8);
     } else {
       System.out.println("Error: Corner is not well identified");
     }
@@ -247,6 +329,21 @@ public class Main {
     if (redTeam == team) {
       Corner = redCorner;
       Ramp = rr;
+      Point left = Ramp.left;
+      Point right = Ramp.right;
+      if (left.x == right.x) {
+        if (left.y < right.y) {
+          orient = "EAST";
+        } else {
+          orient = "WEST";
+        }
+      } else if (left.y == right.y) {
+        if (left.x < right.x) {
+          orient = "SOUTH";
+        } else {
+          orient = "NORTH";
+        }
+      }
       startZone = red;
       isLand = island;
       tun = tnr;
@@ -259,7 +356,7 @@ public class Main {
       tun = tng;
       searchZone = szg;
     }
-
+    startTime = System.currentTimeMillis();
   }
 
   /**

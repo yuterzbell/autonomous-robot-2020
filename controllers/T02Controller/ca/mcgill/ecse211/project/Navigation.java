@@ -377,7 +377,7 @@ public class Navigation {
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
         moveRobotBackwardsFromRamp();
-       
+
      }
 
 
@@ -583,7 +583,9 @@ public class Navigation {
    */
   public static void moveRobotBackwardsFromRamp(){
   
-    moveStraightFor(1.1);
+
+    moveStraightFor(1.2);
+
     moveStraightFor(-1.5);
     /*
     int bottomReading = -1;
