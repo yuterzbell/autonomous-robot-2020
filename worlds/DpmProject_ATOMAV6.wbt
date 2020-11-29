@@ -41,7 +41,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE1 DPM-Obstacle {
       name "obstacle1"
-      position 2.25 1.5
+      position 2.52 1.5
       sections 4
     }
     DEF OBSTACLE2 DPM-Obstacle {
@@ -249,7 +249,7 @@ DPM-Block {
 }
 DPM-Block {
   name "block3"
-  translation 2.20547 0.0499352 0.835154
+  translation 2.23547 0.0499352 0.795154
   rotation 0.6731014985878414 0.3069512621849582 0.6728412110162865 -1.822570872650509e-06
   dimension 0.1
   mass 1
