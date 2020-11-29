@@ -97,6 +97,8 @@ public class Odometer implements Runnable {
       currTacho[LEFT] = leftMotor.getTachoCount();
       currTacho[RIGHT] = rightMotor.getTachoCount();
       
+      
+      
       if(STORE_TORQUE) {
         
         double torqueLeft = Math.abs(leftMotor.getTorque()); // gives Newton per meters

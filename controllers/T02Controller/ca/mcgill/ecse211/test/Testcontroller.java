@@ -120,9 +120,9 @@ public class Testcontroller {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    double x = 7;
+    double x = 12;
     double y = 6;
-    double theta = 90;
+    double theta = 0;
     odometer.setXytInTailSize(x, y, theta);
     
     odometer.printPosition();

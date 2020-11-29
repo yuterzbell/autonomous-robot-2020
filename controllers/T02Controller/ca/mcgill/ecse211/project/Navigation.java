@@ -90,11 +90,11 @@ public class Navigation {
   public static void alignToTheRightSide(){
     moveStraightFor(-0.4);
     turnBy(-90);
-    moveStraightFor(0.8);
+    moveStraightFor(0.7);
     turnBy(90);
-    moveStraightFor(0.8);
+    moveStraightFor(0.9);
     turnBy(90);
-    moveStraightFor(0.8);
+    moveStraightFor(0.7);
   }
 
   /**
@@ -315,7 +315,6 @@ public class Navigation {
       Point goTo = new Point(travelX, travelY);
       navigateTo(goTo);
       alignToTheRightSide();
-      moveStraightFor(Math.abs(deltaLocation[1]));
       
       double difference2 = rampy - odometer.getXytInTileSize()[1];
       double travelY2 = difference2 + odometer.getXytInTileSize()[1] + 0.3;
@@ -371,18 +370,21 @@ public class Navigation {
       }
       
       double difference = rampx - odometer.getXytInTileSize()[0];
-      double travelX = difference + odometer.getXytInTileSize()[0] + 0.3;
+      double travelX = difference + odometer.getXytInTileSize()[0] + 0.4;
       double travelY = odometer.getXytInTileSize()[1];
       Point goTo = new Point(travelX, travelY);
+      STORE_TORQUE = true;
       navigateTo(goTo);
+      STORE_TORQUE = false;
+      calculateMass();
       alignToTheRightSide();
-      moveStraightFor(Math.abs(deltaLocation[1]));
       
       double difference2 = rampy - odometer.getXytInTileSize()[1];
-      double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 0.3;
+      double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 0.4;
       double travelX2 = odometer.getXytInTileSize()[0];
       Point goTo2 = new Point(travelX2, travelY2);
       navigateTo(goTo2);
+      moveRobotBackwardsFromRamp();
      }
     
     }
@@ -553,6 +555,10 @@ public class Navigation {
    * Moves the robot backwards one tile after dropping the container in the bin
    */
   public static void moveRobotBackwardsFromRamp(){
+  
+    moveStraightFor(0.9);
+    moveStraightFor(-1.5);
+    /*
     int bottomReading = -1;
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
@@ -566,7 +572,9 @@ public class Navigation {
         moveStraightFor(-(TILE_SIZE)*4);
         break;
       }
-    } 
+      
+    } */
+    
   }
 
   /** Returns the angle that the robot should point towards to face the destination in degrees. */
@@ -1033,27 +1041,29 @@ public class Navigation {
     
    // System.out.println("sum"+sum);
    // System.out.println("count"+count);
-   // System.out.println(averageTorque);
+    System.out.println(averageTorque);
+    
+    
     
     if(averageTorque < 0.18) {
-      mass = 0.5;
-      System.out.println("Container with weight "+mass+"kg identified");
+      mass = 1.0;
+      System.out.println("Container with weight "+mass+"kg identified (+2points)");
       
     }
     
     if(averageTorque < 0.22 && averageTorque > 0.18) {
-      mass = 1.0;
-      System.out.println("Container with weight "+mass+"kg identified");
+      mass = 2.0;
+      System.out.println("Container with weight "+mass+"kg identified (+3points)");
     }
     
     if(averageTorque < 0.26 && averageTorque > 0.22) {
-      mass = 2.0;
-      System.out.println("Container with weight "+mass+"kg identified");
+      mass = 3.0;
+      System.out.println("Container with weight "+mass+"kg identified (+4points)");
     }
     
     if(averageTorque > 0.26) {
       mass = 3.0;
-      System.out.println("Container with weight "+mass+"kg identified");
+      System.out.println("Container with weight "+mass+"kg identified (+4points)");
     }
     allTorque.clear();
     
