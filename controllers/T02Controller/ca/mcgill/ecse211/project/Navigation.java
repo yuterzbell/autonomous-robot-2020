@@ -144,17 +144,17 @@ public class Navigation {
         double travelY = difference + odometer.getXytInTileSize()[1] + 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
-        STORE_TORQUE = true;
         navigateTo(goTo);
-        STORE_TORQUE = false;
-        calculateMass();
         alignToTheRightSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
         double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 0.4;
+        STORE_TORQUE = true;
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        STORE_TORQUE = false;
+        calculateMass();
         moveRobotBackwardsFromRamp();
         
         }
@@ -183,17 +183,17 @@ public class Navigation {
         double travelY = difference + odometer.getXytInTileSize()[1] + 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
-        STORE_TORQUE = true;
         navigateTo(goTo);
-        STORE_TORQUE = false;
-        calculateMass();
         alignToTheLeftSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
         double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 0.4;
+        STORE_TORQUE = true;
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        STORE_TORQUE = false;
+        calculateMass();
         moveRobotBackwardsFromRamp();
         
         }
@@ -222,17 +222,17 @@ public class Navigation {
         double travelY = difference + odometer.getXytInTileSize()[1] - 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
-        STORE_TORQUE = true;
         navigateTo(goTo);
-        STORE_TORQUE = false;
-        calculateMass();
         alignToTheRightSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
         double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 0.4;
         Point goTo2 = new Point(travelX2, travelY2);
+        STORE_TORQUE = true;
         navigateTo(goTo2);
+        STORE_TORQUE = false;
+        calculateMass();
         moveRobotBackwardsFromRamp();
        }
 
@@ -258,17 +258,17 @@ public class Navigation {
         double travelY = difference + odometer.getXytInTileSize()[1] - 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
-        STORE_TORQUE = true;
         navigateTo(goTo);
-        STORE_TORQUE = false;
-        calculateMass();
         alignToTheLeftSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
         double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 0.4;
+        STORE_TORQUE = true;
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        STORE_TORQUE = false;
+        calculateMass();
         moveRobotBackwardsFromRamp();
         
        }
@@ -820,7 +820,22 @@ public class Navigation {
       double stepFactor = 0;
   
       while (distance != 0) {
-        if (ObjectDetection.obstacleDetect(10)) {
+        if (ObjectDetection.obstacleDetect(36)) {
+          while (!ObjectDetection.obstacleDetect(12)) {
+            if (distance > 0.2) {
+                //moveStraightFor(1);
+                ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+                if (travelFactorY == 0) {
+                  curr_odo = curr_odo + (travelFactorX * 0.2);
+                  distance = distance - 0.2;
+                  odometer.setX(curr_odo * TILE_SIZE);
+                } else {
+                  curr_odo = curr_odo + (travelFactorY * 0.2);
+                  distance = distance - 0.2;
+                  odometer.setY(curr_odo * TILE_SIZE);
+                }
+            }
+          }
           if (distance > TILE_SIZE) {
             stepFactor = dodge(travelFactorX, travelFactorY);
             if (stepFactor == -99) {
@@ -838,16 +853,16 @@ public class Navigation {
           }
           distance = distance - stepFactor;
         } else {
-          if (distance > 0.2) {
+          if (distance > 1.2) {
             //moveStraightFor(1);
-            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
+            ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1.2);
             if (travelFactorY == 0) {
-              curr_odo = curr_odo + (travelFactorX * 0.2);
-              distance = distance - 0.2;
+              curr_odo = curr_odo + (travelFactorX * 1.2);
+              distance = distance - 1.2;
               odometer.setX(curr_odo * TILE_SIZE);
             } else {
-              curr_odo = curr_odo + (travelFactorY * 0.2);
-              distance = distance - 0.2;
+              curr_odo = curr_odo + (travelFactorY * 1.2);
+              distance = distance - 1.2;
               odometer.setY(curr_odo * TILE_SIZE);
             }
           } else {
@@ -1070,20 +1085,20 @@ public class Navigation {
     
     
     
-    if(averageTorque < 0.18) {
-      mass = 1.0;
-      System.out.println("Container with weight "+mass+"kg identified (+2points)");
+    if(averageTorque < 0.08) {
+      mass = 0.05;
+      System.out.println("Container with weight "+mass+"kg identified (+1points)");
       
     }
     
-    if(averageTorque < 0.22 && averageTorque > 0.18) {
-      mass = 2.0;
-      System.out.println("Container with weight "+mass+"kg identified (+3points)");
+    if(averageTorque < 0.17 && averageTorque > 0.08) {
+      mass = 1.0;
+      System.out.println("Container with weight "+mass+"kg identified (+2points)");
     }
     
-    if(averageTorque < 0.26 && averageTorque > 0.22) {
-      mass = 3.0;
-      System.out.println("Container with weight "+mass+"kg identified (+4points)");
+    if(averageTorque < 0.26 && averageTorque > 0.17) {
+      mass = 2.0;
+      System.out.println("Container with weight "+mass+"kg identified (+3points)");
     }
     
     if(averageTorque > 0.26) {

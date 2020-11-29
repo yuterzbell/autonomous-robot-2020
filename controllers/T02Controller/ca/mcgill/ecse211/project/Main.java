@@ -64,12 +64,23 @@ public class Main {
       
     
     /* Then go back to initial */
+
+  //  moveBackToBridge();
+    
+    
+ //   moveToInitial();
+
+
+    // start the detector thread after initial localizing
+
+
     moveBackToBridge();
         
     moveToInitial();
     
     Helper.BeepNtimes(5);
    
+
 
   }
 
@@ -201,25 +212,25 @@ public class Main {
   public static void moveToSearchZone() {
     if (isLand.ur.x < startZone.ll.x) {
       // move leftwards
-      var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      var sz = new Point(searchZone.ur.x - 0.5, (tun.ll.y + tun.ur.y) / 2);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(270);
     } else if (isLand.ll.x > startZone.ur.x) {
       // move rightwards
-      var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      var sz = new Point(searchZone.ll.x + 0.5, (tun.ll.y + tun.ur.y) / 2);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(90);
     } else if (isLand.ll.y > startZone.ur.y) {
       // move upwards
-      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + 0.5);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(0);
     } else if (isLand.ur.y < startZone.ll.y) {
       // move downwards
-      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - 0.5);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(180);

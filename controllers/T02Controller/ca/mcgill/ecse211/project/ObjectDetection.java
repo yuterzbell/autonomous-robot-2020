@@ -316,7 +316,7 @@ public class ObjectDetection implements Runnable{
     ReinitializeDoubleUsensors();
     int down = downMedianFiltering(down_dists);
     int top = topMedianFiltering(top_dists);
-    System.out.println("Top reads: " + top + "\nDown reads: " + down);
+//    System.out.println("Top reads: " + top + "\nDown reads: " + down);
     if ((down < downThreshold) && ((top - down) < US_DIFF_THRESHOLD)) {
       OBJ_DIST = down;
       return true;
