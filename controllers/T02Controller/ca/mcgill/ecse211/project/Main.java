@@ -62,10 +62,10 @@ public class Main {
     moveAndSearch();
     
     /* Then go back to initial */
-    moveBackToBridge();
+  //  moveBackToBridge();
     
     
-    moveToInitial();
+ //   moveToInitial();
 
 
     // start the detector thread after initial localizing
