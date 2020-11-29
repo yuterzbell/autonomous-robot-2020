@@ -26,8 +26,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.9998215629546983 -0.013144027841926094 -0.013567489926840742 1.6026783627859145
-  position 1.2409245339871386 3.8810702035153195 0.595020865690461
+  orientation -0.9947454478673401 -0.08188804273460512 -0.06144788364378705 1.2925621080989422
+  position 0.1842887052490339 0.7366029206250414 0.3217460298739359
 }
 TexturedBackground {
 }
@@ -268,20 +268,20 @@ DPM-Block {
 }
 DPM-Robot {
   name "T02Robot"
-  translation 0.194671 0.0695473 0.18799
-  rotation 0.014655809082229574 -0.9996757051912224 0.020825266158625802 1.573466645886798
+  translation 0.195027 0.0595505 0.188052
+  rotation -0.020874103795926375 0.9996741817893419 0.014690202671392665 1.56878
   children [
-    T02_ATOMAV5arm-solid {
-      translation 0.06971 -0.006 -0.088
+    T02_ATOMAV6base-solid {
+      translation 0 0.0052 -0.0241
       rotation 1 0 0 -1.5707953071795862
     }
-    T02_ATOMAV5arm-solid {
-      translation -0.0697 -0.006 -0.088
-      rotation 1 0 0 -1.5707953071795862
+    T02_ATOMAV6arm-solid {
+      translation -0.0796 -0.006 -0.088
+      rotation 1 0 0 1.5708
     }
-    T02_ATOMAV5base-solid {
-      translation 0 0.0049 -0.0244
-      rotation -1 0 0 1.5708
+    T02_ATOMAV6arm-solid {
+      translation 0.0796 -0.006 -0.088
+      rotation 1 0 0 1.5708
     }
     ShockAbsorber {
       name "shockAbsorberA"
