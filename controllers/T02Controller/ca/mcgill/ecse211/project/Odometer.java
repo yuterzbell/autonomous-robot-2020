@@ -74,31 +74,14 @@ public class Odometer implements Runnable {
   public void run() {
     leftMotor.resetTachoCount();                                    
     rightMotor.resetTachoCount();
-    long startTime = System.currentTimeMillis();
-    
-    
+   
     while (true) {
-      long elapsedTime = System.currentTimeMillis() - startTime;
-      if(elapsedTime >= 270000) {
-        /* Move back to start point */
-        Set<Thread> threads = Thread.getAllStackTraces().keySet();
-        for (Thread t : threads) {
-          String name = t.getName();
-          if (name.equals("main")) {
-//            t.suspend();
-            
-          }
-        }
-        System.out.println("time out");
-        
-      }
+ 
       prevTacho[LEFT] = currTacho[LEFT];
       prevTacho[RIGHT] = currTacho[RIGHT];
       currTacho[LEFT] = leftMotor.getTachoCount();
       currTacho[RIGHT] = rightMotor.getTachoCount();
-      
-      
-      
+     
       if(STORE_TORQUE) {
         
         double torqueLeft = Math.abs(leftMotor.getTorque()); // gives Newton per meters

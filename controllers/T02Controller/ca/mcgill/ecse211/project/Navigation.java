@@ -77,7 +77,7 @@ public class Navigation {
       moveInX = 0;
     }
 
-      moveStraightWithObjectAvoidanceAndLineCorrection(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);   
+    moveStraightWithObjectAvoidanceAndLineCorrection(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);   
   }
 
   /**

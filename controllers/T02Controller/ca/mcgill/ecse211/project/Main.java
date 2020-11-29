@@ -13,6 +13,7 @@ import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Region;
 import ca.mcgill.ecse211.test.Testcontroller;
 import simlejos.hardware.ev3.LocalEV3;
+import com.cyberbotics.webots.controller.Robot;
 
 /**
  * Main class of the program.
@@ -27,7 +28,7 @@ public class Main {
    * one used to perform physics steps.
    */
   public static final int NUMBER_OF_THREADS = 3;
-
+  
   
   
   
@@ -58,9 +59,6 @@ public class Main {
 
     moveToSearchZone();
     Helper.BeepNtimes(3);
-    
-    AVOID_FLAG = true;
-    DETECT_WATER = true;
 
     moveAndSearch();
       
@@ -71,6 +69,7 @@ public class Main {
     moveToInitial();
     
     Helper.BeepNtimes(5);
+   
 
   }
 
@@ -84,15 +83,14 @@ public class Main {
     int i = 0;
     while (i < points.size()) {
       successPush = false;
-      elapsedTime = System.currentTimeMillis() - startTime;
-      if(elapsedTime > 270000) {
+
+      if(time > 16200) {
         return;
       }
       Point p = points.get(i);
       Navigation.navigateTo(p);
       Navigation.turnTo(135);
       // sweep for 90 degree sector
-      long startTime = System.currentTimeMillis();
       leftMotor.setSpeed(FORWARD_SPEED);
       rightMotor.setSpeed(FORWARD_SPEED);
 
@@ -100,9 +98,10 @@ public class Main {
 
       leftMotor.rotate(convertAngle(-90), true);
       rightMotor.rotate(-convertAngle(-90), true);
-      while (System.currentTimeMillis() - startTime < 3500) {      // polling
-        int bottomSensorData = downMedianFiltering(down_dists);
+      int prevTime = time;
+      while (time - prevTime < 200) {      // polling
         int topSensorData = topMedianFiltering(top_dists);
+        int bottomSensorData = downMedianFiltering(down_dists);      
         if (bottomSensorData < VALID_OFFSET) {
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
             calculateAndPush(bottomSensorData);
@@ -386,7 +385,7 @@ public class Main {
         orient = "NORTH";
       }
     }
-    startTime = System.currentTimeMillis();
+
   }
 
   /**
@@ -460,6 +459,7 @@ public class Main {
     new Thread(() -> {
       while (performPhysicsStep()) {
         sleepFor(PHYSICS_STEP_PERIOD);
+        time++;
       }
     }).start();
   }

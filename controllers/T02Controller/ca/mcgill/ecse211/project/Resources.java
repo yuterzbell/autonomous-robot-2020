@@ -147,6 +147,9 @@ public class Resources {
   
   /** elapsed time. */
   public static long elapsedTime;
+  
+  /** Timer counter. */
+  public static int time;
 
 
   /** Flag variable indicating object detect. */
