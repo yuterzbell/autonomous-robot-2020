@@ -41,8 +41,11 @@ public class Main {
     new Thread(odometer).start();   
     // Start the detector thread
     new Thread(detector).start();
+    
+ //   Testcontroller.rampUp();
+    
       
-//    Navigation.moveStraightFor(3);
+//   Navigation.moveStraightFor(3);
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
