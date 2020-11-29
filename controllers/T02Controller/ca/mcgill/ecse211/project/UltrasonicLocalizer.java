@@ -190,6 +190,7 @@ public class UltrasonicLocalizer {
     dist = readUsDistance();
     while (dist <= OPEN_THRESH) {
       dist = readUsDistance();
+//      System.out.println(dist);
     }
     System.out.println("Open ground found! Reinitializing.....");
     leftMotor.setSpeed(FORWARD_SPEED);

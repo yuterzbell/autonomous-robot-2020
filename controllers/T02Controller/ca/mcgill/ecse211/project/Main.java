@@ -41,10 +41,8 @@ public class Main {
     new Thread(odometer).start();   
     // Start the detector thread
     new Thread(detector).start();
-    
-    Testcontroller.rampUp();
-    
-/**   
+      
+//    Navigation.moveStraightFor(3);
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -58,7 +56,8 @@ public class Main {
     Helper.BeepNtimes(3);
 
     moveAndSearch();
-*/
+  
+
     // start the detector thread after initial localizing
 
 
@@ -90,7 +89,8 @@ public class Main {
           System.out.println("Down sensor: " + bottomSensorData);
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
             calculateAndPush(bottomSensorData);
-            isContainer = false;
+            Navigation.goRamp();
+//            isContainer = false;
           }
         } 
       }
@@ -124,7 +124,7 @@ public class Main {
 
     odometer.printPositionXY();
 
-    double dist = botReading / 100d;
+    double dist = botReading / 100d + BOTTOM_CENTER;        // in meter
     double x = dist * Math.sin(Math.toRadians(xyt[2])); 
     double y = dist * Math.cos(Math.toRadians(xyt[2]));
 
@@ -133,7 +133,14 @@ public class Main {
 
     Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
     System.out.println("The point is: " + target);
-    Navigation.navigateTo(target);
+    
+    if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
+      target.x = target.x - 0.9;
+      Navigation.navigateTo(target);
+    } else if(xyt[0]/TILE_SIZE > target.x) {    // if robot to the right of container
+      target.x = target.x + 0.9;
+      Navigation.navigateTo(target);
+    }
   }
 
 

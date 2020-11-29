@@ -138,6 +138,9 @@ public class Resources {
 
   /** Threshold for the bottom sensor to tell should do object avoidance(cm). */
   public static final int OBJTHRESH = 10;
+  
+  /** Offset between bottom sensor and center of the robot*/
+  public static final double BOTTOM_CENTER = 0.074;  
 
 
   /** Flag variable indicating object detect. */
