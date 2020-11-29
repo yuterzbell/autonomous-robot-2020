@@ -40,46 +40,12 @@ public class ObjectDetection implements Runnable{
   public void run(){
     Helper.ReinitializeDoubleUsensors();
     while(true){
-//      bottomSensorData = downMedianFiltering(down_dists);
-//      topSensorData = topMedianFiltering(top_dists);
       bottomSensorData = readUsDistance();
       topSensorData = readUsDistance2();
-//      if (bottomSensorData < VALID_OFFSET) {
-//        objectInClose = true;
-//         
-//        System.out.println("down sensor is in valid distance");
-//        System.out.println("Top sensor " + topSensorData);
-//        System.out.println("Down sensor " + bottomSensorData);
-//        
-//        if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
-//          isContainer = true;   // TODO not really good design since thread are not synchronized
-//          sleepFor(500);        // when find a container, delay the update of the next cycle to boolean flags.
-//        }
-//      } else {
-//        objectInClose = false;
-//        isContainer = false;
-//      }
       sleepFor(500);
     }
   }   
 
-  /**
-   * This method detect a valid object.
-   */
-//  public static void detectObject(){
-//    topSensorData = readUsDistance2();
-////    System.out.println("Top readings: " + topSensorData);
-//    bottomSensorData = readUsDistance();
-////    System.out.println("bottom readings: " + bottomSensorData);
-//    int sensorDifference = Math.abs(bottomSensorData - topSensorData);
-////    System.out.println(DETECT_FLAG);
-//    if(bottomSensorData < OBJTHRESH && sensorDifference < US_DIFF_THRESHOLD && DETECT_FLAG) {
-//      DETECT_FLAG = true;
-//    } else if (bottomSensorData < 10 && sensorDifference > US_DIFF_THRESHOLD && DETECT_FLAG) {
-//      DETECT_FLAG = true;
-//      System.out.println("beepo");
-//    }
-//  }
 
   /**
    * This method will adjust the position of robot to avoid collision.

@@ -43,7 +43,6 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
 
-    /*
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     Helper.BeepNtimes(3);
@@ -54,17 +53,14 @@ public class Main {
 
     moveToSearchZone();
     Helper.BeepNtimes(3);
-    */
+  
+    moveAndSearch();
 
-    Testcontroller.moveAndSearchTest();
+    moveBackToBridge();
+        
+    moveToInitial();
     
-//    moveAndSearch();
-//
-//    moveBackToBridge();
-//        
-//    moveToInitial();
-//    
-//    Helper.BeepNtimes(5);
+    Helper.BeepNtimes(5);
   
   }
 
@@ -98,8 +94,6 @@ public class Main {
         int bottomSensorData = downMedianFiltering(down_dists);      
         if (bottomSensorData < VALID_OFFSET) {
           if (topSensorData > bottomSensorData + US_DIFF_THRESHOLD) {
-            System.out.println("Top: " + topSensorData);
-            System.out.println("Bottom: " + bottomSensorData);
             calculateAndPush(bottomSensorData);
             Navigation.goRamp();
             i = 0;      // reset to first search point after finish a success push
@@ -166,7 +160,7 @@ public class Main {
   public static void calculateAndPush(int botReading) {
     var xyt = odometer.getXyt();
 
-    odometer.printPositionXY();
+//    odometer.printPositionXY();
 
     double dist = botReading / 100d + BOTTOM_CENTER;        // in meter
     double x = dist * Math.sin(Math.toRadians(xyt[2])); 

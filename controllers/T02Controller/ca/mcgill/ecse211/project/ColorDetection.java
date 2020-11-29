@@ -77,7 +77,7 @@ public class ColorDetection {
       }
     }
     
-    System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
+//    System.out.println("EucDis: Red: " + eucledianDistanceArr[0] + " Green: " + eucledianDistanceArr[1] + " Yellow: " + eucledianDistanceArr[2] + " Blue: " + eucledianDistanceArr[3]);
     
     if( eucledianDistanceArr[indexOfSmallest] > eucDisThresh) {
       return "UNCERTAIN";
