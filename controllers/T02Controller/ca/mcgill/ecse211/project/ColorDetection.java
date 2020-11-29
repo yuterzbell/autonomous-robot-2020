@@ -201,7 +201,7 @@ public class ColorDetection {
         break;
         
       }
-      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST - distAfterBlackLine);        
+      Helper.moveStraightFor(COLOR_SENSOR_TO_WHEEL_DIST - distAfterBlackLine);    
      
       var xyt1 = odometer.getXyt();
       

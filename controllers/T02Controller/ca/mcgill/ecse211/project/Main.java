@@ -43,11 +43,6 @@ public class Main {
     new Thread(odometer).start();   
     // Start the detector thread
     new Thread(detector).start();
-    
-//   Testcontroller.rampUp();
-    
-      
-//   Navigation.moveStraightFor(3);
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -61,18 +56,6 @@ public class Main {
     Helper.BeepNtimes(3);
 
     moveAndSearch();
-      
-    
-    /* Then go back to initial */
-
-  //  moveBackToBridge();
-    
-    
- //   moveToInitial();
-
-
-    // start the detector thread after initial localizing
-
 
     moveBackToBridge();
         
@@ -80,8 +63,6 @@ public class Main {
     
     Helper.BeepNtimes(5);
    
-
-
   }
 
   /**
