@@ -150,12 +150,12 @@ public class Resources {
 
 
   /** Flag variable indicating object detect. */
-//  public static boolean DETECT_FLAG = false;
+  public static boolean DETECT_FLAG = true;
 
   /** Flag variable indicating water detection.
    *  Set 'true' only when wanted to check for water.
    */
-  public static boolean DETECT_WATER = false;
+  public static boolean DETECT_WATER = true;
   
   /** Flag variable indicating if mass of container should be printed */
   public static boolean STORE_TORQUE = false;
@@ -166,7 +166,7 @@ public class Resources {
   /** variable to store object distance from robot when need to dodge */
   public static double OBJ_DIST = 0;
   
-  public static boolean AVOID_FLAG = false;
+  public static boolean AVOID_FLAG = true;
 
   // Hardware resources
 

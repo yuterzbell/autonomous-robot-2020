@@ -76,12 +76,8 @@ public class Navigation {
     } else if (destination.y != xyt[1] / TILE_SIZE) {
       moveInX = 0;
     }
-    if(DETECT_WATER){
-      ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(moveInX, distanceBetween(currentLocation, destination));
-    }else{
-         //   moveStraightWithLineCorrection(moveInX, distanceBetween(currentLocation, destination));
-      moveStraightWithObjectAvoidanceAndLineCorrection(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);
-    }    
+
+      moveStraightWithObjectAvoidanceAndLineCorrection(distanceBetween(currentLocation, destination), travelFactorX, travelFactorY);   
   }
 
   /**
@@ -667,9 +663,9 @@ public class Navigation {
     double distanceChange = 0;
 
     while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
-//      if (DETECT_FLAG) {
-//        ObjectDetection.objectAvoidance();
-//      }
+      if (DETECT_FLAG) {
+        ObjectDetection.objectAvoidance();
+      }
       var xyt0 = odometer.getXyt();
 
       LightLocalizer.moveUntilBlackLineDetected();

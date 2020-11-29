@@ -63,45 +63,45 @@ public class ObjectDetection implements Runnable{
     }
   }   
 
-//  /**
-//   * This method detect a valid object.
-//   */
-//  public static void detectObject(){
-//    topSensorData = readUsDistance2();
-////    System.out.println("Top readings: " + topSensorData);
-//    bottomSensorData = readUsDistance();
-////    System.out.println("bottom readings: " + bottomSensorData);
-//    int sensorDifference = Math.abs(bottomSensorData - topSensorData);
-////    System.out.println(DETECT_FLAG);
-//    if(bottomSensorData < OBJTHRESH && sensorDifference < US_DIFF_THRESHOLD && DETECT_FLAG) {
-//      DETECT_FLAG = true;
-//    } else if (bottomSensorData < 10 && sensorDifference > US_DIFF_THRESHOLD && DETECT_FLAG) {
-//      DETECT_FLAG = true;
-//      System.out.println("beepo");
-//    }
-//  }
+  /**
+   * This method detect a valid object.
+   */
+  public static void detectObject(){
+    topSensorData = readUsDistance2();
+//    System.out.println("Top readings: " + topSensorData);
+    bottomSensorData = readUsDistance();
+//    System.out.println("bottom readings: " + bottomSensorData);
+    int sensorDifference = Math.abs(bottomSensorData - topSensorData);
+//    System.out.println(DETECT_FLAG);
+    if(bottomSensorData < OBJTHRESH && sensorDifference < US_DIFF_THRESHOLD && DETECT_FLAG) {
+      DETECT_FLAG = true;
+    } else if (bottomSensorData < 10 && sensorDifference > US_DIFF_THRESHOLD && DETECT_FLAG) {
+      DETECT_FLAG = true;
+      System.out.println("beepo");
+    }
+  }
 
-//  /**
-//   * This method will adjust the position of robot to avoid collision.
-//   * @param bottomSensor
-//   * @param topSensor
-//   * @param flag
-//   */
-//  public static void objectAvoidance(){
-//    Helper.turnBy(-90);
-//    System.out.println("turning");
-//    int leftSpace = readUsDistance();
-//    Helper.turnBy(180);
-//    int rightSpace = readUsDistance();
-//    if (leftSpace <= rightSpace && rightSpace >= (TILE_SIZE * 100.0)) {
-//      moveStraightFor(TILE_SIZE);
-//    } else if (leftSpace > rightSpace && leftSpace >= (TILE_SIZE * 100.0)){
-//      Helper.turnBy(-180);
-//      moveStraightFor(TILE_SIZE);
-//    } else {
-//      //
-//    }
-//  }
+  /**
+   * This method will adjust the position of robot to avoid collision.
+   * @param bottomSensor
+   * @param topSensor
+   * @param flag
+   */
+  public static void objectAvoidance(){
+    Helper.turnBy(-90);
+    System.out.println("turning");
+    int leftSpace = readUsDistance();
+    Helper.turnBy(180);
+    int rightSpace = readUsDistance();
+    if (leftSpace <= rightSpace && rightSpace >= (TILE_SIZE * 100.0)) {
+      moveStraightFor(TILE_SIZE);
+    } else if (leftSpace > rightSpace && leftSpace >= (TILE_SIZE * 100.0)){
+      Helper.turnBy(-180);
+      moveStraightFor(TILE_SIZE);
+    } else {
+      //
+    }
+  }
   
   /**
    * This method will detect the container by searching a 90-deg sector
