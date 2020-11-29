@@ -667,9 +667,9 @@ public class Navigation {
     double distanceChange = 0;
 
     while (inMeters > TILE_SIZE) {    // while distance left can cover another tile
-      if (DETECT_FLAG) {
-        ObjectDetection.objectAvoidance();
-      }
+//      if (DETECT_FLAG) {
+//        ObjectDetection.objectAvoidance();
+//      }
       var xyt0 = odometer.getXyt();
 
       LightLocalizer.moveUntilBlackLineDetected();
