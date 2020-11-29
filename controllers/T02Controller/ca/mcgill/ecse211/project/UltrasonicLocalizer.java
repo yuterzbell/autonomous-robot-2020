@@ -69,14 +69,14 @@ public class UltrasonicLocalizer {
       curmedian = Helper.downMedianFiltering(down_dists);
       
       if (prevmedian >= D_THRESH + K && curmedian < D_THRESH + K && Sequence[0]) {
-        System.out.println("angle1 detected!!!");
+//        System.out.println("angle1 detected!!!");
         alpha1 = odometer.getXyt()[THETA];
         Sequence[0] = false;
         Sequence[1] = true;
         continue;
       }
       if (prevmedian >= D_THRESH - K && curmedian < D_THRESH - K && Sequence[1]) {
-        System.out.println("angle2 detected!!!");
+//        System.out.println("angle2 detected!!!");
         alpha2 = odometer.getXyt()[THETA];  
         Alpha = ((alpha1 + alpha2) / 2) % 360;
         Sequence[1] = false;
@@ -89,14 +89,14 @@ public class UltrasonicLocalizer {
       
       // then detect 2nd falling edge
       if (prevmedian >= D_THRESH + K && curmedian < D_THRESH + K && Sequence[2]) {
-        System.out.println("angle3 detected!!!");
+//        System.out.println("angle3 detected!!!");
         beta1 = odometer.getXyt()[THETA];         
         Sequence[2] = false;
         Sequence[3] = true;
         continue;
       }
       if (prevmedian >= D_THRESH - K && curmedian < D_THRESH - K && Sequence[3]) {
-        System.out.println("angle4 detected!!!");
+//        System.out.println("angle4 detected!!!");
         beta2 = odometer.getXyt()[THETA]; 
         Beta = ((beta1 + beta2) / 2) % 360;
         Sequence[3] = false;
@@ -135,13 +135,13 @@ public class UltrasonicLocalizer {
    */
   private static double calculate_dtheta(double a, double b) {
     double dtheta = 0.0;
-    System.out.println("Alpha: " + Alpha + ", Beta: " + Beta);
+//    System.out.println("Alpha: " + Alpha + ", Beta: " + Beta);
     if (a < b) {
       dtheta = 45 - (a + b) / 2;
     } else {
       dtheta = 225 - (a + b) / 2;
     }
-    System.out.println("dtheta: " + dtheta);
+//    System.out.println("dtheta: " + dtheta);
     return dtheta;
   }
 
@@ -183,7 +183,7 @@ public class UltrasonicLocalizer {
    * @return void
    */
   private static void initializeHeading() {
-    System.out.println("Robot is finding a open ground.....");
+//    System.out.println("Robot is finding a open ground.....");
     rightMotor.backward();
     leftMotor.forward();
 
@@ -192,12 +192,12 @@ public class UltrasonicLocalizer {
       dist = readUsDistance();
 //      System.out.println(dist);
     }
-    System.out.println("Open ground found! Reinitializing.....");
+//    System.out.println("Open ground found! Reinitializing.....");
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     rightMotor.backward();
     leftMotor.forward();
-    System.out.println("Robot moving......");
+//    System.out.println("Robot moving......");
   }
 
   /**

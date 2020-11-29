@@ -112,7 +112,7 @@ public class Resources {
   public static final double ROBOT_OFFSET = 0.7;
   
   /** The max valid distance for us sensors to have a reliable reading. */
-  public static final double VALID_OFFSET = 1.5 * TILE_SIZE * 100;
+  public static final double VALID_OFFSET = 1 * TILE_SIZE * 100;
   
   /** The flag inidcating an object close enough. */
   public static boolean objectInClose = false;
@@ -150,12 +150,12 @@ public class Resources {
 
 
   /** Flag variable indicating object detect. */
-  public static boolean DETECT_FLAG = false;
+  public static boolean DETECT_FLAG = true;
 
   /** Flag variable indicating water detection.
    *  Set 'true' only when wanted to check for water.
    */
-  public static boolean DETECT_WATER = false;
+  public static boolean DETECT_WATER = true;
   
   /** Flag variable indicating if mass of container should be printed */
   public static boolean STORE_TORQUE = false;
@@ -166,7 +166,7 @@ public class Resources {
   /** variable to store object distance from robot when need to dodge */
   public static double OBJ_DIST = 0;
   
-  public static boolean AVOID_FLAG = false;
+  public static boolean AVOID_FLAG = true;
 
   // Hardware resources
 

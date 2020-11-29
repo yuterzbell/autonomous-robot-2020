@@ -43,11 +43,11 @@ public class Main {
     // Start the detector thread
     new Thread(detector).start();
     
-   Testcontroller.rampUp();
+//   Testcontroller.rampUp();
     
       
 //   Navigation.moveStraightFor(3);
-/*
+
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
     Helper.BeepNtimes(3);
@@ -58,10 +58,15 @@ public class Main {
 
     moveToSearchZone();
     Helper.BeepNtimes(3);
+    
+    AVOID_FLAG = true;
+    DETECT_WATER = true;
 
     moveAndSearch();
+      
     
     /* Then go back to initial */
+
   //  moveBackToBridge();
     
     
@@ -69,6 +74,13 @@ public class Main {
 
 
     // start the detector thread after initial localizing
+
+
+    moveBackToBridge();
+        
+    moveToInitial();
+    
+    Helper.BeepNtimes(5);
 
 
   }
@@ -112,10 +124,11 @@ public class Main {
         } 
       }
       
-      if(!successPush)
+      if(!successPush) {
         i++;
+      }
     }
-    System.out.println("All position covered, moveAndSearch done");
+//    System.out.println("All position covered, moveAndSearch done");
   }
 
   /**
@@ -125,11 +138,40 @@ public class Main {
    */
   public static ArrayList<Point> getWayPoints(){
     ArrayList<Point> wayPoints = new ArrayList<Point>();
-    for (double i = searchZone.ll.x + 0.5; i < Ramp.left.x; i += 2) {
-      for (double j = searchZone.ll.y + 0.5; j < Ramp.right.y; j += 2) {
+    /* get x_limit and y_limit covered by chute*/
+    /* by default, the ramp faces SOUTH */
+    double x1 = Ramp.left.x, x2 = Ramp.right.x;
+    double y1 = Ramp.left.y, y2 = y1 + 2;
+    if (orient.equals("SOUTH")) {
+      x1 = Ramp.left.x - 1;
+      x2 = Ramp.right.x + 1;
+      y1 = Ramp.left.y;
+      y2 = y1 + 2;
+    } else if (orient.equals("NORTH")) {
+      x1 = Ramp.right.x - 1;
+      x2 = Ramp.left.x + 1;
+      y1 = Ramp.left.y - 2;
+      y2 = Ramp.left.y;
+    } else if (orient.equals("EAST")) {
+      x1 = Ramp.left.x - 2;
+      x2 = Ramp.left.x;
+      y1 = Ramp.left.y - 1;
+      y2 = Ramp.right.y + 1;
+    } else if (orient.equals("WEST")) {
+      x1 = Ramp.left.x;
+      x2 = x1 + 2;
+      y1 = Ramp.right.y - 1;
+      y2 = Ramp.left.y + 1;
+    }
+    for (double i = searchZone.ll.x + 0.5; i < searchZone.ur.x; i += 2) {
+      for (double j = searchZone.ll.y + 0.5; j < searchZone.ur.y; j += 2) {
+        if (x1 < i && i < x2 && y1 < j && j < y2) {
+          continue;
+        }
         wayPoints.add(new Point(i, j));
       }
     }
+    System.out.println(wayPoints);
     return wayPoints;
   }
 
@@ -154,11 +196,11 @@ public class Main {
     System.out.println("The point is: " + target);
     
     if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
-      target.x = target.x - 0.9;
+
       Navigation.navigateTo(target);
 //      System.out.println("This is when finished \n");
     } else if(xyt[0]/TILE_SIZE > target.x) {    // if robot to the right of container
-      target.x = target.x + 0.9;
+
       Navigation.navigateTo(target);
     }
   }
@@ -203,28 +245,28 @@ public class Main {
   public static void moveToInitial() {
     if (startZone.ur.x < isLand.ll.x) {
       // move leftwards
-      var sz = new Point(searchZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      var sz = new Point(startZone.ur.x - ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(270);
       Navigation.navigateTo(initial);
     } else if (startZone.ll.x > isLand.ur.x) {
       // move rightwards
-      var sz = new Point(searchZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
+      var sz = new Point(startZone.ll.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
       Navigation.navigateTo(sz);
       odometer.setY((tun.ll.y + tun.ur.y) / 2 * TILE_SIZE);
       odometer.setTheta(90);
       Navigation.navigateTo(initial);
     } else if (startZone.ll.y > isLand.ur.y) {
       // move upwards
-      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ll.y + ROBOT_OFFSET);
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, startZone.ll.y + ROBOT_OFFSET);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(0);
       Navigation.navigateTo(initial);
     } else if (startZone.ur.y < isLand.ll.y) {
       // move downwards
-      var sz = new Point((tun.ur.x + tun.ll.x) / 2, searchZone.ur.y - ROBOT_OFFSET);
+      var sz = new Point((tun.ur.x + tun.ll.x) / 2, startZone.ur.y - ROBOT_OFFSET);
       Navigation.navigateTo(sz);
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
       odometer.setTheta(180);
@@ -303,17 +345,16 @@ public class Main {
   private static void setOdometer() {
     if (Corner == 0) {
       odometer.setXytInTailSize(1, 1, 0);
-      initial = new Point(1, 1);
+      initial = new Point(0.7, 0.7);
     } else if (Corner == 1) {
       odometer.setXytInTailSize(14, 1, 270);
-      odometer.printPositionXY();
-      initial = new Point(14, 1);
+      initial = new Point(14.3, 0.7);
     } else if (Corner == 2) {
       odometer.setXytInTailSize(14, 8, 180);
-      initial = new Point(14, 8);
+      initial = new Point(14.3, 8.3);
     } else if (Corner == 3) {
       odometer.setXytInTailSize(1, 8, 90);
-      initial = new Point(1, 8);
+      initial = new Point(0.7, 8.3);
     } else {
       System.out.println("Error: Corner is not well identified");
     }
@@ -329,21 +370,6 @@ public class Main {
     if (redTeam == team) {
       Corner = redCorner;
       Ramp = rr;
-      Point left = Ramp.left;
-      Point right = Ramp.right;
-      if (left.x == right.x) {
-        if (left.y < right.y) {
-          orient = "EAST";
-        } else {
-          orient = "WEST";
-        }
-      } else if (left.y == right.y) {
-        if (left.x < right.x) {
-          orient = "SOUTH";
-        } else {
-          orient = "NORTH";
-        }
-      }
       startZone = red;
       isLand = island;
       tun = tnr;
@@ -355,6 +381,21 @@ public class Main {
       isLand = island;
       tun = tng;
       searchZone = szg;
+    }
+    Point left = Ramp.left;
+    Point right = Ramp.right;
+    if (left.x == right.x) {
+      if (left.y < right.y) {
+        orient = "EAST";
+      } else {
+        orient = "WEST";
+      }
+    } else if (left.y == right.y) {
+      if (left.x < right.x) {
+        orient = "SOUTH";
+      } else {
+        orient = "NORTH";
+      }
     }
     startTime = System.currentTimeMillis();
   }

@@ -152,7 +152,7 @@ public class ObjectDetection implements Runnable{
     int top = topMedianFiltering(top_dists);
     System.out.println("Top reads: " + top + "\nDown reads: " + down);
     if ((down < OBJTHRESH) && ((top - down) < US_DIFF_THRESHOLD)) {
-      System.out.println("Obstackle");
+      System.out.println("Obstacle");
       return true;
     }
     return false;
