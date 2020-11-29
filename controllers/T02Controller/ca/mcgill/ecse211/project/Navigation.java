@@ -145,17 +145,21 @@ public class Navigation {
         }
         
         double difference = rampy - odometer.getXytInTileSize()[1];
-        double travelY = difference + odometer.getXytInTileSize()[1] + 0.5;
+        double travelY = difference + odometer.getXytInTileSize()[1] + 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
+        STORE_TORQUE = true;
         navigateTo(goTo);
+        STORE_TORQUE = false;
+        calculateMass();
         alignToTheRightSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
-        double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 1;
+        double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 0.4;
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        moveRobotBackwardsFromRamp();
         
         }
         
@@ -180,17 +184,21 @@ public class Navigation {
             }
           }
         double difference = rampy - odometer.getXytInTileSize()[1];
-        double travelY = difference + odometer.getXytInTileSize()[1] + 0.5;
+        double travelY = difference + odometer.getXytInTileSize()[1] + 0.4;
         double travelX = odometer.getXytInTileSize()[0];
         Point goTo = new Point(travelX, travelY);
+        STORE_TORQUE = true;
         navigateTo(goTo);
+        STORE_TORQUE = false;
+        calculateMass();
         alignToTheLeftSide();
         
         double difference2 = rampx - odometer.getXytInTileSize()[0];
         double travelY2 = odometer.getXytInTileSize()[1];
-        double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 1;
+        double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 0.4;
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        moveRobotBackwardsFromRamp();
         
         }
   
@@ -213,20 +221,23 @@ public class Navigation {
             
           }
           
-          double difference = rampy - odometer.getXytInTileSize()[1];
-          double travelY = difference + odometer.getXytInTileSize()[1] - 0.3;
-          double travelX = odometer.getXytInTileSize()[0];
-          Point goTo = new Point(travelX, travelY);
-          navigateTo(goTo);
-          alignToTheRightSide();
-          
-          double difference2 = rampx - odometer.getXytInTileSize()[0];
-          double travelY2 = odometer.getXytInTileSize()[1];
-          double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 1;
-          Point goTo2 = new Point(travelX2, travelY2);
-          navigateTo(goTo2);
-          
         }
+        double difference = rampy - odometer.getXytInTileSize()[1];
+        double travelY = difference + odometer.getXytInTileSize()[1] - 0.4;
+        double travelX = odometer.getXytInTileSize()[0];
+        Point goTo = new Point(travelX, travelY);
+        STORE_TORQUE = true;
+        navigateTo(goTo);
+        STORE_TORQUE = false;
+        calculateMass();
+        alignToTheRightSide();
+        
+        double difference2 = rampx - odometer.getXytInTileSize()[0];
+        double travelY2 = odometer.getXytInTileSize()[1];
+        double travelX2 = difference2 + odometer.getXytInTileSize()[0] - 0.4;
+        Point goTo2 = new Point(travelX2, travelY2);
+        navigateTo(goTo2);
+        moveRobotBackwardsFromRamp();
        }
 
       if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
@@ -245,19 +256,24 @@ public class Navigation {
             
           }
           
-          double difference = rampy - odometer.getXytInTileSize()[1];
-          double travelY = difference + odometer.getXytInTileSize()[1] - 0.3;
-          double travelX = odometer.getXytInTileSize()[0];
-          Point goTo = new Point(travelX, travelY);
-          navigateTo(goTo);
-          alignToTheLeftSide();
-          
-          double difference2 = rampx - odometer.getXytInTileSize()[0];
-          double travelY2 = odometer.getXytInTileSize()[1];
-          double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 1;
-          Point goTo2 = new Point(travelX2, travelY2);
-          navigateTo(goTo2);
+        
         }
+        double difference = rampy - odometer.getXytInTileSize()[1];
+        double travelY = difference + odometer.getXytInTileSize()[1] - 0.4;
+        double travelX = odometer.getXytInTileSize()[0];
+        Point goTo = new Point(travelX, travelY);
+        STORE_TORQUE = true;
+        navigateTo(goTo);
+        STORE_TORQUE = false;
+        calculateMass();
+        alignToTheLeftSide();
+        
+        double difference2 = rampx - odometer.getXytInTileSize()[0];
+        double travelY2 = odometer.getXytInTileSize()[1];
+        double travelX2 = difference2 + odometer.getXytInTileSize()[0] + 0.4;
+        Point goTo2 = new Point(travelX2, travelY2);
+        navigateTo(goTo2);
+        moveRobotBackwardsFromRamp();
         
        }
       
@@ -281,18 +297,21 @@ public class Navigation {
         }
       }
       double difference = rampx - odometer.getXytInTileSize()[0];
-      double travelX = difference + odometer.getXytInTileSize()[0] + 0.3;
+      double travelX = difference + odometer.getXytInTileSize()[0] + 0.4;
       double travelY = odometer.getXytInTileSize()[1];
       Point goTo = new Point(travelX, travelY);
+      STORE_TORQUE = true;
       navigateTo(goTo);
-      alignToTheRightSide();
+      STORE_TORQUE = false;
+      calculateMass();
+      alignToTheLeftSide();
       
       double difference2 = rampy - odometer.getXytInTileSize()[1];
-      double travelY2 = difference2 + odometer.getXytInTileSize()[1] + 0.3;
+      double travelY2 = difference2 + odometer.getXytInTileSize()[1] + 0.4;
       double travelX2 = odometer.getXytInTileSize()[0];
       Point goTo2 = new Point(travelX2, travelY2);
       navigateTo(goTo2);
-      
+      moveRobotBackwardsFromRamp();
      }
 
     //Case to move down and move RIGHT
@@ -310,17 +329,21 @@ public class Navigation {
         }
       }
       double difference = rampx - odometer.getXytInTileSize()[0];
-      double travelX = difference + odometer.getXytInTileSize()[0] - 0.3;
+      double travelX = difference + odometer.getXytInTileSize()[0] - 0.4;
       double travelY = odometer.getXytInTileSize()[1];
       Point goTo = new Point(travelX, travelY);
+      STORE_TORQUE = true;
       navigateTo(goTo);
+      STORE_TORQUE = false;
+      calculateMass();
       alignToTheRightSide();
       
       double difference2 = rampy - odometer.getXytInTileSize()[1];
-      double travelY2 = difference2 + odometer.getXytInTileSize()[1] + 0.3;
+      double travelY2 = difference2 + odometer.getXytInTileSize()[1] + 0.4;
       double travelX2 = odometer.getXytInTileSize()[0];
       Point goTo2 = new Point(travelX2, travelY2);
       navigateTo(goTo2);
+      moveRobotBackwardsFromRamp();
      }
 
       //Case to move up and move RIGHT
@@ -341,15 +364,19 @@ public class Navigation {
         double travelX = difference + odometer.getXytInTileSize()[0] - 0.4; 
         double travelY = odometer.getXytInTileSize()[1];
         Point goTo = new Point(travelX, travelY);
+        STORE_TORQUE = true;
         navigateTo(goTo);
+        STORE_TORQUE = false;
+        calculateMass();
         alignToTheLeftSide();
         
         double difference2 = rampy - odometer.getXytInTileSize()[1];
-        double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 1;
+        double travelY2 = difference2 + odometer.getXytInTileSize()[1] - 0.4;
         double travelX2 = odometer.getXytInTileSize()[0];
         System.out.println("nextY:"+travelY2);
         Point goTo2 = new Point(travelX2, travelY2);
         navigateTo(goTo2);
+        moveRobotBackwardsFromRamp();
        
      }
 
@@ -556,7 +583,7 @@ public class Navigation {
    */
   public static void moveRobotBackwardsFromRamp(){
   
-    moveStraightFor(0.9);
+    moveStraightFor(1.1);
     moveStraightFor(-1.5);
     /*
     int bottomReading = -1;

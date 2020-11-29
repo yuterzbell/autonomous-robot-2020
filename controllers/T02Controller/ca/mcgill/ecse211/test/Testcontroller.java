@@ -120,9 +120,9 @@ public class Testcontroller {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
     
-    double x = 12;
-    double y = 6;
-    double theta = 0;
+    double x = 13;
+    double y = 7;
+    double theta = 270;
     odometer.setXytInTailSize(x, y, theta);
     
     odometer.printPosition();
@@ -137,9 +137,9 @@ public class Testcontroller {
   public static void waterDetect() {
     leftMotor.setSpeed(FORWARD_SPEED);
     rightMotor.setSpeed(FORWARD_SPEED);
-    double x = 8;
-    double y = 7;
-    double theta = 180;
+    double x = 9;
+    double y = 6;
+    double theta = 0;
     
     double waterX = 8;
     double waterY = 4;
