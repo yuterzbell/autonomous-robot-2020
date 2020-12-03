@@ -101,17 +101,6 @@ public class Testcontroller {
     }
   }
   
-  /**
-   * This method tests the containerDetection method.
-   * @author Zichen Chang
-   */
-  public static void testContainerDetection() {
-    ReinitializeDoubleUsensors();
-    int down = downMedianFiltering(down_dists);
-    int top = topMedianFiltering(top_dists);
-    System.out.println("Top readings:" + top + "\nDown readings: " + down);
-    System.out.println("Is there a container? " + ObjectDetection.containerDetect());
-}
 
   /**
    * This method test the robot's ability to drive up ramp.
@@ -222,5 +211,15 @@ public class Testcontroller {
     odometer.setXytInTailSize(6.5, 7.5, 90);
     odometer.printPositionXY();
     Main.moveAndSearch();
+  }
+  
+  /**
+   * This method test the ability of robot to self driving back to initial position.
+   */
+  public static void moveBackTest() {
+    odometer.setXytInTailSize(14.5, 6.5, 270);
+    initial = new Point(14.5, 0.5);
+    Main.moveBackToBridge();
+    Main.moveToInitial();
   }
 }

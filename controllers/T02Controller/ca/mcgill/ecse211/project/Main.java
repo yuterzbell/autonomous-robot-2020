@@ -28,12 +28,12 @@ public class Main {
    * one used to perform physics steps.
    */
   public static final int NUMBER_OF_THREADS = 3;
-  
-  
-  
-  
+
+
+
+
   /** Main entry point. */
-  
+
   public static void main(String[] args) {    
     initialize();
 
@@ -41,7 +41,7 @@ public class Main {
     // Start the odometer thread
     new Thread(odometer).start();   
     // Start the detector thread
-    new Thread(detector).start();
+    new Thread(detector).start();    
 
     UltrasonicLocalizer.localize();
     LightLocalizer.localize();
@@ -53,15 +53,16 @@ public class Main {
 
     moveToSearchZone();
     Helper.BeepNtimes(3);
-  
+
     moveAndSearch();
 
     moveBackToBridge();
-        
+
     moveToInitial();
-    
+
     Helper.BeepNtimes(5);
-  
+
+
   }
 
   /**
@@ -101,7 +102,7 @@ public class Main {
           }
         } 
       }
-      
+
       if(!successPush) {
         i++;
       }
@@ -148,7 +149,7 @@ public class Main {
         wayPoints.add(new Point(i, j));
       }
     }
-//    System.out.println(wayPoints);
+    //    System.out.println(wayPoints);
     return wayPoints;
   }
 
@@ -160,20 +161,20 @@ public class Main {
   public static void calculateAndPush(int botReading) {
     var xyt = odometer.getXyt();
 
-//    odometer.printPositionXY();
+    //    odometer.printPositionXY();
 
     double dist = botReading / 100d + BOTTOM_CENTER;        // in meter
     double x = dist * Math.sin(Math.toRadians(xyt[2])); 
     double y = dist * Math.cos(Math.toRadians(xyt[2]));
-//    System.out.print("the delta x is: " + x);
-//    System.out.println("\tthe delta y is: " + y);
+    //    System.out.print("the delta x is: " + x);
+    //    System.out.println("\tthe delta y is: " + y);
     Point target = new Point((xyt[0] + x) / TILE_SIZE, (xyt[1] + y) / TILE_SIZE);
-//    System.out.println("The point is: " + target);
-    
+    //    System.out.println("The point is: " + target);
+
     if(xyt[0]/TILE_SIZE < target.x) {      // if robot to the left of container
 
       Navigation.navigateTo(target);
-//      System.out.println("This is when finished \n");
+      //      System.out.println("This is when finished \n");
     } else if(xyt[0]/TILE_SIZE > target.x) {    // if robot to the right of container
 
       Navigation.navigateTo(target);
@@ -254,7 +255,7 @@ public class Main {
    * 
    * @author Zichen Chang
    */
-  private static void moveBackToBridge() {
+  public static void moveBackToBridge() {
     if (startZone.ur.x < isLand.ll.x) {
       // move leftwards
       var bridge = new Point(tun.ur.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);
@@ -277,14 +278,14 @@ public class Main {
       odometer.setX((tun.ur.x + tun.ll.x) / 2 * TILE_SIZE);
     }
   }
-  
-  
+
+
   /**
    * This method will drive the robot in front of bridge.
    * 
    * @author Zichen Chang
    */
-  private static void moveToBridge() {
+  public static void moveToBridge() {
     if (isLand.ur.x < startZone.ll.x) {
       // move leftwards
       var bridge = new Point(tun.ur.x + ROBOT_OFFSET, (tun.ll.y + tun.ur.y) / 2);

@@ -120,7 +120,7 @@ public class Navigation {
     turnBy(- 90);
     moveStraightFor(0.7);
   }
-
+  
   public static void determineMovement(double deltaLocation[], double theta, boolean flag, double rampx, double rampy){
     //Case to move down and move left
     if(flag == true) {
@@ -196,10 +196,7 @@ public class Navigation {
         calculateMass();
         moveRobotBackwardsFromRamp();
         
-        }
-  
-       
-
+        }     
         //Case to move up and move RIGHT
       if(deltaLocation[1]>0 && deltaLocation[0]>0 ){
 //        System.out.println("3.1");
@@ -240,18 +237,14 @@ public class Navigation {
 //        System.out.println("4.1");
         if(!(theta>350 || theta<10)){
           if(theta>85 && theta < 100){
-            alignToTheLeftSide();
-          
+            alignToTheLeftSide();         
           }
           else if(theta>170 && theta<190){
-            alignReserve();
-            
+            alignReserve();           
           }
           else if(theta>350 || theta<10){
-            alignToTheRightSide();
-            
+            alignToTheRightSide();           
           }
-          
         
         }
         double difference = rampy - odometer.getXytInTileSize()[1];
@@ -272,10 +265,7 @@ public class Navigation {
         moveRobotBackwardsFromRamp();
         
        }
-      
-      
-      
-      
+                      
     }else {
       
     
@@ -442,163 +432,21 @@ public class Navigation {
      onSide = true;
     }
     
-//    System.out.println(onSide);
-    
-//    System.out.println("yramp"+yRamp);
-//    System.out.println(blockLocation[1]);
     double deltaLocation[] = {xRamp - blockLocation[0],yRamp - blockLocation[1]};
-//    System.out.println(deltaLocation[0]);
-//    System.out.println(deltaLocation[1]);
+
     determineMovement(deltaLocation, xyt[2], onSide, xRamp, yRamp);
 
 
-    // // case 270 - up towards the left
-    // if(left.y < right.y && left.x == right.x) {
-    //   System.out.println("1");
-    //   xRamp = xRamp +1;
-    //   Point ramp = new Point(xRamp, yRamp);
-    //   navigateTo(ramp);
-    //   turnTo(270);
-    //   //moveRobotBackwardsFromRamp();
-
-    // }
-    // // case 90 - up on the right
-    // if(left.y > right.y && left.x == right.x) {
-    //   System.out.println("2");
-    //   xRamp = xRamp -1;
-    //   Point ramp = new Point(xRamp, yRamp);
-    //   navigateTo(ramp);
-    //   turnTo(90);
-    //   // moveRobotBackwardsFromRamp();
-    // }
-
-    // // case 0 - going up north
-    // if(left.x < right.x && left.y == right.y) {
-    //   System.out.println("3");
-    //   yRamp = yRamp -1;
-    //   System.out.println(xRamp);
-    //   Point ramp = new Point(xRamp, yRamp);
-    //   navigateTo(ramp);
-    //   turnTo(0);
-    //   //moveRobotBackwardsFromRamp();
-
-    // }
-    // // case 180 - going down 
-    // if(left.x > right.x && left.y == right.y) {
-    //   System.out.println("4");
-    //   yRamp = yRamp +1;
-    //   Point ramp = new Point(xRamp, yRamp);
-    //   navigateTo(ramp);
-    //   turnTo(180);
-    //   // moveRobotBackwardsFromRamp();
-    // }
-
   }
 
-  /**
-   * Moves the robot backwards one tile after dropping the container in the bin
-   */
-  /*
-  public static void moveRobotBackwardsFromRamp(){
-    int bottomReading = -1;
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
-    System.out.println("in");
-    while(true){
-      forward();
-      bottomReading = readUsDistance();
-      if(bottomReading > 80){
-        leftMotor.stop();
-        rightMotor.stop();
-        moveStraightFor(-(TILE_SIZE)*4);
-        break;
-      }
-    } 
-  }
-  */
-  /** Navigates the robot to the ramp. */
-  /*
-  public static void goRamp() {
-    Point left = Ramp.left;
-    Point right = Ramp.right;
-    System.out.println();
-    var xyt = odometer.getXyt();
-
-
-    double xRamp = (left.x + right.x)/2;
-    double yRamp = (left.y + right.y)/2;
-
-
-
-    if(left.y < right.y && left.x == right.x) {
-      System.out.println("1");
-      xRamp = xRamp +1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(270);
-      //moveRobotBackwardsFromRamp();
-
-    }
-    if(left.y > right.y && left.x == right.x) {
-      System.out.println("2");
-      xRamp = xRamp -1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(90);
-      // moveRobotBackwardsFromRamp();
-    }
-
-
-    if(left.x < right.x && left.y == right.y) {
-      System.out.println("3");
-      yRamp = yRamp -1;
-      System.out.println(xRamp);
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(0);
-      //moveRobotBackwardsFromRamp();
-
-    }
-
-    if(left.x > right.x && left.y == right.y) {
-      System.out.println("4");
-      yRamp = yRamp +1;
-      Point ramp = new Point(xRamp, yRamp);
-      navigateTo(ramp);
-      turnTo(180);
-      // moveRobotBackwardsFromRamp();
-    }
-
-
-
-
-  }*/
 
   /**
    * Moves the robot backwards one tile after dropping the container in the bin
    */
   public static void moveRobotBackwardsFromRamp(){
-  
-
     moveStraightFor(1.2);
 
     moveStraightFor(-1.5);
-    /*
-    int bottomReading = -1;
-    leftMotor.setSpeed(FORWARD_SPEED);
-    rightMotor.setSpeed(FORWARD_SPEED);
-    System.out.println("in");
-    while(true){
-      forward();
-      bottomReading = readUsDistance();
-      if(bottomReading > 80){
-        leftMotor.stop();
-        rightMotor.stop();
-        moveStraightFor(-(TILE_SIZE)*4);
-        break;
-      }
-      
-    } */
     
   }
 
@@ -637,8 +485,6 @@ public class Navigation {
     var dy = p2.y - p1.y;
     return sqrt(dx * dx + dy * dy);
   }
-
-  // TODO Bring Navigation-related helper methods from Labs 2 and 3 here
 
   /**
    * Moves the robot straight for the given distance.
@@ -809,12 +655,6 @@ public class Navigation {
   public static void moveStraightWithObjectAvoidanceAndLineCorrection(double distance, int travelFactorX, int travelFactorY) {
     
     if (AVOID_FLAG) {
-//      double curr_odo = 0;
-//      if (travelFactorY == 0) {
-//        curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-//      } else {
-//        curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-//      }
   
       double stepFactor = 0;
   
@@ -824,15 +664,6 @@ public class Navigation {
             if (distance > 0.2) {
                 //moveStraightFor(1);
                 ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 0.2);
-//                if (travelFactorY == 0) {
-//                  curr_odo = curr_odo + (travelFactorX * 0.2);
-//                  distance = distance - 0.2;
-//                  odometer.setX(curr_odo * TILE_SIZE);
-//                } else {
-//                  curr_odo = curr_odo + (travelFactorY * 0.2);
-//                  distance = distance - 0.2;
-//                  odometer.setY(curr_odo * TILE_SIZE);
-//                }
                 distance = distance - 0.2;
             }
           }
@@ -842,11 +673,7 @@ public class Navigation {
               System.out.println("Fatal Error!");
               return;
             }
-//            if (travelFactorY == 0) {
-//              curr_odo = odometer.getXyt()[0] / TILE_SIZE;
-//            } else {
-//              curr_odo = odometer.getXyt()[1] / TILE_SIZE;
-//            }
+
           } else {
 //            System.out.println("test");
             distance = 0;
@@ -854,28 +681,10 @@ public class Navigation {
           distance = distance - stepFactor;
         } else {
           if (distance > 1.2) {
-            //moveStraightFor(1);
             ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1.2);
-//            if (travelFactorY == 0) {
-//              curr_odo = curr_odo + (travelFactorX * 1.2);
-//              distance = distance - 1.2;
-//              odometer.setX(curr_odo * TILE_SIZE);
-//            } else {
-//              curr_odo = curr_odo + (travelFactorY * 1.2);
-//              distance = distance - 1.2;
-//              odometer.setY(curr_odo * TILE_SIZE);
-//            }
             distance = distance - 1.2;
           } else {
-            //moveStraightFor(distance);
             ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), distance);
-//            if (travelFactorY == 0) {
-//              curr_odo = curr_odo + (travelFactorX * distance);
-//              odometer.setX(curr_odo * TILE_SIZE);
-//            } else {
-//              curr_odo = curr_odo + (travelFactorY * distance);
-//              odometer.setY(curr_odo * TILE_SIZE);
-//            }
             break;
           }
         }
@@ -901,18 +710,7 @@ public class Navigation {
       stepFactor = 2.5;
     } else {
       stepFactor = 2;
-    }
-    
-//    double straight_odo = 0;
-//    double lateral_odo = 0;
-//
-//    if (travelFactorY == 0) {
-//      straight_odo = odometer.getXyt()[0] / TILE_SIZE;
-//      lateral_odo = odometer.getXyt()[1] / TILE_SIZE;
-//    } else {
-//      straight_odo = odometer.getXyt()[1] / TILE_SIZE;
-//      lateral_odo = odometer.getXyt()[0] / TILE_SIZE;
-//    }
+    }   
     
     int dodgeFactor = 0;
     while (dodgeFactor == 0) {
@@ -932,13 +730,6 @@ public class Navigation {
       }
       turnBy(180);
       moveStraightFor(0.2);
-//      if (travelFactorY == 0) {
-//        straight_odo = straight_odo + (stepFactor * travelFactorX);
-//        odometer.setX(straight_odo * TILE_SIZE);
-//      } else {
-//        straight_odo = straight_odo + (stepFactor * travelFactorY);
-//        odometer.setY(straight_odo * TILE_SIZE);;
-//      }
       if (ObjectDetection.obstacleDetect(10)) {
         return -99;
       }
@@ -948,119 +739,23 @@ public class Navigation {
     
 
     turnBy(dodgeFactor*90);
-
-    //moveStraightFor(1);
+    
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorY), 1);
-//    if (travelFactorY == 0) {
-//      lateral_odo = lateral_odo + (-travelFactorX);
-//      odometer.setY(lateral_odo * TILE_SIZE);
-//    } else {
-//      lateral_odo = lateral_odo + (-travelFactorY);
-//      odometer.setX(lateral_odo * TILE_SIZE);
-//    }
 
     turnBy(dodgeFactor*-90);
 
-    //moveStraightFor(stepFactor);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), stepFactor);
-//    if (travelFactorY == 0) {
-//      straight_odo = straight_odo + (stepFactor * travelFactorX);
-//      odometer.setX(straight_odo * TILE_SIZE);
-//    } else {
-//      straight_odo = straight_odo + (stepFactor * travelFactorY);
-//      odometer.setY(straight_odo * TILE_SIZE);;
-//    }
+
 
     //Restore x and theta
     turnBy(dodgeFactor*-90);
 
-    //moveStraightFor(1);
     ColorDetection.moveStraightWithLineCorrectionAndWaterDetection(Math.abs(travelFactorX), 1);
-//    if (travelFactorY == 0) {
-//      lateral_odo = lateral_odo + (travelFactorX);
-//      odometer.setY(lateral_odo * TILE_SIZE);
-//    } else {
-//      lateral_odo = lateral_odo + (travelFactorY);
-//      odometer.setX(lateral_odo * TILE_SIZE);
-//    }
 
     turnBy(dodgeFactor*90);
 
     return stepFactor;
   }
-
-  /**
-   * Method Drives robot in Y.
-   */
-//  public static void searchInY() {
-//
-//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-//
-//    if ((szr.ur.y - curr_y) < (curr_y - szr.ll.y)) {
-//      searchUpwards();
-//      searchDownwards();
-//    } else {
-//      searchDownwards();
-//      searchUpwards();
-//    }
-//
-//  }
-  
-  /**
-   * Method drives robot upwards.
-   */
-//  public static void searchUpwards() {
-//
-//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-//
-//    //Searching Upwards
-//    turnBy(-90);
-//    odometer.setTheta(0);    
-//
-//    while ((szr.ur.y - curr_y) > 1) {
-//      if (!ObjectDetection.detect()) {
-//        moveStraightFor(1);
-//        curr_y = curr_y + 1;
-//        odometer.setY(curr_y * TILE_SIZE);
-//      } else {
-//        if ((szr.ur.y - (curr_y + 1) < 1)) { //Checking if obstacle is at top of column
-//          break;
-//        } else {
-//          ObjectDetection.avoidObjectInX(true, false);
-//          curr_y = odometer.getXyt()[1] / TILE_SIZE;
-//        }
-//      }
-//    }
-//  }
-  
-  
-  /**
-   * Method drives robot downwards.
-   */
-//  public static void searchDownwards() {
-//
-//    double curr_y = odometer.getXyt()[1] / TILE_SIZE;
-//
-//    //Searching Downwards
-//    turnBy(180);
-//    odometer.setTheta(180);
-//
-//    while ((curr_y - szr.ll.y) > 1) {
-//      if (!ObjectDetection.detect()) {
-//        moveStraightFor(1);
-//        curr_y = curr_y - 1;
-//        odometer.setY(curr_y * TILE_SIZE);
-//      } else {
-//        if (((curr_y - 1) - szr.ll.y < 1)) { //Checking if obstacle is at bottom of column
-//          break;
-//        } else {
-//          ObjectDetection.avoidObjectInX(false, true);
-//          curr_y = odometer.getXyt()[1] / TILE_SIZE;
-//        }
-//      }
-//    }
-//  }
-//  
 
 /** Method calculates the mass of the container*/
   
