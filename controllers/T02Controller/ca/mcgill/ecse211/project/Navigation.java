@@ -43,13 +43,11 @@ public class Navigation {
     if(Math.abs(differenceY) > 0.1) {flagY = true;}
     if(Math.abs(differenceX) > 0.1) {flagX = true;}
     // move in y first
-//    System.out.println("abssY"+Math.abs(differenceY));
     if(flagY) {
     var pointX = new Point(xyt[0] / TILE_SIZE, destination.y);
     travelTo(pointX, 0, travelY);
     }
     // move in x then
-//    System.out.println("abssX"+Math.abs(differenceX));
     if(flagX) {
     xyt = odometer.getXyt();
     var pointY = new Point(destination.x, xyt[1] / TILE_SIZE);
@@ -81,7 +79,7 @@ public class Navigation {
   }
 
   /**
-   * When odometer is facing 90 degrees
+   * Method to reposition the robot when required to rotate to the right while pushing a container
    */
   public static void alignToTheRightSide(){
     moveStraightFor(-0.4);
@@ -94,7 +92,7 @@ public class Navigation {
   }
 
   /**
-   * When odometer is facing 270
+   * Method to reposition the robot when required to rotate to the left while pushing a container
    */
   public static void alignToTheLeftSide(){
     moveStraightFor(-0.4);
@@ -107,7 +105,7 @@ public class Navigation {
   }
 
     /**
-   * When odometer is facing 0  
+   * Method to reposition the robot when required to rotate by an angle of 180 degrees while pushing a container 
    */
   public static void alignReserve(){
     moveStraightFor(-0.3);
@@ -121,11 +119,20 @@ public class Navigation {
     moveStraightFor(0.7);
   }
   
+  /**
+   * Method which calls the appropriate methods to navigate the robot to edge of the ramp. Determines all necessary robot orientation adjustment when having to rotate while pushing a block. 
+   * It is also responsible to determine when to store torque measurements to then call the calculateMass method at the appropriate time. 
+   * @param deltaLocation
+   * @param theta
+   * @param flag
+   * @param rampx
+   * @param rampy
+   */
   public static void determineMovement(double deltaLocation[], double theta, boolean flag, double rampx, double rampy){
     //Case to move down and move left
     if(flag == true) {
       if(deltaLocation[1]<0 && deltaLocation[0]<0 ){
-//        System.out.println("1.1");
+
         if(!(theta>170 && theta<190)){        
         
           if(theta>350 || theta<10){
@@ -162,8 +169,7 @@ public class Navigation {
       
       //Case to move down and move RIGHT
       if(deltaLocation[1]<0 && deltaLocation[0]>0 ){
-//        System.out.println("2.1");
-        
+
         if(!(theta>170 && theta<190)) {
           
           if(theta>260 && theta < 280){
@@ -234,7 +240,7 @@ public class Navigation {
        }
 
       if(deltaLocation[1]>0 && deltaLocation[0]<0 ){
-//        System.out.println("4.1");
+
         if(!(theta>350 || theta<10)){
           if(theta>85 && theta < 100){
             alignToTheLeftSide();         
@@ -768,15 +774,12 @@ public class Navigation {
     int floor = (int) Math.round(allTorque.size()*0.3);
     int sealing = (int) Math.round(allTorque.size()*0.8);
     for (int i = floor; i <sealing; i++) {
-      //System.out.println(allTorque.get(i));
       sum += allTorque.get(i);
       count++;
     }
 
     averageTorque = sum / count;
     
-   // System.out.println("sum"+sum);
-   // System.out.println("count"+count);
     System.out.println(averageTorque);
     
     
