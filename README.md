@@ -1,6 +1,16 @@
 # ECSE211 Project: Team 02 - Atom
 ## Project Description
   The purpose of this project is to create an autonomous vehicle that can navigate from a corner positioned with a random angle. It should find its way across the bridge inside the playing field and then go identify and push the containers into the target bin. After it finishes all the containers or the time runs out, the robot should drive itself back to the starting point. For details please check our Requirement document Requirements_5.02.docx
+  
+Implemented features:
+Container detection
+Obstacle avoidance
+Water avoidance
+Torque measurement
+Navigate to destination
+Navigate and push container
+Localization
+
 
 ## Content of repo
 ### controller
